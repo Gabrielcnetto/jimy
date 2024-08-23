@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894532107300",
+    "project_id": "jimyappoficial",
+    "storage_bucket": "jimyappoficial.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894532107300:android:ad87b9beb489ce648eacb1",
+        "android_client_info": {
+          "package_name": "com.jimyapp.oficial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZyfJb9U00t9f4lawbQyGDs1eBx_N53bY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

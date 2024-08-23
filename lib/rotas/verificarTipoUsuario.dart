@@ -1,0 +1,92 @@
+import 'package:flutter/material.dart';
+import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:jimy/funcoes/CriarContaeLogar.dart';
+import 'package:jimy/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
+import 'package:jimy/usuarioGerente/UsuarioGerenteHome.dart';
+import 'package:jimy/usuarioNormal/UsuarioNormalHome.dart';
+
+class VerificartipoDeUsuario extends StatefulWidget {
+  const VerificartipoDeUsuario({super.key});
+
+  @override
+  State<VerificartipoDeUsuario> createState() => _VerificartipoDeUsuarioState();
+}
+
+class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadUserIsManager();
+    loadUseruserNormal();
+    loadUserdistribuidor();
+  }
+
+  bool? isManager;
+  Future<void> loadUserIsManager() async {
+    bool? bolIsManager = await CriarcontaelogarProvider().getUserIsManager();
+
+    if (isManager != null) {
+    } else {
+      const Text('N/A');
+    }
+
+    setState(() {
+      isManager = bolIsManager!;
+    });
+  }
+
+  bool? userNormal;
+  Future<void> loadUseruserNormal() async {
+    bool? booluserNormal =
+        await CriarcontaelogarProvider().getUserIsUsuarioNormal();
+
+    if (userNormal != null) {
+    } else {
+      const Text('N/A');
+    }
+
+    setState(() {
+      userNormal = booluserNormal!;
+    });
+  }
+
+  bool? distribuidor;
+  Future<void> loadUserdistribuidor() async {
+    bool? boldistribuidor =
+        await CriarcontaelogarProvider().getUserIsUsuarioNormal();
+
+    if (distribuidor != null) {
+    } else {
+      const Text('N/A');
+    }
+
+    setState(() {
+      distribuidor = boldistribuidor!;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Verifica se as variáveis foram carregadas
+    if (isManager == null || userNormal == null || distribuidor == null) {
+      // Exibe um indicador de carregamento enquanto os dados são carregados
+      return Scaffold(
+        appBar: AppBar(title: Text('Carregando...')),
+        body: Center(child: CircularProgressIndicator(color: Dadosgeralapp().primaryColor,)),
+      );
+    }
+
+    // Exibindo a tela com base nas variáveis carregadas
+    if (userNormal == true) {
+      return UsuarioNormalHome();
+    } else if (isManager == true) {
+      return UsuarioGerenteHome();
+    } else if (distribuidor == true) {
+      return UsuarioGerenteDistribuidor();
+    } else {
+      return AcessoEntrada(); // aqui colocar uma tela default
+    }
+  }
+}
