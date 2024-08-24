@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:jimy/DadosGeralApp.dart';
 
 class CriarcontaelogarProvider with ChangeNotifier {
   //bibliotecas - packages
@@ -34,7 +35,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
         "urlPerfilImage":
-            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+            "${Dadosgeralapp().defaultAvatarImage}",
         "Dimypoints": 0,
         "userName": userName,
         "email": email,
@@ -82,7 +83,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         'PhoneNumber': numeroContato,
         'userIdDatabase': userIdCreate,
         "urlPerfilImage":
-            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+            "${Dadosgeralapp().defaultAvatarImage}",
 
         "userName": userName,
         "email": email,
@@ -104,7 +105,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "idDistribuidora": idDistribuidora,
         "totalVendas": 0.0,
         "urlPerfilImage":
-            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+            "${Dadosgeralapp().defaultAvatarImage}",
       });
       notifyListeners();
     } catch (e) {
@@ -139,7 +140,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
         "urlPerfilImage":
-            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+            "${Dadosgeralapp().defaultAvatarImage}",
 
         "userName": userName,
         "email": email,
@@ -150,7 +151,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "nomeBarbearia": nomeBarbearia,
         "idBarbearia": idBarbearia,
         "imagemPerfilBarbearia:":
-            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+            "${Dadosgeralapp().defaultAvatarImage}",
       });
 
       //criando perfil barbearia
@@ -161,7 +162,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "nomeBarbearia": nomeBarbearia,
         "idBarbearia": idBarbearia,
         "imagemPerfilBarbearia:":
-            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+            "${Dadosgeralapp().defaultAvatarImage}",
         "cidade": cidade,
         "cep": cep,
         //Vendas
@@ -271,5 +272,15 @@ class CriarcontaelogarProvider with ChangeNotifier {
 
   Future<void> deslogar() async {
     authConfigs.signOut();
+  }
+
+   Future<void> resetPassword({required String emailController}) async {
+    try {
+      await authConfigs.sendPasswordResetEmail(email: emailController);
+      print("tudo certo com o envio de e-mail");
+    } catch (e) {
+      print("ao recuperar a senha houve este erro: $e");
+      throw e;
+    }
   }
 }

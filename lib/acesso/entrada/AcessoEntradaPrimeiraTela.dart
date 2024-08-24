@@ -6,6 +6,7 @@ import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart';
 import 'package:jimy/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart';
 import 'package:jimy/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart';
+import 'package:jimy/acesso/recuperarSenha/recuperarSenhaScreen.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
@@ -445,13 +446,22 @@ class _AcessoEntradaState extends State<AcessoEntrada> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(
-                              "Esqueceu a senha?",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: Dadosgeralapp().principalColor,
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (ctx) => RecuperarSenhaScreen(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Esqueceu a senha?",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    color: Dadosgeralapp().principalColor,
+                                  ),
                                 ),
                               ),
                             ),
