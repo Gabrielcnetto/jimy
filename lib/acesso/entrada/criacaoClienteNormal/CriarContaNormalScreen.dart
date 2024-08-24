@@ -94,7 +94,7 @@ class _CriarContaNormalScreenState extends State<CriarContaNormalScreen> {
             backgroundColor: Colors.white,
             title: Text("Erro ao criar a conta"),
             content:
-                Text("Tente novamente em alguns segundos... Pedimos desculpa."),
+                Text("Verifique os dados, se persistir aguarde alguns segundos"),
             actions: [
               TextButton(
                 onPressed: () {

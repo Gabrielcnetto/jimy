@@ -27,10 +27,7 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
   Future<void> loadUserIsManager() async {
     bool? bolIsManager = await CriarcontaelogarProvider().getUserIsManager();
 
-    if (isManager != null) {
-    } else {
-      const Text('N/A');
-    }
+  
 
     setState(() {
       isManager = bolIsManager!;
@@ -42,10 +39,7 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
     bool? booluserNormal =
         await CriarcontaelogarProvider().getUserIsUsuarioNormal();
 
-    if (userNormal != null) {
-    } else {
-      const Text('N/A');
-    }
+  
 
     setState(() {
       userNormal = booluserNormal!;
@@ -55,12 +49,9 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
   bool? distribuidor;
   Future<void> loadUserdistribuidor() async {
     bool? boldistribuidor =
-        await CriarcontaelogarProvider().getUserIsUsuarioNormal();
+        await CriarcontaelogarProvider().getUserIsUsuarioDistribuidor();
 
-    if (distribuidor != null) {
-    } else {
-      const Text('N/A');
-    }
+    
 
     setState(() {
       distribuidor = boldistribuidor!;

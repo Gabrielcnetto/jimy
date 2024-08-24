@@ -56,6 +56,14 @@ class CriarcontaelogarProvider with ChangeNotifier {
     required String email,
     required String password,
     required String userName,
+    required String rua,
+    required String cep,
+    required String cnpj,
+    required String numeroContato,
+    required String nomeDistribuidora,
+    required String estado,
+    required String bairro,
+    required String idDistribuidora,
   }) async {
     try {
       await authConfigs.createUserWithEmailAndPassword(
@@ -71,7 +79,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "distribuidor": true,
 
         //atributos para usuario utilizar e visualizar e localizar o distribuidor
-        'PhoneNumber': "",
+        'PhoneNumber': numeroContato,
         'userIdDatabase': userIdCreate,
         "urlPerfilImage":
             "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
@@ -79,16 +87,24 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "userName": userName,
         "email": email,
         "senha": password,
-
-        //identificar e encontrar a loja do distribuidor
-
-        "nomeDaLoja": "",
-        "idDaLoja": "",
-        "imagemPerfilLoja:":
+      });
+//criando perfil
+      final pubNewDistribuidor =
+          await database.collection("Distribuidores").doc(idDistribuidora).set({
+        "email": email,
+        "password": password,
+        "userName": userName,
+        "rua": rua,
+        "cep": cep,
+        "cnpj": cnpj,
+        "numeroContato": numeroContato,
+        "nomeDistribuidora": nomeDistribuidora,
+        "estado": estado,
+        "bairro": bairro,
+        "idDistribuidora": idDistribuidora,
+        "totalVendas": 0.0,
+        "urlPerfilImage":
             "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
-
-        //Vendas
-        'totalVendas': 0.0,
       });
       notifyListeners();
     } catch (e) {
@@ -100,7 +116,11 @@ class CriarcontaelogarProvider with ChangeNotifier {
   Future<void> criarContaClienteGerenteBarbearia({
     required String email,
     required String password,
+    required String idBarbearia,
     required String userName,
+    required String nomeBarbearia,
+    required String cidade,
+    required String cep,
   }) async {
     try {
       await authConfigs.createUserWithEmailAndPassword(
@@ -127,11 +147,23 @@ class CriarcontaelogarProvider with ChangeNotifier {
 
         //identificar e encontrar a barbearia
 
-        "nomeBarbearia": "",
-        "idBarbearia": "",
+        "nomeBarbearia": nomeBarbearia,
+        "idBarbearia": idBarbearia,
         "imagemPerfilBarbearia:":
             "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+      });
 
+      //criando perfil barbearia
+      final barbeariaPub =
+          await database.collection("Barbearias").doc(idBarbearia).set({
+        //identificar e encontrar a barbearia
+        "gerente": userName,
+        "nomeBarbearia": nomeBarbearia,
+        "idBarbearia": idBarbearia,
+        "imagemPerfilBarbearia:":
+            "https://firebasestorage.googleapis.com/v0/b/lionsbarber-easecorte.appspot.com/o/profileDefaultImage%2FdefaultUserImage.png?alt=media&token=5d61e887-4f54-4bca-be86-a34e43b1cb92",
+        "cidade": cidade,
+        "cep": cep,
         //Vendas
         'totalVendas': 0.0,
       });
@@ -211,8 +243,8 @@ class CriarcontaelogarProvider with ChangeNotifier {
   //EFETUAR O LOGIN NO SISTEMA
   Future<void> userLogin(
       {required String email, required String password}) async {
-        print("email: $email");
-        print("senha: $password");
+    print("email: $email");
+    print("senha: $password");
     try {
       final login = await authConfigs.signInWithEmailAndPassword(
         email: email,
@@ -220,25 +252,24 @@ class CriarcontaelogarProvider with ChangeNotifier {
       );
     } catch (e) {
       if (e is FirebaseAuthException) {
-      if (e.code == 'invalid-email') {
-        print('O e-mail fornecido está incorreto.');
-      } else if (e.code == 'user-not-found') {
-        print('Usuário não encontrado.');
-      } else if (e.code == 'wrong-password') {
-        print('Senha incorreta.');
+        if (e.code == 'invalid-email') {
+          print('O e-mail fornecido está incorreto.');
+        } else if (e.code == 'user-not-found') {
+          print('Usuário não encontrado.');
+        } else if (e.code == 'wrong-password') {
+          print('Senha incorreta.');
+        } else {
+          print('Erro desconhecido: ${e.message}');
+        }
       } else {
-        print('Erro desconhecido: ${e.message}');
+        print('Erro não relacionado ao Firebase: ${e.toString()}');
       }
-    } else {
-      print('Erro não relacionado ao Firebase: ${e.toString()}');
-    }
       print("ao logar deu erro: $e");
       throw e;
-
     }
   }
 
-  Future<void>deslogar()async{
+  Future<void> deslogar() async {
     authConfigs.signOut();
   }
 }

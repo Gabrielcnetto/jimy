@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart';
+import 'package:jimy/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart';
+import 'package:jimy/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
@@ -52,40 +54,59 @@ class _AcessoEntradaState extends State<AcessoEntrada> {
                   height: 15,
                 ),
                 //primeiro options
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Dadosgeralapp().primaryColor,
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Dono de Barbearia",
-                    style: GoogleFonts.openSans(
+                InkWell(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (ctx) => AcessoEntradaDonoBarbearia(),
+                    ));
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Dadosgeralapp().primaryColor,
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Dono de Barbearia",
+                      style: GoogleFonts.openSans(
                         textStyle: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    )),
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 //fim do primeiro options
                 SizedBox(
                   height: 15,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Dadosgeralapp().secondaryColor,
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Distribuidor",
-                    style: GoogleFonts.openSans(
-                        textStyle: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    )),
+                InkWell(
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => AcessoEntradaDistribuidorScreen(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: Dadosgeralapp().secondaryColor,
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Distribuidor",
+                      style: GoogleFonts.openSans(
+                          textStyle: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      )),
+                    ),
                   ),
                 ),
                 //fim segundo options
@@ -133,7 +154,7 @@ class _AcessoEntradaState extends State<AcessoEntrada> {
       GlobalKey<ScaffoldMessengerState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool isLoading = false;
-  
+
   Future<void> loginuser() async {
     try {
       setState(() {
