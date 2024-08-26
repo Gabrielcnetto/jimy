@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
+import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
 import 'package:jimy/usuarioGerente/UsuarioGerenteHome.dart';
+import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioNormal/UsuarioNormalHome.dart';
+import 'package:provider/provider.dart';
 
 class VerificartipoDeUsuario extends StatefulWidget {
   const VerificartipoDeUsuario({super.key});
@@ -18,6 +23,7 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     loadUserIsManager();
     loadUseruserNormal();
     loadUserdistribuidor();
@@ -27,19 +33,17 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
   Future<void> loadUserIsManager() async {
     bool? bolIsManager = await CriarcontaelogarProvider().getUserIsManager();
 
-  
-
     setState(() {
       isManager = bolIsManager!;
     });
   }
 
+  //
+
   bool? userNormal;
   Future<void> loadUseruserNormal() async {
     bool? booluserNormal =
         await CriarcontaelogarProvider().getUserIsUsuarioNormal();
-
-  
 
     setState(() {
       userNormal = booluserNormal!;
@@ -50,8 +54,6 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
   Future<void> loadUserdistribuidor() async {
     bool? boldistribuidor =
         await CriarcontaelogarProvider().getUserIsUsuarioDistribuidor();
-
-    
 
     setState(() {
       distribuidor = boldistribuidor!;
@@ -64,8 +66,23 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
     if (isManager == null || userNormal == null || distribuidor == null) {
       // Exibe um indicador de carregamento enquanto os dados são carregados
       return Scaffold(
-        appBar: AppBar(title: Text('Carregando...')),
-        body: Center(child: CircularProgressIndicator(color: Dadosgeralapp().primaryColor,)),
+        appBar: AppBar(
+          title: InkWell(
+            onTap: () {
+              Provider.of<CriarcontaelogarProvider>(context, listen: false)
+                  .deslogar();
+              Navigator.of(context).push(DialogRoute(
+                context: context,
+                builder: (ctx) => VerificacaoDeLogado(),
+              ));
+            },
+            child: Text('Carregando...'),
+          ),
+        ),
+        body: Center(
+            child: CircularProgressIndicator(
+          color: Dadosgeralapp().primaryColor,
+        )),
       );
     }
 

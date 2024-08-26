@@ -34,8 +34,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         //atributos para usuario utilizar e visualizar e localizar o cliente
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
-        "urlPerfilImage":
-            "${Dadosgeralapp().defaultAvatarImage}",
+        "urlPerfilImage": "${Dadosgeralapp().defaultAvatarImage}",
         "Dimypoints": 0,
         "userName": userName,
         "email": email,
@@ -82,8 +81,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         //atributos para usuario utilizar e visualizar e localizar o distribuidor
         'PhoneNumber': numeroContato,
         'userIdDatabase': userIdCreate,
-        "urlPerfilImage":
-            "${Dadosgeralapp().defaultAvatarImage}",
+        "urlPerfilImage": "${Dadosgeralapp().defaultAvatarImage}",
 
         "userName": userName,
         "email": email,
@@ -104,8 +102,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "bairro": bairro,
         "idDistribuidora": idDistribuidora,
         "totalVendas": 0.0,
-        "urlPerfilImage":
-            "${Dadosgeralapp().defaultAvatarImage}",
+        "urlPerfilImage": "${Dadosgeralapp().defaultAvatarImage}",
       });
       notifyListeners();
     } catch (e) {
@@ -139,8 +136,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         //atributos para usuario utilizar e visualizar e localizar o dono
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
-        "urlPerfilImage":
-            "${Dadosgeralapp().defaultAvatarImage}",
+        "urlPerfilImage": "${Dadosgeralapp().defaultAvatarImage}",
 
         "userName": userName,
         "email": email,
@@ -150,8 +146,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
 
         "nomeBarbearia": nomeBarbearia,
         "idBarbearia": idBarbearia,
-        "imagemPerfilBarbearia:":
-            "${Dadosgeralapp().defaultAvatarImage}",
+        "imagemPerfilBarbearia:": "${Dadosgeralapp().defaultAvatarImage}",
       });
 
       //criando perfil barbearia
@@ -159,10 +154,11 @@ class CriarcontaelogarProvider with ChangeNotifier {
           await database.collection("Barbearias").doc(idBarbearia).set({
         //identificar e encontrar a barbearia
         "gerente": userName,
+        "profissionais": [],
+        "servicos": [],
         "nomeBarbearia": nomeBarbearia,
         "idBarbearia": idBarbearia,
-        "imagemPerfilBarbearia:":
-            "${Dadosgeralapp().defaultAvatarImage}",
+        "imagemPerfilBarbearia:": "${Dadosgeralapp().defaultAvatarImage}",
         "cidade": cidade,
         "cep": cep,
         //Vendas
@@ -274,7 +270,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
     authConfigs.signOut();
   }
 
-   Future<void> resetPassword({required String emailController}) async {
+  Future<void> resetPassword({required String emailController}) async {
     try {
       await authConfigs.sendPasswordResetEmail(email: emailController);
       print("tudo certo com o envio de e-mail");

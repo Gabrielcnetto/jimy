@@ -8,6 +8,10 @@
 	<string>Jimy</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Seu aplicativo precisa de acesso à câmera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Seu aplicativo precisa de acesso à biblioteca de fotos.</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

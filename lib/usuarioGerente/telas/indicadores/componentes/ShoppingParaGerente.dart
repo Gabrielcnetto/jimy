@@ -25,13 +25,13 @@ class ShoppingParaGerente extends StatelessWidget {
               ),
               Text(
                 "Shopping do Barbeiro",
-                style: GoogleFonts.poppins(
-                  textStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    fontSize: 15,
-                  ),
+               style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontSize: 15,
                 ),
+              ),
               ),
             ],
           ),

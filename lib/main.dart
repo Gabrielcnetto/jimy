@@ -5,6 +5,9 @@ import 'package:jimy/firebase_options.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
 import 'package:jimy/rotas/AppRoutes.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
+import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -32,6 +35,16 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => CriarcontaelogarProvider(),
         ),
+           ChangeNotifierProvider(
+            create: (_) => Criarfuncionario(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => Getsdeinformacoes(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => Criarservicos(),
+          ),
+     
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

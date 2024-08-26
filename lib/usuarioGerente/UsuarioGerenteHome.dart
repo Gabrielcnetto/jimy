@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
+import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioGerenteHome extends StatefulWidget {
-  const UsuarioGerenteHome({super.key});
+
+  const UsuarioGerenteHome({super.key,});
 
   @override
   State<UsuarioGerenteHome> createState() => _UsuarioGerenteHomeState();
@@ -16,12 +19,15 @@ class UsuarioGerenteHome extends StatefulWidget {
 class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
   int screen = 0;
   List<Map<String, Object>>? _screensSelect;
+  
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+     
+    
     _screensSelect = [
-       {
+      {
         'tela': IndicadoresScreen(),
       },
       {
@@ -31,12 +37,11 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
         'tela': Container(),
       },
       {
-        'tela':Container(),
+        'tela': Container(),
       },
       {
         'tela': Container(),
       },
-     
     ];
   }
 
@@ -46,11 +51,15 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
     });
   }
 
+  
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body:  _screensSelect![screen]['tela'] as Widget,
+      body: _screensSelect![screen]['tela'] as Widget,
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 2),
         child: CurvedNavigationBar(
@@ -60,7 +69,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
           index: screen,
           backgroundColor: Dadosgeralapp().primaryColor,
           items: [
-             const Icon(
+            const Icon(
               Icons.account_circle,
               size: 25,
             ),
@@ -80,7 +89,6 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
               Icons.storefront,
               size: 25,
             ),
-           
           ],
         ),
       ),
