@@ -150,7 +150,7 @@ class Getsdeinformacoes with ChangeNotifier {
          barbeirosList.sort((a, b) => b.totalCortes.compareTo(a.totalCortes));
         _profList = barbeirosList;
         profissionaisList.add(_profList);
-
+        print("o tamanho final é:${_profList.length}");
       } else {
         print("Documento não encontrado.");
       }

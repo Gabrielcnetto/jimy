@@ -70,11 +70,11 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
           backgroundColor: Dadosgeralapp().primaryColor,
           items: [
             const Icon(
-              Icons.account_circle,
+              Icons.home,
               size: 25,
             ),
             const Icon(
-              Icons.add,
+              Icons.play_circle,
               size: 25,
             ),
             const Icon(
@@ -82,7 +82,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
               size: 25,
             ),
             const Icon(
-              Icons.paid,
+              Icons.shopping_cart,
               size: 25,
             ),
             const Icon(

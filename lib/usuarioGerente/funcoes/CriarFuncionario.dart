@@ -308,4 +308,44 @@ class Criarfuncionario with ChangeNotifier {
       throw e;
     }
   }
+
+  Future<void> AtualizarAtividade({
+    required String idBarbearia,
+    required bool ativoOuNao,
+    required String idBarbeiro,
+  }) async {
+    try {
+      // Referência e upload da nova foto
+   
+      // Passo 1: Recupera o documento da barbearia
+      DocumentSnapshot documentSnapshot =
+          await database.collection('Barbearias').doc(idBarbearia).get();
+
+      if (!documentSnapshot.exists) {
+        print('Documento não encontrado!');
+        return;
+      }
+
+      // Passo 2: Encontre o barbeiro e a lista de profissionais
+      List<dynamic> profissionais = documentSnapshot.get('profissionais');
+      List<Map<String, dynamic>> updatedProfissionais =
+          List.from(profissionais);
+
+      // Atualiza o campo da URL da foto do barbeiro específico
+      for (int i = 0; i < updatedProfissionais.length; i++) {
+        if (updatedProfissionais[i]['id'] == idBarbeiro) {
+          updatedProfissionais[i]['ativoParaClientes'] = ativoOuNao;
+          break;
+        }
+      }
+
+      // Passo 3: Atualize o documento com a lista modificada
+      await database.collection('Barbearias').doc(idBarbearia).update({
+        'profissionais': updatedProfissionais,
+      });
+    } catch (e) {
+      print("Erro ao alterar a foto: $e");
+      throw e;
+    }
+  }
 }

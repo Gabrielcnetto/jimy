@@ -187,7 +187,7 @@ class IndicadoresQuadroView extends StatelessWidget {
                             SizedBox(
                               height: 5,
                             ),
-                           Expanded(
+                            Expanded(
                               child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
@@ -235,6 +235,90 @@ class IndicadoresQuadroView extends StatelessWidget {
                                 ),
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey.shade300,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.inventory_2,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Text(
+                                "Produtos mais vendidos",
+                                textAlign: TextAlign.left,
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.grey.shade300,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.content_cut,
+                              size: 18,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Text(
+                                "Serviços mais vendidos",
+                                textAlign: TextAlign.left,
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

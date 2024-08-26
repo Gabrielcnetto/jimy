@@ -90,17 +90,26 @@ class _VisaoInternaProfissionalState extends State<VisaoInternaProfissional> {
         await Provider.of<Getsdeinformacoes>(context, listen: false)
             .getListaProfissionais();
       }
-      if(widget.barber.porcentagemCortes != porcentagemPorCortesControler.text){
-        await Provider.of<Criarfuncionario>(context, listen: false).updatePorcentagemCortes(idBarbearia: loadIdBarbearia!, porcentagemCortes: double.parse(porcentagemPorCortesControler.text), idBarbeiro: widget.barber.id);
-          await Provider.of<Getsdeinformacoes>(context, listen: false)
+      if (widget.barber.porcentagemCortes !=
+          porcentagemPorCortesControler.text) {
+        await Provider.of<Criarfuncionario>(context, listen: false)
+            .updatePorcentagemCortes(
+                idBarbearia: loadIdBarbearia!,
+                porcentagemCortes:
+                    double.parse(porcentagemPorCortesControler.text),
+                idBarbeiro: widget.barber.id);
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
             .getListaProfissionais();
       }
-        if(widget.barber.porcentagemProdutos != porcentagemporProdutos.text){
-        await Provider.of<Criarfuncionario>(context, listen: false).updatePorcentagemprodutos(idBarbearia: loadIdBarbearia!, porcentagemProdutos: double.parse(porcentagemporProdutos.text), idBarbeiro: widget.barber.id);
-          await Provider.of<Getsdeinformacoes>(context, listen: false)
+      if (widget.barber.porcentagemProdutos != porcentagemporProdutos.text) {
+        await Provider.of<Criarfuncionario>(context, listen: false)
+            .updatePorcentagemprodutos(
+                idBarbearia: loadIdBarbearia!,
+                porcentagemProdutos: double.parse(porcentagemporProdutos.text),
+                idBarbeiro: widget.barber.id);
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
             .getListaProfissionais();
       }
-
 
       setState(() {
         isLoading = false;

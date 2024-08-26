@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/adicionarProfissional/visaointernaProfissionalEdit.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,27 @@ class _VisaoTodosOsProfissionaisState extends State<VisaoTodosOsProfissionais> {
     super.initState();
     Provider.of<Getsdeinformacoes>(context, listen: false)
         .getListaProfissionais();
+        loadloadIdBarbearia();
+  }
+String? loadIdBarbearia;
+
+  Future<void> loadloadIdBarbearia() async {
+    String? id = await Getsdeinformacoes().getNomeIdBarbearia();
+
+    setState(() {
+      loadIdBarbearia = id;
+    });
+  }
+  //usar esse no toggle
+  Future<void> desativarProfissional({required String idbarbeiro, required bool boolfinal, }) async {
+    bool? valorDefinido;
+    await Provider.of<Criarfuncionario>(context, listen: false)
+            .AtualizarAtividade(idBarbearia: loadIdBarbearia!, ativoOuNao: boolfinal , idBarbeiro: idbarbeiro);
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+            .getListaProfissionais();
+    try {} catch (e) {
+      print("ao alterar a possibilidade deu isto:$e");
+    }
   }
 
   @override
@@ -142,77 +164,149 @@ class _VisaoTodosOsProfissionaisState extends State<VisaoTodosOsProfissionais> {
                                         width: double.infinity,
                                         padding: EdgeInsets.symmetric(
                                             vertical: 10, horizontal: 5),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              30)),
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            30),
-                                                    child: Image.network(
-                                                        item.urlImageFoto,
-                                                        fit: BoxFit.cover),
+                                            Container(
+                                              child: Text(
+                                                item.ativoParaClientes
+                                                    ? "Ativo"
+                                                    : "Desativado",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 10,
+                                                    color: item.ativoParaClientes ? Colors.green.shade600: Colors
+                                                                .grey.shade400,
                                                   ),
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.15,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.08,
                                                 ),
-                                                SizedBox(
-                                                  width: 5,
+                                              ),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.2,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                  width: 0.3,
+                                                  color: Colors.grey.shade200,
                                                 ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 5),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
                                                   children: [
-                                                    Text(
-                                                      item.name,
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        textStyle: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: Colors.black,
-                                                          fontSize: 14,
-                                                        ),
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      30)),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(30),
+                                                        child: Image.network(
+                                                            item.urlImageFoto,
+                                                            fit: BoxFit.cover),
                                                       ),
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.15,
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .height *
+                                                              0.08,
                                                     ),
                                                     SizedBox(
-                                                      height: 2,
+                                                      width: 5,
                                                     ),
-                                                    Text(
-                                                      "Porcentagem: ${item.porcentagemCortes.toStringAsFixed(0)}%",
-                                                      style:
-                                                          GoogleFonts.openSans(
-                                                        textStyle: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Colors.black54,
-                                                          fontSize: 12,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          item.name,
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                            textStyle:
+                                                                TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 14,
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
+                                                        SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                        Text(
+                                                          "Porcentagem: ${item.porcentagemCortes.toStringAsFixed(0)}%",
+                                                          style: GoogleFonts
+                                                              .openSans(
+                                                            textStyle:
+                                                                TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              color: Colors
+                                                                  .black54,
+                                                              fontSize: 12,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
+                                                InkWell(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  onTap: () {
+                                                    bool? boolFinalParaEnviar;
+                                                    setState(() {
+                                                      item.ativoParaClientes =
+                                                          !item
+                                                              .ativoParaClientes;
+                                                              boolFinalParaEnviar = item.ativoParaClientes;
+                                                    });
+
+                                                    desativarProfissional(boolfinal: boolFinalParaEnviar!,idbarbeiro: item.id,);
+                                                  }, //desativarProfissional,
+                                                  child: Icon(
+                                                    item.ativoParaClientes
+                                                        ? Icons.toggle_on
+                                                        : Icons.toggle_off,
+                                                    size: 40,
+                                                    color:
+                                                        item.ativoParaClientes ==
+                                                                true
+                                                            ? Colors.black
+                                                            : Colors
+                                                                .grey.shade400,
+                                                  ),
+                                                ),
                                               ],
-                                            ),
-                                            Icon(
-                                              item.ativoParaClientes
-                                                  ? Icons.toggle_on
-                                                  : Icons.toggle_off,
-                                              size: 40,
                                             ),
                                           ],
                                         ),

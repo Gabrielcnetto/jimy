@@ -3,9 +3,11 @@ class Servico {
   final String name;
   final double price;
   final int tempolevado;
+  final int quantiaEscolhida;
   bool active;
 
   Servico({
+    required this.quantiaEscolhida,
     required this.active,
     required this.id,
     required this.tempolevado,
@@ -16,6 +18,7 @@ class Servico {
   // Método para converter o objeto para um mapa
   Map<String, dynamic> toMap() {
     return {
+      'quantiaEscolhida': quantiaEscolhida,
       'id': id,
       'name': name,
       'price': price,
@@ -27,6 +30,7 @@ class Servico {
   // Método para criar um objeto a partir de um mapa
   factory Servico.fromMap(Map<String, dynamic> map) {
     return Servico(
+      quantiaEscolhida: map['quantiaEscolhida'] ?? 0,
       id: map['id'],
       name: map['name'],
       price: map['price'],

@@ -16,6 +16,7 @@ class Criarservicos with ChangeNotifier {
   }) async {
     try {
       final service = Servico(
+        quantiaEscolhida: 0,
         active: false,
         id: Random().nextDouble().toString(),
         name: serviceName,
