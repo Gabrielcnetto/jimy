@@ -5,12 +5,14 @@ import 'package:jimy/funcoes/CriarContaeLogar.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
 import 'package:jimy/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioGerenteHome extends StatefulWidget {
-
-  const UsuarioGerenteHome({super.key,});
+  const UsuarioGerenteHome({
+    super.key,
+  });
 
   @override
   State<UsuarioGerenteHome> createState() => _UsuarioGerenteHomeState();
@@ -19,13 +21,12 @@ class UsuarioGerenteHome extends StatefulWidget {
 class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
   int screen = 0;
   List<Map<String, Object>>? _screensSelect;
-  
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-     
-    
+
     _screensSelect = [
       {
         'tela': IndicadoresScreen(),
@@ -34,7 +35,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
         'tela': Container(),
       },
       {
-        'tela': Container(),
+        'tela': AgendaEAddScreen(),
       },
       {
         'tela': Container(),
@@ -50,10 +51,6 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
       screen = index;
     });
   }
-
-  
-
-
 
   @override
   Widget build(BuildContext context) {

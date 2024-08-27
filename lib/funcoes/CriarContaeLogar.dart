@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/usuarioGerente/classes/horarios.dart';
 
 class CriarcontaelogarProvider with ChangeNotifier {
   //bibliotecas - packages
@@ -148,11 +149,22 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "idBarbearia": idBarbearia,
         "imagemPerfilBarbearia:": "${Dadosgeralapp().defaultAvatarImage}",
       });
-
+      final List<Map<String, dynamic>> horariosMap =
+          listaHorariosBase.map((horario) => horario.toMap()).toList();
+            final List<Map<String, dynamic>> horariosMapSabado =
+          listaHorariosBaseSabado.map((horario) => horario.toMap()).toList();
       //criando perfil barbearia
       final barbeariaPub =
           await database.collection("Barbearias").doc(idBarbearia).set({
         //identificar e encontrar a barbearia
+        "diaFechado": "",
+        "horarioSegunda": horariosMap,
+        "horarioTerca": horariosMap,
+        "horarioQuarta": horariosMap,
+        "horarioQuinta": horariosMap,
+        "horarioSexta": horariosMap,
+        "horarioSabado": horariosMapSabado,
+        "horarioDomingo": [],
         "gerente": userName,
         "profissionais": [],
         "servicos": [],

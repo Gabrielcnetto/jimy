@@ -164,8 +164,8 @@ class Criarfuncionario with ChangeNotifier {
       }
 
       // Passo 2: Encontre o barbeiro e a lista de profissionais
-      List<dynamic> profissionais = documentSnapshot.get('profissionais');
-      List<Map<String, dynamic>> updatedProfissionais =
+      List<dynamic> profissionais = await documentSnapshot.get('profissionais');
+      List<Map<String, dynamic>> updatedProfissionais =await
           List.from(profissionais);
 
       // Filtra a lista para remover o barbeiro com o idBarbeiro
@@ -179,7 +179,7 @@ class Criarfuncionario with ChangeNotifier {
 
       // Opcional: Exclui a foto do barbeiro do Firebase Storage, se necessário
       Reference ref =
-          FirebaseStorage.instance.ref().child("userProfilePhotos/$idBarbeiro");
+          await FirebaseStorage.instance.ref().child("userProfilePhotos/$idBarbeiro");
       await ref.delete();
     } catch (e) {
       print("Erro ao deletar o barbeiro: $e");
