@@ -20,7 +20,7 @@ class AdicionarServicosScreen extends StatefulWidget {
 class _AdicionarServicosScreenState extends State<AdicionarServicosScreen> {
   final nomeServicoControler = TextEditingController();
   final precoProdutoControler = TextEditingController();
-  final tempoLevadoControler = TextEditingController();
+
   final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
       GlobalKey<ScaffoldMessengerState>();
   final GlobalKey<FormState> _forms = GlobalKey<FormState>();
@@ -55,7 +55,7 @@ class _AdicionarServicosScreenState extends State<AdicionarServicosScreen> {
       await Provider.of<Criarservicos>(context, listen: false).addServico(
         serviceName: nomeServicoControler.text,
         servicePrice: valorDouble,
-        tempoParaFazer: int.parse(tempoLevadoControler.text),
+        tempoParaFazer: 30,
         idBarbearia: loadIdBarbearia!,
       );
       setState(() {
@@ -342,73 +342,9 @@ class _AdicionarServicosScreenState extends State<AdicionarServicosScreen> {
                           ],
                         ),
                         SizedBox(
-                          height: 5,
+                          height: 25,
                         ),
-                        //tempo
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Tempo médio (minutos)",
-                              style: GoogleFonts.openSans(
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Dadosgeralapp().secundariaColor,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    width: 0.7,
-                                    color: Colors.grey.shade200,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 10,
-                                  horizontal: 10,
-                                ),
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Por favor, digite o tempo';
-                                    }
-                                    return null;
-                                  },
-                                  maxLength: 2,
-                                  controller: tempoLevadoControler,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-
-                                    // Custom formatter to ensure currency format is applied
-                                  ],
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    label: Text(
-                                      "Digite os minutos que você usa para concluir este serviço.",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black38,
-                                          fontSize: 11,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        //criar
-                        SizedBox(
-                          height: 15,
-                        ),
+                        
                         InkWell(
                           onTap: () {
                             if (_forms.currentState!.validate()) {

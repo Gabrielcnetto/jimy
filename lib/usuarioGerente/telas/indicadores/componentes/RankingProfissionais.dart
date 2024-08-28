@@ -216,27 +216,7 @@ class _RankingProfissionaisHomeGerenteState
                                     color: Colors.black,
                                   )),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Dadosgeralapp()
-                                        .primaryColor
-                                        .withOpacity(0.8),
-                                  ),
-                                  child: Text(
-                                    "${listabarbeirosprimaria[0].totalCortes.toStringAsFixed(0) ?? 0} cortes",
-                                    style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    )),
-                                  ),
-                                ),
+                                
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -387,27 +367,7 @@ class _RankingProfissionaisHomeGerenteState
                                 SizedBox(
                                   height: 5,
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Dadosgeralapp()
-                                        .secondaryColor
-                                        .withOpacity(0.5),
-                                  ),
-                                  child: Text(
-                                    "${listabarbeirosprimaria[1].totalCortes.toStringAsFixed(0) ?? 0} cortes",
-                                    style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    )),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
+                               
                                 Container(
                                   alignment: Alignment.center,
                                   width: double.infinity,
@@ -498,27 +458,7 @@ class _RankingProfissionaisHomeGerenteState
                                     color: Colors.black,
                                   )),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Dadosgeralapp()
-                                        .primaryColor
-                                        .withOpacity(0.8),
-                                  ),
-                                  child: Text(
-                                    "${listabarbeirosprimaria[0].totalCortes.toStringAsFixed(0) ?? 0} cortes",
-                                    style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    )),
-                                  ),
-                                ),
+                                
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -670,27 +610,7 @@ class _RankingProfissionaisHomeGerenteState
                               SizedBox(
                                 height: 5,
                               ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 2),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Dadosgeralapp()
-                                      .secondaryColor
-                                      .withOpacity(0.5),
-                                ),
-                                child: Text(
-                                  "${listabarbeirosprimaria[1].totalCortes.toStringAsFixed(0) ?? 0} cortes",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  )),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
+                            
                               Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
@@ -779,27 +699,7 @@ class _RankingProfissionaisHomeGerenteState
                                   color: Colors.black,
                                 )),
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 2),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Dadosgeralapp()
-                                      .primaryColor
-                                      .withOpacity(0.8),
-                                ),
-                                child: Text(
-                                  "${listabarbeirosprimaria[0].totalCortes.toStringAsFixed(0) ?? 0} cortes",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  )),
-                                ),
-                              ),
+                              
                               SizedBox(
                                 height: 5,
                               ),
@@ -891,27 +791,7 @@ class _RankingProfissionaisHomeGerenteState
                                   color: Colors.black,
                                 )),
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 2),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Dadosgeralapp()
-                                      .tertiaryColor
-                                      .withOpacity(0.8),
-                                ),
-                                child: Text(
-                                  "${listabarbeirosprimaria[2].totalCortes.toStringAsFixed(0) ?? 0} cortes",
-                                  style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white,
-                                  )),
-                                ),
-                              ),
+                              
                               SizedBox(
                                 height: 5,
                               ),
