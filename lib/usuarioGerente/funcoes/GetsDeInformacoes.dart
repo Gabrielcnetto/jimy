@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/classes/horarios.dart';
+import 'package:jimy/usuarioGerente/classes/servico.dart';
 
 class Getsdeinformacoes with ChangeNotifier {
   final authSettings = FirebaseAuth.instance;
@@ -161,5 +162,55 @@ class Getsdeinformacoes with ChangeNotifier {
     }
   }
 
+  //get de servicos
+  List<Servico> _serviceList = [];
+  List<Servico> get serviceList => [..._serviceList];
 
+  final StreamController<List<Servico>> serviceListStream =
+      StreamController<List<Servico>>.broadcast();
+
+  Stream<List<Servico>> get getServiceList => serviceListStream.stream;
+
+  Future<void> getListaServicos() async {
+    try {
+      final String uidUser = await authSettings.currentUser!.uid;
+      String? userIdbarbearia;
+
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          userIdbarbearia = data['idBarbearia'];
+        } else {}
+        return userIdbarbearia;
+      });
+      // Referência ao documento com o ID específico
+      final DocumentReference docRef = FirebaseFirestore.instance
+          .collection('Barbearias')
+          .doc(userIdbarbearia);
+
+      // Obtém o documento
+      final DocumentSnapshot docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Extrai o campo 'profissionais' que é uma lista de mapas
+        final List<dynamic> profissionaisListData =
+            docSnapshot.get('servicos') ?? [];
+
+        // Mapeia os dados para uma lista de Servico
+        final List<Servico> servicoLista = profissionaisListData
+            .map((item) => Servico.fromMap(item as Map<String, dynamic>))
+            .toList();
+
+        _serviceList = servicoLista;
+        serviceListStream.add(_serviceList);
+        print("o tamanho final é:${_serviceList.length}");
+        print(_serviceList[0].name);
+      } else {
+        print("Documento não encontrado.");
+      }
+    } catch (e) {
+      print("Erro ao carregar os profissionais: $e");
+    }
+  }
 }

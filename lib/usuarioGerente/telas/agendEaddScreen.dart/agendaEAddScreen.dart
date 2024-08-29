@@ -307,6 +307,8 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                 ),
                                                 child: Text(
                                                   item.name,
+                                                  textAlign: TextAlign.center,
+                                                  overflow: TextOverflow.clip,
                                                   style: GoogleFonts.poppins(
                                                     textStyle: TextStyle(
                                                       fontWeight:
