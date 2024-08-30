@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/classes/servico.dart';
@@ -37,6 +38,64 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
     });
   }
 
+  int _selectedIndex = -1;
+  int _selectedIndexService = -1;
+
+  //data
+    DateTime? dataSelectedInModal;
+  DateTime? DataFolgaDatabase;
+    Future<void> ShowModalData() async {
+    setState(() {
+      dataSelectedInModal = null;
+    });
+    showDatePicker(
+      context: context,
+      locale: const Locale('pt', 'BR'),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2040),
+      selectableDayPredicate: (DateTime day) {
+        // Desativa domingos
+        if (day.weekday == DateTime.sunday) {
+          return false;
+        }
+        // Bloqueia a data contida em dataOffselectOfManger
+        if (DataFolgaDatabase != null &&
+            day.year == DataFolgaDatabase!.year &&
+            day.month == DataFolgaDatabase!.month &&
+            day.day == DataFolgaDatabase!.day) {
+          return false;
+        }
+        return true;
+      },
+    ).then((selectUserDate) {
+      try {
+        if (selectUserDate != null) {
+          setState(() {
+            dataSelectedInModal = selectUserDate;
+          
+          });
+        }
+      } catch (e) {
+        return showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: const Text('Erro'),
+              content: Text("${e}"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Fecha o modal
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -353,72 +412,89 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                     List<Servico> listaServico =
                                         snaphost.data as List<Servico>;
                                     return Column(
-                                      children: listaServico.map((servicoItem) {
-                                        return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${servicoItem.name} - ",
-                                                  style: GoogleFonts.openSans(
-                                                    textStyle: TextStyle(
+                                      children: listaServico
+                                          .asMap()
+                                          .entries
+                                          .map((entry) {
+                                        int index = entry.key;
+                                        Servico servicoItem = entry.value;
+
+                                        return GestureDetector(
+                                          onTap: () {
+                                            setState(() {
+                                              _selectedIndexService = index;
+                                            });
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${servicoItem.name} - ",
+                                                    style: GoogleFonts.openSans(
+                                                      textStyle: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w400,
                                                         color: Colors.white,
-                                                        fontSize: 12),
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .green.shade600,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(15),
-                                                      ),
-                                                      padding:
-                                                          EdgeInsets.all(2),
-                                                      child: Icon(
-                                                        Icons.paid,
-                                                        size: 12,
-                                                        color: Color.fromRGBO(
-                                                            54, 54, 54, 1),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 2,
-                                                    ),
-                                                    Text(
-                                                      "R\$${servicoItem.price.toStringAsFixed(2).replaceAll('.', ',')}",
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                        textStyle: TextStyle(
-                                                          color: Colors.white38,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12,
+                                                  SizedBox(width: 2),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors
+                                                              .green.shade600,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.all(2),
+                                                        child: Icon(
+                                                          Icons.paid,
+                                                          size: 12,
+                                                          color: Color.fromRGBO(
+                                                              54, 54, 54, 1),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            Icon(
-                                              Icons.toggle_off,
-                                              size: 40,
-                                              color: Colors.white,
-                                            ),
-                                          ],
+                                                      SizedBox(width: 2),
+                                                      Text(
+                                                        "R\$${servicoItem.price.toStringAsFixed(2).replaceAll('.', ',')}",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          textStyle: TextStyle(
+                                                            color:
+                                                                Colors.white38,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            fontSize: 12,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              Icon(
+                                                _selectedIndexService == index
+                                                    ? Icons.toggle_on
+                                                    : Icons.toggle_off,
+                                                size: 40,
+                                                color: _selectedIndexService ==
+                                                        index
+                                                    ? Colors.white
+                                                    : Colors.grey.shade600,
+                                              ),
+                                            ],
+                                          ),
                                         );
                                       }).toList(),
                                     );
@@ -496,65 +572,165 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                       }
                       List<Barbeiros> listaBarbeiros =
                           snapshot.data as List<Barbeiros>;
-                      return Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                        width: double.infinity,
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            // Define a altura de cada item
-                            double itemHeight =
-                                MediaQuery.of(context).size.height * 0.7;
-                            // Calcula o número de linhas necessárias
-                            int rows = (listaBarbeiros.length / 2)
-                                .ceil(); // Assume 2 colunas
-                            // Calcula a altura total necessária para o GridView
-                            double totalHeight = rows * itemHeight +
-                                (rows - 1) *
-                                    10.0; // Considera o espaçamento entre linhas
+                      return LayoutBuilder(
+                        builder: (context, constraints) {
+                          const crossAxisCount = 2;
+                          const crossAxisSpacing = 10.0;
+                          const mainAxisSpacing = 10.0;
+                          const childAspectRatio =
+                              1.0; // Ajuste conforme necessário
 
-                            return Container(
-                              height:
-                                  totalHeight, // Altura total calculada do Container
-                              child: GridView.builder(
-                                physics:
-                                    NeverScrollableScrollPhysics(), // Desativa o scroll do GridView
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  crossAxisSpacing: 10.0,
-                                  mainAxisSpacing: 10.0,
-                                  childAspectRatio:
-                                      MediaQuery.of(context).size.width /
-                                          (itemHeight + 10.0),
-                                ),
-                                itemCount: listaBarbeiros
-                                    .length, // Substitua pelo tamanho da sua lista
-                                itemBuilder: (ctx, index) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    height: itemHeight,
-                                    child: Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
+                          // Calcule a largura disponível para cada item
+                          final itemWidth = (constraints.maxWidth -
+                                  (crossAxisCount - 1) * crossAxisSpacing) /
+                              crossAxisCount;
+                          final itemHeight = itemWidth * childAspectRatio;
+
+                          // Calcule o número total de linhas necessárias
+                          final totalItems = listaBarbeiros.length;
+                          final totalLines =
+                              (totalItems / crossAxisCount).ceil();
+
+                          // Calcule a altura total do GridView
+                          final totalHeight = totalLines * itemHeight +
+                              (totalLines - 1) * mainAxisSpacing;
+
+                          return Container(
+                            height: totalHeight,
+                            child: GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: crossAxisCount,
+                                crossAxisSpacing: crossAxisSpacing,
+                                mainAxisSpacing: mainAxisSpacing,
+                                childAspectRatio: childAspectRatio,
+                              ),
+                              itemCount: listaBarbeiros.length,
+                              itemBuilder: (ctx, index) {
+                                final isSelected = _selectedIndex == index;
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _selectedIndex = isSelected
+                                          ? -1
+                                          : index; // Atualiza para -1 se já estiver selecionado
+                                    });
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        width: double
+                                            .infinity, // Preenche a largura disponível
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                           child: Image.network(
                                             listaBarbeiros[index].urlImageFoto,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
+                                      ),
+                                      if (isSelected)
+                                        Positioned.fill(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.black54,
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ), // Sobreposição preta
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.check_circle,
+                                                color: Colors.white,
+                                                size: 40,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       );
                     },
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Dadosgeralapp().primaryColor),
+                        child: const Text(
+                          "5",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Selecione uma data",
+                        style: GoogleFonts.openSans(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  InkWell(
+                    onTap: ShowModalData,
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                           dataSelectedInModal != null ?  DateFormat("dd/MM/yyyy").format(dataSelectedInModal!): "Clique para escolher",
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey.shade400,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.calendar_today,
+                            size: 18,
+                            color: Colors.grey.shade400,
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),

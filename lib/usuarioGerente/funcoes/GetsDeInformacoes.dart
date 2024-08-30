@@ -201,9 +201,11 @@ class Getsdeinformacoes with ChangeNotifier {
         final List<Servico> servicoLista = profissionaisListData
             .map((item) => Servico.fromMap(item as Map<String, dynamic>))
             .toList();
-
+        _serviceList.sort((a, b) => b.price.compareTo(a.price));
         _serviceList = servicoLista;
+
         serviceListStream.add(_serviceList);
+
         print("o tamanho final é:${_serviceList.length}");
         print(_serviceList[0].name);
       } else {

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
 import 'package:jimy/firebase_options.dart';
@@ -9,7 +10,7 @@ import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Chame primeiro aqui ele inicia os widgets
@@ -35,16 +36,15 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => CriarcontaelogarProvider(),
         ),
-           ChangeNotifierProvider(
-            create: (_) => Criarfuncionario(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => Getsdeinformacoes(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => Criarservicos(),
-          ),
-     
+        ChangeNotifierProvider(
+          create: (_) => Criarfuncionario(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Getsdeinformacoes(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Criarservicos(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -52,6 +52,33 @@ class _MyAppState extends State<MyApp> {
         routes: {
           Approutes.VerificacaoDeLogado: (ctx) => VerificacaoDeLogado(),
         },
+        supportedLocales: const [
+          Locale('pt', 'BR'), // Português do Brasil
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+          theme: ThemeData(
+          datePickerTheme: DatePickerThemeData(
+            backgroundColor: Colors.white,
+            cancelButtonStyle: ButtonStyle(
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            confirmButtonStyle: ButtonStyle(
+              textStyle: MaterialStateProperty.all<TextStyle>(
+                const TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
