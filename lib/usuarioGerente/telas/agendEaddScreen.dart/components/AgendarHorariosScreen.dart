@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:jimy/usuarioGerente/classes/horarios.dart';
 import 'package:jimy/usuarioGerente/classes/servico.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,10 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   final nomeClienteControler = TextEditingController();
 
   bool verServicos = true;
+  List<Horarios> horarioFinal = listaHorariosFixos;
+  List<Horarios> Horariopreenchidos = [];
+  int selectedIndexHorario = -1;
+  String? horarioClicadoeSelecionado;
   void loadListAndView() async {
     await Provider.of<Getsdeinformacoes>(context, listen: false)
         .getListaServicos();
@@ -42,9 +47,10 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   int _selectedIndexService = -1;
 
   //data
-    DateTime? dataSelectedInModal;
+  bool prontoparaexibir = true;
+  DateTime? dataSelectedInModal;
   DateTime? DataFolgaDatabase;
-    Future<void> ShowModalData() async {
+  Future<void> ShowModalData() async {
     setState(() {
       dataSelectedInModal = null;
     });
@@ -72,7 +78,6 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
         if (selectUserDate != null) {
           setState(() {
             dataSelectedInModal = selectUserDate;
-          
           });
         }
       } catch (e) {
@@ -96,6 +101,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -704,7 +710,8 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                     onTap: ShowModalData,
                     child: Container(
                       width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(10),
@@ -714,7 +721,10 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                           dataSelectedInModal != null ?  DateFormat("dd/MM/yyyy").format(dataSelectedInModal!): "Clique para escolher",
+                            dataSelectedInModal != null
+                                ? DateFormat("dd/MM/yyyy")
+                                    .format(dataSelectedInModal!)
+                                : "Clique para escolher",
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -729,6 +739,414 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                             color: Colors.grey.shade400,
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Dadosgeralapp().primaryColor),
+                        child: const Text(
+                          "6",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Selecione um horário",
+                        style: GoogleFonts.openSans(
+                          textStyle: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    //  height: heighScreen * 0.64,
+                    child: prontoparaexibir == true
+                        ? GridView.builder(
+                            padding: const EdgeInsets.only(top: 5),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: horarioFinal.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 2.3,
+                              childAspectRatio: 2.3,
+                            ),
+                            itemBuilder: (BuildContext ctx, int index) {
+                              bool presentInBothLists = Horariopreenchidos.any(
+                                  (horario) =>
+                                      horarioFinal[index].horario ==
+                                      horario
+                                          .horario); // Verifica se o horário está presente nas duas listas
+                              Color color = selectedIndexHorario == index
+                                  ? Colors
+                                      .green // Se o item estiver selecionado, a cor é verde
+                                  : presentInBothLists
+                                      ? Colors
+                                          .orangeAccent // Se o horário estiver presente em ambas as listas, a cor é vermelha
+                                      : Dadosgeralapp()
+                                          .primaryColor; // Caso contrário, use a cor primária do Estabelecimento
+                              return InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndexHorario =
+                                        selectedIndexHorario == index
+                                            ? -1
+                                            : index;
+
+                                    horarioClicadoeSelecionado =
+                                        horarioFinal[index].horario;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 3, horizontal: 3),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.elliptical(20, 20),
+                                        bottomRight: Radius.elliptical(20, 20),
+                                        topLeft: Radius.elliptical(20, 20),
+                                        topRight: Radius.elliptical(20, 20),
+                                      ),
+                                      color: color,
+                                    ),
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      "${horarioFinal[index].horario}",
+                                      style: GoogleFonts.openSans(
+                                          textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        fontSize: 15,
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          )
+                        : const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (ctx) {
+                            return Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 25),
+                              width: double.infinity,
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.elliptical(25, 25),
+                                  topRight: Radius.elliptical(25, 25),
+                                ),
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Icon(
+                                          Icons.arrow_back_ios,
+                                          size: 25,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Resumo do agendamento",
+                                            style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 2,
+                                          ),
+                                          Text(
+                                            "Revise os dados",
+                                            style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black38,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 10,
+                                      horizontal: 15,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        //nome do cliente
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Nome do cliente",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        Colors.grey.shade500),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Gabriel",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        //contato
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Telefone de contato",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        Colors.grey.shade500),
+                                              ),
+                                            ),
+
+                                            Text(
+                                              "5551983448088",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            //Contato
+                                          ],
+                                        ),
+                                        //data
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Data",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        Colors.grey.shade500),
+                                              ),
+                                            ),
+
+                                            Text(
+                                              "23/04/2004",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            //Contato
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        //horário
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Horário",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        Colors.grey.shade500),
+                                              ),
+                                            ),
+
+                                            Text(
+                                              "16:30",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            //Contato
+                                          ],
+                                        ),
+                                        //profissional
+                                        SizedBox(
+                                          height: 15,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Profissional selecionado",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color:
+                                                        Colors.grey.shade500),
+                                              ),
+                                            ),
+
+                                            Text(
+                                              "Nicolas",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            //Contato
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    decoration: BoxDecoration(
+                                      color: Dadosgeralapp().primaryColor,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Text(
+                                      "Agendar agora",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color.fromRGBO(54, 54, 54, 1),
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Próximo",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 2,
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              size: 20,
+                              color: Colors.white,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
