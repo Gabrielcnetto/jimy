@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
+import 'package:jimy/rotas/confirmacaoAgendamento.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:jimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
 import 'package:jimy/firebase_options.dart';
 import 'package:jimy/funcoes/CriarContaeLogar.dart';
+import 'package:jimy/funcoes/agendarHorario.dart';
 import 'package:jimy/rotas/AppRoutes.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
@@ -11,6 +12,7 @@ import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Chame primeiro aqui ele inicia os widgets
@@ -45,6 +47,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => Criarservicos(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => Agendarhorario(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -62,7 +67,7 @@ class _MyAppState extends State<MyApp> {
           DefaultCupertinoLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-          theme: ThemeData(
+        theme: ThemeData(
           datePickerTheme: DatePickerThemeData(
             backgroundColor: Colors.white,
             cancelButtonStyle: ButtonStyle(
