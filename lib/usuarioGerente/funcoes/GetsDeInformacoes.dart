@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/classes/horarios.dart';
 import 'package:jimy/usuarioGerente/classes/servico.dart';
@@ -214,5 +216,84 @@ class Getsdeinformacoes with ChangeNotifier {
     } catch (e) {
       print("Erro ao carregar os profissionais: $e");
     }
+  }
+
+  final StreamController<List<Corteclass>> _CorteslistaManager =
+      StreamController<List<Corteclass>>.broadcast();
+
+  Stream<List<Corteclass>> get CorteslistaManager => _CorteslistaManager.stream;
+
+  List<Corteclass> _managerListCortes = [];
+  List<Corteclass> get managerListCortes => [..._managerListCortes];
+  Future<void> carregarAgendaAposSelecionarDiaEprofissional({
+    required int selectDay,
+    required String selectMonth,
+    required String proffName,
+    required int year,
+  }) async {
+    print("tela do manager, 7 dias corte funcao executada");
+
+    try {
+      final String uidUser = await authSettings.currentUser!.uid;
+      String? userIdbarbearia;
+
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          userIdbarbearia = data['idBarbearia'];
+        } else {}
+        return userIdbarbearia;
+      });
+      print("peguei o profissional:${proffName}");
+      // _CorteslistaManager.sink.add([]); // Isso irá enviar uma lista vazia para o fluxo
+      final nomeBarber = proffName.replaceAll(' ', '');
+      QuerySnapshot querySnapshot = await database
+          .collection("agendas")
+          .doc(userIdbarbearia)
+          .collection("${selectMonth}.${year}")
+          .doc("${selectDay}")
+          .collection(nomeBarber)
+          .get();
+
+      _managerListCortes = querySnapshot.docs.map((doc) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+
+        // Acessando os atributos diretamente usando []
+        print("tipos de dados:");
+        print(data?["totalValue"].toString());
+        return Corteclass(
+          JaCortou: data?["JaCortou"] ?? false,
+          MesSelecionado: data?["MesSelecionado"] ?? "",
+          ProfissionalSelecionado: data?["ProfissionalSelecionado"] ?? "",
+          anoSelecionado: data?["anoSelecionado"] ?? "",
+          barbeariaId: data?["barbeariaId"] ?? "",
+          clienteNome: data?["clienteNome"] ?? "",
+          dataSelecionadaDateTime: data?["dataSelecionadaDateTime"],
+          diaSelecionado: data?["diaSelecionado"] ?? "",
+          horarioSelecionado: data?["horarioSelecionado"] ?? "",
+          id: data?["id"] ?? "",
+          horariosExtras: data?["horariosExtras"] ?? [],
+          idDoServicoSelecionado: data?["idDoServicoSelecionado"] ?? "",
+          momentoDoAgendamento: data?["momentoDoAgendamento"],
+          nomeServicoSelecionado: data?["nomeServicoSelecionado"] ?? "",
+          pagouPeloApp: data?["pagouPeloApp"] ?? false,
+          pagoucomcupom: data?["pagoucomcupom"] ?? false,
+          pontosGanhos: data?["pontosGanhos"] ?? 0,
+          preencher2horarios: data?["preencher2horarios"] ?? false,
+          profissionalId: data?["profissionalId"] ?? false,
+          urlImagePerfilfoto:
+              data?["urlImagePerfilfoto"] ?? Dadosgeralapp().defaultAvatarImage,
+          urlImageProfissionalFoto: data?["urlImageProfissionalFoto"] ??
+              Dadosgeralapp().defaultAvatarImage,
+          valorCorte: data?["valorCorte"] ?? 0.0,
+        );
+      }).toList();
+      _CorteslistaManager.add(_managerListCortes);
+    } catch (e) {
+      print("ao carregar a lista do manager dia, deu isto: ${e}");
+    }
+    print("o tamanho da lista é manager ${_managerListCortes.length}");
+    notifyListeners();
   }
 }

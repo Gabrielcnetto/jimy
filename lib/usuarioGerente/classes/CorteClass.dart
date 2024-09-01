@@ -20,6 +20,7 @@ class Corteclass {
   final int pontosGanhos;
 
   //informacoes do dia e horario
+  final List<String>horariosExtras;
   final String idDoServicoSelecionado;
   final String nomeServicoSelecionado;
   final String horarioSelecionado;
@@ -29,6 +30,7 @@ class Corteclass {
   final DateTime dataSelecionadaDateTime;
   final DateTime momentoDoAgendamento;
   Corteclass({
+    required this.horariosExtras,
     required this.idDoServicoSelecionado,
     required this.nomeServicoSelecionado,
     required this.JaCortou,

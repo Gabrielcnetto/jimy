@@ -55,7 +55,7 @@ class _AdicionarServicosScreenState extends State<AdicionarServicosScreen> {
       await Provider.of<Criarservicos>(context, listen: false).addServico(
         serviceName: nomeServicoControler.text,
         servicePrice: valorDouble,
-        tempoParaFazer: 30,
+        ocupar2Vagas: preencher2,
         idBarbearia: loadIdBarbearia!,
       );
       setState(() {
@@ -141,6 +141,33 @@ class _AdicionarServicosScreenState extends State<AdicionarServicosScreen> {
             );
           });
       print("houve um erro: $e");
+    }
+  }
+
+  bool minutos30 = true;
+  bool minutos60 = false;
+  bool preencher2 = false;
+  void set30minutosTrue() {
+    if (minutos30 == true) {
+      return;
+    } else {
+      setState(() {
+        preencher2 = false;
+        minutos30 = true;
+        minutos60 = false;
+      });
+    }
+  }
+
+  void set60minutosTrue() {
+    if (minutos60 == true) {
+      return;
+    } else {
+      setState(() {
+        minutos60 = true;
+        preencher2 = true;
+        minutos30 = false;
+      });
     }
   }
 
@@ -342,9 +369,92 @@ class _AdicionarServicosScreenState extends State<AdicionarServicosScreen> {
                           ],
                         ),
                         SizedBox(
+                          height: 15,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Tempo estimado",
+                              style: GoogleFonts.openSans(
+                                textStyle: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  color: Dadosgeralapp().secundariaColor,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    onTap: set30minutosTrue,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: minutos30 == true
+                                            ? Color.fromRGBO(54, 54, 54, 1)
+                                            : Colors.grey.shade300,
+                                      ),
+                                      alignment: Alignment.center,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: Text(
+                                        "30 Minutos",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                          color: minutos30 == true
+                                              ? Colors.white
+                                              : Colors.black45,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                        )),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: InkWell(
+                                    splashColor: Colors.transparent,
+                                    onTap: set60minutosTrue,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: minutos60 == true
+                                            ? Color.fromRGBO(54, 54, 54, 1)
+                                            : Colors.grey.shade300,
+                                      ),
+                                      alignment: Alignment.center,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      child: Text(
+                                        "60 Minutos",
+                                        style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                          color: minutos60 == true
+                                              ? Colors.white
+                                              : Colors.black45,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                        )),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        SizedBox(
                           height: 25,
                         ),
-                        
+
                         InkWell(
                           onTap: () {
                             if (_forms.currentState!.validate()) {

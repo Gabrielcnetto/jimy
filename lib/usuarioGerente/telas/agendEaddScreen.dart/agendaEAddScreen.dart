@@ -26,7 +26,6 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
   void initState() {
     super.initState();
 
-    // Chama o initState da classe pai
     loadingTotal();
     _animationController = AnimationController(
       vsync: this,
@@ -47,6 +46,9 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
   }
 
   bool isloading = false;
+  int? diaSelecionadoSegundo;
+  String? mesSelecionadoSegundo;
+  int? anoAtual;
   void loadingTotal() async {
     try {
       setState(() {
@@ -55,17 +57,52 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       setDaysAndMonths();
       await Provider.of<Getsdeinformacoes>(context, listen: false)
           .getListaProfissionais();
+      ajusteIndexDoProfissionalPrimeiroLoad();
+    await  primeiroGetNomeProfissionalDefault();
+      await attViewSchedule(
+        year: lastSevenYears[0],
+        dia: lastSevenDays[0],
+        mes: lastSevenMonths[0],
+        proffName: profSelecionado,
+      );
       setState(() {
         isloading = false;
       });
     } catch (e) {}
   }
 
+  String profSelecionado = "";
+  Future<void> attViewSchedule({
+    required int year,
+    required int dia,
+    required String mes,
+    required String proffName,
+  }) async {
+    print("dia selecionado: $dia e o mês é: $mes");
+    Provider.of<Getsdeinformacoes>(context, listen: false)
+        .carregarAgendaAposSelecionarDiaEprofissional(
+      year: year,
+      selectDay: dia,
+      selectMonth: mes,
+      proffName: profSelecionado,
+    );
+  }
+
+  void ajusteIndexDoProfissionalPrimeiroLoad() {
+    setState(() {
+      selectedIndexBarbeiros = 0;
+    });
+  }
+   primeiroGetNomeProfissionalDefault()async{
+    setState(() {
+      profSelecionado =  Provider.of<Getsdeinformacoes>(context, listen: false).profList[0].name;
+    });
+   }
   //
   List<int> lastSevenDays = [];
   List<String> lastSevenMonths = [];
   List<String> lastSevenWeekdays = [];
-
+  List<int> lastSevenYears = [];
   void setDaysAndMonths() {
     initializeDateFormatting('pt_BR');
     DateTime now = DateTime.now();
@@ -74,14 +111,12 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       int dayOfMonth = int.parse(DateFormat('d').format(date));
       String monthName = DateFormat('MMMM', 'pt_BR').format(date);
       String weekdayName = DateFormat('EEEE', 'pt_BR').format(date);
+      int year = date.year;
       lastSevenDays.add(dayOfMonth);
       lastSevenMonths.add(monthName);
       lastSevenWeekdays.add(weekdayName);
+      lastSevenYears.add(year);
     }
-  }
-
-  void showVerificationModalManager() {
-    print("teste");
   }
 
   int selectedIndex = 0;
@@ -139,6 +174,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                               int day = lastSevenDays[index];
                               String month = lastSevenMonths[index];
                               String weekday = lastSevenWeekdays[index];
+                              int anoAtualGet = lastSevenYears[index];
                               String firstLetterOfMonth = month.substring(0, 1);
                               String tresPrimeirasLetras =
                                   weekday.substring(0, 3);
@@ -159,9 +195,17 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                     splashColor: Colors.transparent,
                                     onTap: () {
                                       setState(() {
-                                        selectedIndex =
-                                            index; // Marca o índice como selecionado
+                                        selectedIndex = index;
+                                        diaSelecionadoSegundo = day;
+                                        mesSelecionadoSegundo = month;
+                                        anoAtual = anoAtualGet;
                                       });
+                                      attViewSchedule(
+                                        year: anoAtualGet,
+                                        dia: day,
+                                        mes: month,
+                                        proffName: profSelecionado,
+                                      );
                                       print(index);
                                     },
                                     child: Container(
@@ -263,6 +307,8 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                             selectedIndexBarbeiros =
                                                 index; // Atualiza o índice selecionado
                                           });
+                                     
+                                         
                                         },
                                         child: Container(
                                           alignment: Alignment.center,

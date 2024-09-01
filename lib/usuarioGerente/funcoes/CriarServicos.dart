@@ -11,7 +11,7 @@ class Criarservicos with ChangeNotifier {
   Future<void> addServico({
     required String serviceName,
     required double servicePrice,
-    required int tempoParaFazer,
+    required bool ocupar2Vagas,
     required String idBarbearia,
   }) async {
     try {
@@ -21,7 +21,7 @@ class Criarservicos with ChangeNotifier {
         id: Random().nextDouble().toString(),
         name: serviceName,
         price: servicePrice,
-        tempolevado: tempoParaFazer,
+        ocupar2vagas: ocupar2Vagas,
       );
       final pubNewService =
           database.collection("Barbearias").doc(idBarbearia).update({

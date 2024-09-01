@@ -21,6 +21,9 @@ class AgendarHorarioScreen extends StatefulWidget {
 }
 
 class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
+  final GlobalKey<ScaffoldMessengerState> _scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
+  final GlobalKey<FormState> _keyForm = GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +47,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   bool isloading = false;
   final numberControler = TextEditingController();
   final nomeClienteControler = TextEditingController();
-  List<Horarios> horarioFinal = listaHorariosFixos;
+  List<Horarios> horarioFinal = [];
   List<Horarios> Horariopreenchidos = [];
   DateTime? dataSelectedInModal;
   String profissionalSelecionado = "";
@@ -55,39 +58,174 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   String idServicoSelecionado = "";
   double valorServicoSelecionado = 0.0;
   bool ocupar2EspacosAgenda = false;
+  //load dos horários - inicio
+  Future<void> loadListCortes() async {
+    setState(() {
+      prontoparaexibir = false;
+    });
+    horarioFinal.clear();
+    Horariopreenchidos.clear();
+    List<Horarios> listaTemporaria = [];
+    List<Horarios> _horariosLivres = listaHorariosFixos;
+    DateTime? mesSelecionado = dataSelectedInModal;
+    listaTemporaria.addAll(_horariosLivres);
+    if (mesSelecionado != null) {
+      try {
+        await Provider.of<Agendarhorario>(context, listen: false)
+            .loadCortesParaProfissionais(
+          BarbeariaId: loadIdBarbearia!,
+          mesSelecionado: mesSelecionado,
+          DiaSelecionado: mesSelecionado.day,
+          Barbeiroselecionado: profissionalSelecionado,
+        );
+        List<Horarios> listaCort =
+            await Provider.of<Agendarhorario>(context, listen: false)
+                .horariosListLoad;
 
+        for (var horario in listaCort) {
+          Horariopreenchidos.add(
+            Horarios(
+              quantidadeHorarios: 1,
+              horario: horario.horario,
+              id: horario.id,
+            ),
+          );
+          _horariosPreenchidosParaEvitarDupNoCreate.add(Horarios(
+              horario: horario.horario, id: horario.id, quantidadeHorarios: 1));
+        }
+        print(
+            "o tamanho da lista de preenchidos é ${Horariopreenchidos.length}");
+        setState(() {
+          horarioFinal = List.from(listaTemporaria);
+        });
+        setState(() {
+          prontoparaexibir = true;
+        });
+
+        print("este e o tamanho da lista final: ${horarioFinal.length}");
+      } catch (e) {
+        print("nao consegu realizar, erro: ${e}");
+      }
+    } else {
+      print("problemas na hora ou dia");
+    }
+  }
+
+  //load dos horários - fim
   //funcao de agendar:
+  List<Horarios> _horariosPreenchidosParaEvitarDupNoCreate = [];
   Future<void> FuncaodeAgendar() async {
+    Navigator.of(context).pop();
     setState(() {
       isloading = true;
     });
-  
+
+    //verificacao caso seja um procedimento mais demorado para adicionar as listas de horarios
+    List<String> selectedHorarios = [];
+    if (ocupar2EspacosAgenda == true) {
+      // Encontrar o índice do horário selecionado na lista _horariosSemana
+      int selectedIndex = listaHorariosFixos.indexWhere(
+          (horario) => horario.horario == horarioClicadoeSelecionado);
+
+      if (selectedIndex != -1 &&
+          selectedIndex + 2 < listaHorariosFixos.length) {
+        for (int i = 1; i <= 2; i++) {
+          String horarioExtra = listaHorariosFixos[selectedIndex + i].horario;
+          // Verificar se o horário extra está presente na lista de horários preenchidos
+          bool horarioJaPreenchido = _horariosPreenchidosParaEvitarDupNoCreate
+              .any((horario) => horario.horario == horarioExtra);
+          print(
+              "o tamanho da lista é # ${_horariosPreenchidosParaEvitarDupNoCreate.length}");
+          if (horarioJaPreenchido == true) {
+            // Mostrar um dialog para o usuário selecionar outro horário
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                    'Horário Indisponível',
+                    style: GoogleFonts.openSans(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Dadosgeralapp().primaryColor,
+                      ),
+                    ),
+                  ),
+                  content: Text(
+                    'O Serviço selecionado leva mais tempo, ao selecionar este horário pode bagunçar sua rotina. Escolha outro por favor.',
+                    style: GoogleFonts.openSans(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        // Fechar o dialog
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Dadosgeralapp().primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'Escolher outro',
+                          style: GoogleFonts.openSans(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+            setState(() {
+              isloading = false;
+            });
+            // Abortar a adição ao provider
+            return;
+          }
+
+          selectedHorarios.add(horarioExtra);
+        }
+      }
+    }
+
     try {
-        String monthName =
-        await DateFormat('MMMM', 'pt_BR').format(dataSelectedInModal!);
-    final Corteclass _corteCriado = Corteclass(
-      idDoServicoSelecionado: idServicoSelecionado,
-      nomeServicoSelecionado: nomeServicoSelecionado,
-      JaCortou: false,
-      MesSelecionado: monthName,
-      ProfissionalSelecionado: profissionalSelecionado,
-      anoSelecionado: dataSelectedInModal!.year.toString(),
-      barbeariaId: loadIdBarbearia!,
-      clienteNome: nomeClienteControler.text,
-      dataSelecionadaDateTime: dataSelectedInModal!,
-      diaSelecionado: dataSelectedInModal!.day.toString(),
-      horarioSelecionado: horarioClicadoeSelecionado,
-      id: Random().nextDouble().toString(),
-      momentoDoAgendamento: DateTime.now(),
-      pagouPeloApp: false,
-      pagoucomcupom: false,
-      pontosGanhos: 0,
-      preencher2horarios: ocupar2EspacosAgenda,
-      profissionalId: idDoProfissionalSelecionado,
-      urlImagePerfilfoto: Dadosgeralapp().defaultAvatarImage,
-      urlImageProfissionalFoto: urlImagemPerfilProfissional,
-      valorCorte: valorServicoSelecionado,
-    );
+      String monthName =
+          await DateFormat('MMMM', 'pt_BR').format(dataSelectedInModal!);
+      final Corteclass _corteCriado = Corteclass(
+        horariosExtras: selectedHorarios,
+        idDoServicoSelecionado: idServicoSelecionado,
+        nomeServicoSelecionado: nomeServicoSelecionado,
+        JaCortou: false,
+        MesSelecionado: monthName,
+        ProfissionalSelecionado: profissionalSelecionado,
+        anoSelecionado: dataSelectedInModal!.year.toString(),
+        barbeariaId: loadIdBarbearia!,
+        clienteNome: nomeClienteControler.text,
+        dataSelecionadaDateTime: dataSelectedInModal!,
+        diaSelecionado: dataSelectedInModal!.day.toString(),
+        horarioSelecionado: horarioClicadoeSelecionado,
+        id: Random().nextDouble().toString(),
+        momentoDoAgendamento: DateTime.now(),
+        pagouPeloApp: false,
+        pagoucomcupom: false,
+        pontosGanhos: 0,
+        preencher2horarios: ocupar2EspacosAgenda,
+        profissionalId: idDoProfissionalSelecionado,
+        urlImagePerfilfoto: Dadosgeralapp().defaultAvatarImage,
+        urlImageProfissionalFoto: urlImagemPerfilProfissional,
+        valorCorte: valorServicoSelecionado,
+      );
       await Provider.of<Agendarhorario>(context, listen: false)
           .agendarHorararioParaProfissionais(
         idDaBarbearia: loadIdBarbearia!,
@@ -162,6 +300,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
         if (selectUserDate != null) {
           setState(() {
             dataSelectedInModal = selectUserDate;
+            loadListCortes();
           });
         }
       } catch (e) {
@@ -189,6 +328,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Colors.white,
       body: GestureDetector(
         onTap: () {
@@ -248,68 +388,77 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                         height: 15,
                       ),
                       //container do nome do cliente
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Dadosgeralapp().primaryColor),
-                                child: const Text(
-                                  "1",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                      Form(
+                        key: _keyForm,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Dadosgeralapp().primaryColor),
+                                  child: const Text(
+                                    "1",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "Nome do cliente",
-                                style: GoogleFonts.openSans(
-                                  textStyle: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "Nome do cliente",
+                                  style: GoogleFonts.openSans(
+                                    textStyle: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                width: 1,
-                                color: Colors.grey.shade200,
-                              ),
+                              ],
                             ),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 15),
-                            child: TextFormField(
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey.shade600,
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey.shade200,
                                 ),
                               ),
-                              controller: nomeClienteControler,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 0, horizontal: 15),
+                              child: TextFormField(
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Digite o nome do cliente';
+                                  }
+                                  return null;
+                                },
+                                controller: nomeClienteControler,
+                                decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       //Container do contato
                       SizedBox(
@@ -524,6 +673,9 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                                       listaServico[index].name;
                                                   idServicoSelecionado =
                                                       listaServico[index].id;
+                                                  ocupar2EspacosAgenda =
+                                                      listaServico[index]
+                                                          .ocupar2vagas;
                                                 });
                                               },
                                               child: Row(
@@ -727,21 +879,73 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                     final isSelected = _selectedIndex == index;
                                     return GestureDetector(
                                       onTap: () {
-                                        setState(() {
-                                          _selectedIndex =
-                                              isSelected ? -1 : index;
-                                          dataSelectedInModal = null;
-                                          horarioClicadoeSelecionado = "";
-                                          selectedIndexHorario =
-                                              -1; // Atualiza para -1 se já estiver selecionado
-                                          profissionalSelecionado =
-                                              listaBarbeiros[index].name;
-                                          idDoProfissionalSelecionado =
-                                              listaBarbeiros[index].id;
-                                          urlImagemPerfilProfissional =
-                                              listaBarbeiros[index]
-                                                  .urlImageFoto;
-                                        });
+                                        if (_keyForm.currentState!.validate()) {
+                                          setState(() {
+                                            _selectedIndex =
+                                                isSelected ? -1 : index;
+                                            dataSelectedInModal = null;
+                                            horarioClicadoeSelecionado = "";
+                                            selectedIndexHorario =
+                                                -1; // Atualiza para -1 se já estiver selecionado
+                                            profissionalSelecionado =
+                                                listaBarbeiros[index].name;
+                                            idDoProfissionalSelecionado =
+                                                listaBarbeiros[index].id;
+                                            urlImagemPerfilProfissional =
+                                                listaBarbeiros[index]
+                                                    .urlImageFoto;
+                                          });
+                                        } else {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  "Digite o nome do cliente",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
+                                                  ),
+                                                ),
+                                                content: Text(
+                                                  "Antes de selecionar o profissional, digite o nome do cliente",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                    ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Text(
+                                                      "Voltar",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: Dadosgeralapp()
+                                                                .primaryColor,
+                                                            fontSize: 14),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }
                                       },
                                       child: Stack(
                                         children: [
