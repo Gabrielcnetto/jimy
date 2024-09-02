@@ -60,9 +60,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   bool ocupar2EspacosAgenda = false;
   //load dos horários - inicio
   Future<void> loadListCortes() async {
-    setState(() {
-      prontoparaexibir = false;
-    });
+    
     horarioFinal.clear();
     Horariopreenchidos.clear();
     List<Horarios> listaTemporaria = [];
@@ -128,8 +126,8 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
           (horario) => horario.horario == horarioClicadoeSelecionado);
 
       if (selectedIndex != -1 &&
-          selectedIndex + 2 < listaHorariosFixos.length) {
-        for (int i = 1; i <= 2; i++) {
+          selectedIndex + 3 < listaHorariosFixos.length) {
+        for (int i = 1; i <= 3; i++) {
           String horarioExtra = listaHorariosFixos[selectedIndex + i].horario;
           // Verificar se o horário extra está presente na lista de horários preenchidos
           bool horarioJaPreenchido = _horariosPreenchidosParaEvitarDupNoCreate
@@ -301,6 +299,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
           setState(() {
             dataSelectedInModal = selectUserDate;
             loadListCortes();
+            FocusScope.of(context).requestFocus(FocusNode()); 
           });
         }
       } catch (e) {

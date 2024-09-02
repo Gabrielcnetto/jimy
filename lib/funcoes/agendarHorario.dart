@@ -69,7 +69,7 @@ class Agendarhorario with ChangeNotifier {
             .doc(corte.horariosExtras[0])
             .set({
           "id": corte.id,
-          "clienteNome": "extra",
+          "clienteNome": "BARBANULO",
           "urlImagePerfilfoto": corte.urlImagePerfilfoto,
           //identificacao da barbearia
           "barbeariaId": corte.barbeariaId,
@@ -90,7 +90,7 @@ class Agendarhorario with ChangeNotifier {
           //informacoes do dia e horario
           "idDoServicoSelecionado": corte.idDoServicoSelecionado,
           "nomeServicoSelecionado": corte.nomeServicoSelecionado,
-          "horarioSelecionado": corte.horarioSelecionado,
+          "horarioSelecionado": corte.horariosExtras[0],
           "diaSelecionado": corte.diaSelecionado,
           "MesSelecionado": corte.MesSelecionado,
           "anoSelecionado": corte.anoSelecionado,
@@ -107,7 +107,7 @@ class Agendarhorario with ChangeNotifier {
             .doc(corte.horariosExtras[1])
             .set({
           "id": corte.id,
-          "clienteNome": "extra",
+          "clienteNome": "BARBANULO",
           "urlImagePerfilfoto": corte.urlImagePerfilfoto,
           //identificacao da barbearia
           "barbeariaId": corte.barbeariaId,
@@ -128,7 +128,7 @@ class Agendarhorario with ChangeNotifier {
           //informacoes do dia e horario
           "idDoServicoSelecionado": corte.idDoServicoSelecionado,
           "nomeServicoSelecionado": corte.nomeServicoSelecionado,
-          "horarioSelecionado": corte.horarioSelecionado,
+          "horarioSelecionado": corte.horariosExtras[1],
           "diaSelecionado": corte.diaSelecionado,
           "MesSelecionado": corte.MesSelecionado,
           "anoSelecionado": corte.anoSelecionado,

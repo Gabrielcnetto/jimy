@@ -259,8 +259,6 @@ class Getsdeinformacoes with ChangeNotifier {
       _managerListCortes = querySnapshot.docs.map((doc) {
         Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
 
-        // Acessando os atributos diretamente usando []
-        print("tipos de dados:");
         print(data?["totalValue"].toString());
         return Corteclass(
           JaCortou: data?["JaCortou"] ?? false,
@@ -269,13 +267,17 @@ class Getsdeinformacoes with ChangeNotifier {
           anoSelecionado: data?["anoSelecionado"] ?? "",
           barbeariaId: data?["barbeariaId"] ?? "",
           clienteNome: data?["clienteNome"] ?? "",
-          dataSelecionadaDateTime: data?["dataSelecionadaDateTime"],
+          dataSelecionadaDateTime:
+              (data?["dataSelecionadaDateTime"] as Timestamp?)?.toDate() ??
+                  DateTime.now(),
           diaSelecionado: data?["diaSelecionado"] ?? "",
           horarioSelecionado: data?["horarioSelecionado"] ?? "",
           id: data?["id"] ?? "",
           horariosExtras: data?["horariosExtras"] ?? [],
           idDoServicoSelecionado: data?["idDoServicoSelecionado"] ?? "",
-          momentoDoAgendamento: data?["momentoDoAgendamento"],
+          momentoDoAgendamento:
+              (data?["momentoDoAgendamento"] as Timestamp?)?.toDate() ??
+                  DateTime.now(),
           nomeServicoSelecionado: data?["nomeServicoSelecionado"] ?? "",
           pagouPeloApp: data?["pagouPeloApp"] ?? false,
           pagoucomcupom: data?["pagoucomcupom"] ?? false,

@@ -4,11 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:jimy/usuarioGerente/classes/horarios.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart';
 import 'package:provider/provider.dart';
+import 'package:timeline_tile/timeline_tile.dart';
 
 class AgendaEAddScreen extends StatefulWidget {
   const AgendaEAddScreen({super.key});
@@ -58,7 +61,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       await Provider.of<Getsdeinformacoes>(context, listen: false)
           .getListaProfissionais();
       ajusteIndexDoProfissionalPrimeiroLoad();
-    await  primeiroGetNomeProfissionalDefault();
+      await primeiroGetNomeProfissionalDefault();
       await attViewSchedule(
         year: lastSevenYears[0],
         dia: lastSevenDays[0],
@@ -93,11 +96,15 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       selectedIndexBarbeiros = 0;
     });
   }
-   primeiroGetNomeProfissionalDefault()async{
+
+  primeiroGetNomeProfissionalDefault() async {
     setState(() {
-      profSelecionado =  Provider.of<Getsdeinformacoes>(context, listen: false).profList[0].name;
+      profSelecionado = Provider.of<Getsdeinformacoes>(context, listen: false)
+          .profList[0]
+          .name;
     });
-   }
+  }
+
   //
   List<int> lastSevenDays = [];
   List<String> lastSevenMonths = [];
@@ -121,6 +128,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
 
   int selectedIndex = 0;
   int selectedIndexBarbeiros = -1;
+  List<Horarios> _horariosListFixa = listaHorariosFixos;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -288,97 +296,383 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                             List<Barbeiros> listaBarbeiros =
                                 snapshot.data as List<Barbeiros>;
                             return SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: listaBarbeiros
-                                      .asMap()
-                                      .entries
-                                      .map((entry) {
-                                    int index = entry.key;
-                                    Barbeiros item = entry.value;
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children:
+                                    listaBarbeiros.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  Barbeiros item = entry.value;
 
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 5, horizontal: 5),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selectedIndexBarbeiros =
-                                                index; // Atualiza o índice selecionado
-                                          });
-                                     
-                                         
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.14,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height *
-                                                    0.08,
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(60),
-                                                  child: Image.network(
-                                                    item.urlImageFoto ??
-                                                        'https://example.com/default_avatar.jpg',
-                                                    fit: BoxFit.cover,
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 5),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          profSelecionado = item.name;
+                                          selectedIndexBarbeiros =
+                                              index; // Atualiza o índice selecionado
+                                        });
+                                        attViewSchedule(
+                                          year:anoAtual!, 
+                                          dia: diaSelecionadoSegundo!,
+                                          mes: mesSelecionadoSegundo!,
+                                          proffName: profSelecionado,
+                                        );
+                                        print("#2:${item.name}");
+                                        
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.14,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.08,
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(60),
+                                                child: Image.network(
+                                                  item.urlImageFoto ??
+                                                      'https://example.com/default_avatar.jpg',
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 2),
+                                            Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 10,
+                                                  vertical:
+                                                      5), // Espaço interno
+                                              decoration: BoxDecoration(
+                                                color: selectedIndexBarbeiros ==
+                                                        index
+                                                    ? Dadosgeralapp()
+                                                        .tertiaryColor
+                                                    : Colors.transparent,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Text(
+                                                item.name,
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.clip,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    color:
+                                                        selectedIndexBarbeiros ==
+                                                                index
+                                                            ? Colors.white
+                                                            : Colors.black,
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(height: 2),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 10,
-                                                    vertical:
-                                                        5), // Espaço interno
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      selectedIndexBarbeiros ==
-                                                              index
-                                                          ? Dadosgeralapp()
-                                                              .tertiaryColor
-                                                          : Colors.transparent,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  item.name,
-                                                  textAlign: TextAlign.center,
-                                                  overflow: TextOverflow.clip,
-                                                  style: GoogleFonts.poppins(
-                                                    textStyle: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color:
-                                                          selectedIndexBarbeiros ==
-                                                                  index
-                                                              ? Colors.white
-                                                              : Colors.black,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Container(
+                        child: StreamBuilder(
+                          stream: Provider.of<Getsdeinformacoes>(
+                            context,
+                            listen: true,
+                          ).CorteslistaManager,
+                          builder: (ctx, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: Dadosgeralapp().primaryColor,
+                                ),
+                              );
+                            }
+                            if (snapshot.data!.isEmpty ||
+                                snapshot.data == null) {
+                              return LinhaTempoProfissionalSelecionado();
+                            }
+                            final List<Corteclass>? cortes = snapshot.data;
+                            final List<Corteclass> cortesFiltrados = cortes!
+                                .where((corte) => corte.clienteNome != "extra")
+                                .toList();
+
+                            return Column(
+                              children: _horariosListFixa.map((horario) {
+                                List<Corteclass> cortesParaHorario =
+                                    cortesFiltrados
+                                        .where((corte) =>
+                                            corte.horarioSelecionado ==
+                                            horario.horario)
+                                        .toList();
+                                return Row(
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      child: TimelineTile(
+                                        alignment: TimelineAlign.manual,
+                                        lineXY: 0,
+                                        axis: TimelineAxis.vertical,
+                                        indicatorStyle: IndicatorStyle(
+                                          color: Colors.grey.shade300,
+                                          height: 5,
+                                        ),
+                                        beforeLineStyle: LineStyle(
+                                          color: Colors.grey.shade300,
+                                          thickness: 2,
+                                        ),
+                                        endChild: Padding(
+                                          padding: EdgeInsets.only(left: 5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Container(
+                                                    alignment: Alignment.center,
+                                                    height: 100,
+                                                    child: Text(
+                                                      horario.horario,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontSize: 12,
+                                                        color: Dadosgeralapp()
+                                                            .tertiaryColor,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
+                                                ],
                                               ),
+                                              const SizedBox(width: 10),
+                                              cortesParaHorario.isNotEmpty
+                                                  ? Expanded(
+                                                      child: Column(
+                                                      children:
+                                                          cortesParaHorario
+                                                              .map((corte) {
+                                                        return corte.clienteNome !=
+                                                                "BARBANULO"
+                                                            ? Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                        top:
+                                                                            10),
+                                                                child:
+                                                                    Container(
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height *
+                                                                      0.18,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Dadosgeralapp()
+                                                                        .tertiaryColor,
+                                                                    borderRadius: corte.preencher2horarios ==
+                                                                            false
+                                                                        ? BorderRadius
+                                                                            .circular(
+                                                                                10)
+                                                                        : BorderRadius.only(
+                                                                            topLeft:
+                                                                                Radius.circular(10),
+                                                                            topRight: Radius.circular(10)),
+                                                                  ),
+                                                                  padding: EdgeInsets.symmetric(
+                                                                      vertical:
+                                                                          15,
+                                                                      horizontal:
+                                                                          10),
+                                                                  child: Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceAround,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          Text(
+                                                                            "Ínicio:",
+                                                                            style:
+                                                                                GoogleFonts.poppins(
+                                                                              textStyle: TextStyle(
+                                                                                fontWeight: FontWeight.w400,
+                                                                                color: Colors.white24,
+                                                                                fontSize: 10,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                5,
+                                                                          ),
+                                                                          Text(
+                                                                            corte.horarioSelecionado,
+                                                                            style:
+                                                                                GoogleFonts.poppins(
+                                                                              textStyle: TextStyle(
+                                                                                fontWeight: FontWeight.w400,
+                                                                                color: Colors.white,
+                                                                                fontSize: 10,
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          Container(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width * 0.65,
+                                                                            child:
+                                                                                Text(
+                                                                              corte.nomeServicoSelecionado,
+                                                                              style: GoogleFonts.poppins(
+                                                                                textStyle: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                  color: Colors.white,
+                                                                                  fontWeight: FontWeight.w500,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          Container(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width * 0.65,
+                                                                            child:
+                                                                                Text(
+                                                                              corte.clienteNome,
+                                                                              style: GoogleFonts.poppins(
+                                                                                textStyle: TextStyle(
+                                                                                  fontSize: 14,
+                                                                                  color: Colors.white,
+                                                                                  fontWeight: FontWeight.w400,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height:
+                                                                            2,
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.end,
+                                                                        children: [
+                                                                          Container(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            decoration:
+                                                                                BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                                                                            padding:
+                                                                                EdgeInsets.all(5),
+                                                                            child:
+                                                                                Icon(
+                                                                              Icons.open_in_new,
+                                                                              size: 15,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Container(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.18,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Dadosgeralapp()
+                                                                      .tertiaryColor,
+                                                                ),
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            15,
+                                                                        horizontal:
+                                                                            10),
+                                                              );
+                                                      }).toList(),
+                                                    ))
+                                                  : Expanded(
+                                                      child: Container(
+                                                        height: 80,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors
+                                                              .grey.shade200,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: const Center(
+                                                          child: Text(
+                                                            "Horário disponível",
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 14,
+                                                              color: Colors
+                                                                  .black54,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
                                             ],
                                           ),
                                         ),
                                       ),
-                                    );
-                                  }).toList(),
-                                ));
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            );
                           },
                         ),
-                      ),
-                      LinhaTempoProfissionalSelecionado(),
+                      )
                     ],
                   ),
                 ),
