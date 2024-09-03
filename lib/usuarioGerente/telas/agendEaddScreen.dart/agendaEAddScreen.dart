@@ -82,13 +82,24 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
     required String proffName,
   }) async {
     print("dia selecionado: $dia e o mês é: $mes");
-    Provider.of<Getsdeinformacoes>(context, listen: false)
-        .carregarAgendaAposSelecionarDiaEprofissional(
-      year: year,
-      selectDay: dia,
-      selectMonth: mes,
-      proffName: profSelecionado,
-    );
+    print("cliquei aqui");
+    try {
+      setState(() {
+        diaSelecionadoSegundo = dia;
+        mesSelecionadoSegundo = mes;
+        anoAtual = year;
+      });
+      Provider.of<Getsdeinformacoes>(context, listen: false)
+          .carregarAgendaAposSelecionarDiaEprofissional(
+        year: year,
+        selectDay: dia,
+        selectMonth: mes,
+        proffName: profSelecionado,
+      );
+    } catch (e) {
+      print("erro: $e");
+      throw e;
+    }
   }
 
   void ajusteIndexDoProfissionalPrimeiroLoad() {
@@ -98,11 +109,13 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
   }
 
   primeiroGetNomeProfissionalDefault() async {
-    setState(() {
-      profSelecionado = Provider.of<Getsdeinformacoes>(context, listen: false)
-          .profList[0]
-          .name;
-    });
+    setState(
+      () {
+        profSelecionado = Provider.of<Getsdeinformacoes>(context, listen: false)
+            .profList[0]
+            .name;
+      },
+    );
   }
 
   //
@@ -214,6 +227,9 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                         mes: month,
                                         proffName: profSelecionado,
                                       );
+                                      print("ano:${anoAtual}");
+                                      print("mes:${month}");
+                                      print("dia:${day}");
                                       print(index);
                                     },
                                     child: Container(
@@ -315,13 +331,17 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                               index; // Atualiza o índice selecionado
                                         });
                                         attViewSchedule(
-                                          year:anoAtual!, 
+                                          year: anoAtual!,
                                           dia: diaSelecionadoSegundo!,
                                           mes: mesSelecionadoSegundo!,
                                           proffName: profSelecionado,
                                         );
+                                        print("anoAtual:${anoAtual}");
+                                        print(
+                                            "mes Atual:${mesSelecionadoSegundo}");
+                                        print(
+                                            "dia Atual:${diaSelecionadoSegundo}");
                                         print("#2:${item.name}");
-                                        
                                       },
                                       child: Container(
                                         alignment: Alignment.center,

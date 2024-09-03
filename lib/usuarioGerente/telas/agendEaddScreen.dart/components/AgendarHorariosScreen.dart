@@ -995,7 +995,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                       SizedBox(
                         height: 15,
                       ),
-                      if (profissionalSelecionado.isNotEmpty)
+                      if (profissionalSelecionado.isNotEmpty && nomeServicoSelecionado != "")
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

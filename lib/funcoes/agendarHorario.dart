@@ -135,7 +135,106 @@ class Agendarhorario with ChangeNotifier {
           "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
           "momentoDoAgendamento": corte.momentoDoAgendamento,
         });
-       
+      }
+      //enviando os dados/indicadores
+      try {
+        //enviando dados da barbearia referente ao mes em que o corte foi feito
+        final docRef = await database
+            .collection("dadosBarbearias")
+            .doc(idDaBarbearia)
+            .collection("faturamentoMes")
+            .doc(monthName);
+
+        final docSnapshot = await docRef.get();
+
+        if (docSnapshot.exists) {
+          // Se o documento existir, use update()
+          await docRef.update({
+            'valor': FieldValue.increment(corte.valorCorte),
+          });
+        } else {
+          // Se o documento não existir, use set() com merge: true para criá-lo
+          await docRef.set({
+            'valor': FieldValue.increment(corte.valorCorte),
+          }, SetOptions(merge: true));
+        }
+        //enviando agora a quantidade de faturamento total
+        final docRefFaturamentoTotal = await database
+            .collection("dadosBarbearias")
+            .doc(idDaBarbearia)
+            .collection("faturamentoTotal")
+            .doc("valor");
+
+        final docSnapshotFaturamentoTotal = await docRefFaturamentoTotal.get();
+
+        if (docSnapshotFaturamentoTotal.exists) {
+          // Se o documento existir, use update()
+          await docRefFaturamentoTotal.update({
+            'valor': FieldValue.increment(corte.valorCorte),
+          });
+        } else {
+          // Se o documento não existir, use set() com merge: true para criá-lo
+          await docRefFaturamentoTotal.set({
+            'valor': FieldValue.increment(corte.valorCorte),
+          }, SetOptions(merge: true));
+        }
+
+        //quantidade de corte feita no mes
+        final docRefquantidadeMensaldeCortesFeitos = await database
+            .collection("dadosBarbearias")
+            .doc(idDaBarbearia)
+            .collection("quantiaCortesMesAtual")
+            .doc("valor");
+
+        final docSnapshotQuantiaCorteFeitoEsteMes =
+            await docRefquantidadeMensaldeCortesFeitos.get();
+
+        if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
+          // Se o documento existir, use update()
+          await docRefquantidadeMensaldeCortesFeitos.update({
+            'valor': FieldValue.increment(1),
+          });
+        } else {
+          // Se o documento não existir, use set() com merge: true para criá-lo
+          await docRefquantidadeMensaldeCortesFeitos.set({
+            'valor': FieldValue.increment(1),
+          }, SetOptions(merge: true));
+        }
+
+        //enviando agora o total de cortes historico
+        final docTotalCortesHistoria = await database
+            .collection("dadosBarbearias")
+            .doc(idDaBarbearia)
+            .collection("totalCortesHistorico")
+            .doc("valor");
+
+        final docSnapTotalCorteHistorico = await docTotalCortesHistoria.get();
+
+        if (docSnapTotalCorteHistorico.exists) {
+          // Se o documento existir, use update()
+          await docTotalCortesHistoria.update({
+            'valor': FieldValue.increment(1),
+          });
+        } else {
+          // Se o documento não existir, use set() com merge: true para criá-lo
+          await docTotalCortesHistoria.set({
+            'valor': FieldValue.increment(1),
+          }, SetOptions(merge: true));
+        }
+      } catch (e) {
+        print("ao enviar os dados deu isto:$e");
+      }
+
+      //agora atualizando na classe da barbearia os servicos selecionados, e também o profissional
+      try {
+        await atualizandoQuantiasNaClasseDaBarbearia(
+          idBarbearia: idDaBarbearia,
+          profissionalId: corte.profissionalId,
+          serviceIdSelecionado: corte.idDoServicoSelecionado,
+        );
+      } catch (e) {
+        print(
+            "ao enviar um att ao barbeiro e servico de selecionado deu isto:$e");
       }
       print("acessei a funcao, feito");
     } catch (e) {
@@ -145,6 +244,67 @@ class Agendarhorario with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> atualizandoQuantiasNaClasseDaBarbearia({
+    required String idBarbearia,
+    required String profissionalId,
+    required String serviceIdSelecionado,
+  }) async {
+    try {
+      // Passo 1: Obtenha o documento da barbearia
+      DocumentSnapshot documentSnapshot =
+          await database.collection('Barbearias').doc(idBarbearia).get();
+
+      if (!documentSnapshot.exists) {
+        print('Documento não encontrado!');
+        return;
+      }
+
+      // Passo 2: Encontre o barbeiro e a lista de profissionais
+      List<dynamic> profissionais = documentSnapshot.get('profissionais');
+      List<Map<String, dynamic>> updatedProfissionais =
+          List.from(profissionais);
+
+      for (int i = 0; i < updatedProfissionais.length; i++) {
+        if (updatedProfissionais[i]['id'] == profissionalId) {
+          // Verificando se o totalCortes é double ou int e convertendo para int
+          int totalCortesAtual =
+              (updatedProfissionais[i]['totalCortes'] as num).toInt();
+          updatedProfissionais[i]['totalCortes'] = totalCortesAtual + 1;
+          break;
+        }
+      }
+
+      // Passo 3: Atualize o documento com a lista modificada
+      await database.collection('Barbearias').doc(idBarbearia).update({
+        'profissionais': updatedProfissionais,
+      });
+
+      // Passo 2: Encontre o barbeiro e a lista de profissionais
+      List<dynamic> servicos = await documentSnapshot.get('servicos');
+      List<Map<String, dynamic>> updateServiceEscolha = await List.from(servicos);
+
+      for (int i = 0; i < updateServiceEscolha.length; i++) {
+        if (updateServiceEscolha[i]['id'] == serviceIdSelecionado) {
+          // Verificando se o totalCortes é double ou int e convertendo para int
+          int quantiaEscolhida =
+              (updateServiceEscolha[i]['quantiaEscolhida'] as num).toInt();
+          updateServiceEscolha[i]['quantiaEscolhida'] = await quantiaEscolhida + 1;
+          break;
+        }
+      }
+
+      // Passo 3: Atualize o documento com a lista modificada
+      await database.collection('Barbearias').doc(idBarbearia).update({
+        'servicos': updateServiceEscolha,
+      });
+      //atualizando agora a quantai do servico selecionado
+    } catch (e) {
+      print("Erro ao atualizar na classe: $e");
+      throw e;
+    }
+  }
+
+  //
   List<Horarios> _horariosListLoad = [];
   List<Horarios> get horariosListLoad => [..._horariosListLoad];
   //
