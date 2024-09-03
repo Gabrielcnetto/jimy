@@ -12,6 +12,7 @@ class Agendarhorario with ChangeNotifier {
   Future<void> agendarHorararioParaProfissionais({
     required String idDaBarbearia,
     required Corteclass corte,
+    required double porcentagemProfissional,
   }) async {
     try {
       print("acessei a funcao");
@@ -232,6 +233,19 @@ class Agendarhorario with ChangeNotifier {
           profissionalId: corte.profissionalId,
           serviceIdSelecionado: corte.idDoServicoSelecionado,
         );
+
+        try {
+          //enviando a porcentagem ao profissional selecionado
+          await enviandoPorcentagensDeComissao(
+            idBarbearia: idDaBarbearia,
+            ProfissionalId: corte.profissionalId,
+            mesAtual: monthName,
+            porcentagemProfissional: porcentagemProfissional,
+            valorServico: corte.valorCorte,
+          );
+        } catch (e) {
+          print("erro:$e");
+        }
       } catch (e) {
         print(
             "ao enviar um att ao barbeiro e servico de selecionado deu isto:$e");
@@ -281,14 +295,16 @@ class Agendarhorario with ChangeNotifier {
 
       // Passo 2: Encontre o barbeiro e a lista de profissionais
       List<dynamic> servicos = await documentSnapshot.get('servicos');
-      List<Map<String, dynamic>> updateServiceEscolha = await List.from(servicos);
+      List<Map<String, dynamic>> updateServiceEscolha =
+          await List.from(servicos);
 
       for (int i = 0; i < updateServiceEscolha.length; i++) {
         if (updateServiceEscolha[i]['id'] == serviceIdSelecionado) {
           // Verificando se o totalCortes é double ou int e convertendo para int
           int quantiaEscolhida =
               (updateServiceEscolha[i]['quantiaEscolhida'] as num).toInt();
-          updateServiceEscolha[i]['quantiaEscolhida'] = await quantiaEscolhida + 1;
+          updateServiceEscolha[i]['quantiaEscolhida'] =
+              await quantiaEscolhida + 1;
           break;
         }
       }
@@ -300,6 +316,79 @@ class Agendarhorario with ChangeNotifier {
       //atualizando agora a quantai do servico selecionado
     } catch (e) {
       print("Erro ao atualizar na classe: $e");
+      throw e;
+    }
+  }
+
+  Future<void> enviandoPorcentagensDeComissao({
+    required double porcentagemProfissional,
+    required String idBarbearia,
+    required String ProfissionalId,
+    required String mesAtual,
+    required double valorServico,
+  }) async {
+    try {
+      double valorComissao = valorServico * (porcentagemProfissional / 100);
+      print("#2 o valor final:${valorComissao}");
+      final pubValorparaProfissional = await database
+          .collection("dadosBarbearias")
+          .doc(idBarbearia)
+          .collection("comissaoMensalBarbeiros")
+          .doc(ProfissionalId)
+          .collection(mesAtual)
+          .doc("dados");
+
+      final docSnapshotQuantiaCorteFeitoEsteMes =
+          await pubValorparaProfissional.get();
+
+      if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
+        // Se o documento existir, use update()
+        await pubValorparaProfissional.update({
+          'valor': FieldValue.increment(valorComissao),
+        });
+      } else {
+        // Se o documento não existir, use set() com merge: true para criá-lo
+        await pubValorparaProfissional.set({
+          'valor': FieldValue.increment(valorComissao),
+        }, SetOptions(merge: true));
+      }
+
+      await enviandoeSomandoComissaoQueDevePagarACadaProfissional(
+        comissaoTotalfinal: valorComissao,
+        idBarbearia: idBarbearia,
+        mes: mesAtual,
+      );
+    } catch (e) {
+      print("ao enviar porcentagens, deu isto:$e");
+      throw e;
+    }
+  }
+
+  Future<void> enviandoeSomandoComissaoQueDevePagarACadaProfissional(
+      {required String idBarbearia,
+      required double comissaoTotalfinal,
+      required String mes}) async {
+    try {
+      final pubFinalComissiao = database
+          .collection("dadosBarbearias")
+          .doc(idBarbearia)
+          .collection("comissaoTotalGerenteMes")
+          .doc(mes);
+      final docAttComissaoDistribuicao = await pubFinalComissiao.get();
+
+      if (docAttComissaoDistribuicao.exists) {
+        // Se o documento existir, use update()
+        await pubFinalComissiao.update({
+          'valor': FieldValue.increment(comissaoTotalfinal),
+        });
+      } else {
+        // Se o documento não existir, use set() com merge: true para criá-lo
+        await pubFinalComissiao.set({
+          'valor': FieldValue.increment(comissaoTotalfinal),
+        }, SetOptions(merge: true));
+      }
+    } catch (e) {
+      print("ao enviar a porcentagm total do gerente:$e");
       throw e;
     }
   }

@@ -58,6 +58,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   String idServicoSelecionado = "";
   double valorServicoSelecionado = 0.0;
   bool ocupar2EspacosAgenda = false;
+  double porcentagemDoProfissional = 100;
   //load dos horários - inicio
   Future<void> loadListCortes() async {
     
@@ -226,6 +227,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
       );
       await Provider.of<Agendarhorario>(context, listen: false)
           .agendarHorararioParaProfissionais(
+            porcentagemProfissional: porcentagemDoProfissional,
         idDaBarbearia: loadIdBarbearia!,
         corte: _corteCriado,
       );
@@ -893,6 +895,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                             urlImagemPerfilProfissional =
                                                 listaBarbeiros[index]
                                                     .urlImageFoto;
+                                                    porcentagemDoProfissional = listaBarbeiros[index].porcentagemCortes;
                                           });
                                         } else {
                                           showDialog(

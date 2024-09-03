@@ -10,6 +10,7 @@ import 'package:jimy/usuarioGerente/classes/horarios.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -502,133 +503,138 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                         top:
                                                                             10),
                                                                 child:
-                                                                    Container(
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height *
-                                                                      0.18,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Dadosgeralapp()
-                                                                        .tertiaryColor,
-                                                                    borderRadius: corte.preencher2horarios ==
-                                                                            false
-                                                                        ? BorderRadius
-                                                                            .circular(
-                                                                                10)
-                                                                        : BorderRadius.only(
-                                                                            topLeft:
-                                                                                Radius.circular(10),
-                                                                            topRight: Radius.circular(10)),
-                                                                  ),
-                                                                  padding: EdgeInsets.symmetric(
-                                                                      vertical:
-                                                                          15,
-                                                                      horizontal:
-                                                                          10),
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .spaceAround,
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.start,
-                                                                        children: [
-                                                                          Text(
-                                                                            "Ínicio:",
-                                                                            style:
-                                                                                GoogleFonts.poppins(
-                                                                              textStyle: TextStyle(
-                                                                                fontWeight: FontWeight.w400,
-                                                                                color: Colors.white24,
-                                                                                fontSize: 10,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          SizedBox(
-                                                                            width:
-                                                                                5,
-                                                                          ),
-                                                                          Text(
-                                                                            corte.horarioSelecionado,
-                                                                            style:
-                                                                                GoogleFonts.poppins(
-                                                                              textStyle: TextStyle(
-                                                                                fontWeight: FontWeight.w400,
-                                                                                color: Colors.white,
-                                                                                fontSize: 10,
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          Container(
-                                                                            width:
-                                                                                MediaQuery.of(context).size.width * 0.65,
-                                                                            child:
-                                                                                Text(
-                                                                              corte.nomeServicoSelecionado,
-                                                                              style: GoogleFonts.poppins(
+                                                                    InkWell(
+                                                                      onTap: (){
+                                                                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>EditarAgendamento(corte: corte,)));
+                                                                      },
+                                                                      child: Container(
+                                                                                                                                        height: MediaQuery.of(
+                                                                                context)
+                                                                            .size
+                                                                            .height *
+                                                                        0.18,
+                                                                                                                                        decoration:
+                                                                        BoxDecoration(
+                                                                      color: Dadosgeralapp()
+                                                                          .tertiaryColor,
+                                                                      borderRadius: corte.preencher2horarios ==
+                                                                              false
+                                                                          ? BorderRadius
+                                                                              .circular(
+                                                                                  10)
+                                                                          : BorderRadius.only(
+                                                                              topLeft:
+                                                                                  Radius.circular(10),
+                                                                              topRight: Radius.circular(10)),
+                                                                                                                                        ),
+                                                                                                                                        padding: EdgeInsets.symmetric(
+                                                                        vertical:
+                                                                            15,
+                                                                        horizontal:
+                                                                            10),
+                                                                                                                                        child: Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceAround,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            Text(
+                                                                              "Ínicio:",
+                                                                              style:
+                                                                                  GoogleFonts.poppins(
                                                                                 textStyle: TextStyle(
-                                                                                  fontSize: 16,
-                                                                                  color: Colors.white,
-                                                                                  fontWeight: FontWeight.w500,
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          Container(
-                                                                            width:
-                                                                                MediaQuery.of(context).size.width * 0.65,
-                                                                            child:
-                                                                                Text(
-                                                                              corte.clienteNome,
-                                                                              style: GoogleFonts.poppins(
-                                                                                textStyle: TextStyle(
-                                                                                  fontSize: 14,
-                                                                                  color: Colors.white,
                                                                                   fontWeight: FontWeight.w400,
+                                                                                  color: Colors.white24,
+                                                                                  fontSize: 10,
                                                                                 ),
                                                                               ),
                                                                             ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            2,
-                                                                      ),
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.end,
-                                                                        children: [
-                                                                          Container(
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            decoration:
-                                                                                BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                                                                            padding:
-                                                                                EdgeInsets.all(5),
-                                                                            child:
-                                                                                Icon(
-                                                                              Icons.open_in_new,
-                                                                              size: 15,
+                                                                            SizedBox(
+                                                                              width:
+                                                                                  5,
                                                                             ),
-                                                                          ),
-                                                                        ],
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                ),
+                                                                            Text(
+                                                                              corte.horarioSelecionado,
+                                                                              style:
+                                                                                  GoogleFonts.poppins(
+                                                                                textStyle: TextStyle(
+                                                                                  fontWeight: FontWeight.w400,
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 10,
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            Container(
+                                                                              width:
+                                                                                  MediaQuery.of(context).size.width * 0.65,
+                                                                              child:
+                                                                                  Text(
+                                                                                corte.nomeServicoSelecionado,
+                                                                                style: GoogleFonts.poppins(
+                                                                                  textStyle: TextStyle(
+                                                                                    fontSize: 16,
+                                                                                    color: Colors.white,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            Container(
+                                                                              width:
+                                                                                  MediaQuery.of(context).size.width * 0.65,
+                                                                              child:
+                                                                                  Text(
+                                                                                corte.clienteNome,
+                                                                                style: GoogleFonts.poppins(
+                                                                                  textStyle: TextStyle(
+                                                                                    fontSize: 14,
+                                                                                    color: Colors.white,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        SizedBox(
+                                                                          height:
+                                                                              2,
+                                                                        ),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.end,
+                                                                          children: [
+                                                                            Container(
+                                                                              alignment:
+                                                                                  Alignment.center,
+                                                                              decoration:
+                                                                                  BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                                                                              padding:
+                                                                                  EdgeInsets.all(5),
+                                                                              child:
+                                                                                  Icon(
+                                                                                Icons.open_in_new,
+                                                                                size: 15,
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                                                                                        ),
+                                                                                                                                      ),
+                                                                    ),
                                                               )
                                                             : Container(
                                                                 height: MediaQuery.of(
