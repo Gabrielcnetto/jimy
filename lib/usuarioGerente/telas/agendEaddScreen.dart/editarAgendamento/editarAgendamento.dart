@@ -1,15 +1,84 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/funcoes/agendarHorario.dart';
+import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
+import 'package:provider/provider.dart';
 
-class EditarAgendamento extends StatelessWidget {
+class EditarAgendamento extends StatefulWidget {
   final Corteclass corte;
   const EditarAgendamento({
     super.key,
     required this.corte,
   });
+
+  @override
+  State<EditarAgendamento> createState() => _EditarAgendamentoState();
+}
+
+class _EditarAgendamentoState extends State<EditarAgendamento> {
+  bool isLoading = false;
+  Future<void> confirmCancelamento() async {
+    Navigator.of(context).pop();
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<Agendarhorario>(context, listen: false)
+          .DesmarcarTotalFuncao(
+        corte: widget.corte,
+        idBarbearia: widget.corte.barbeariaId,
+      );
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Evita que o diálogo seja fechado ao tocar fora dele
+        builder: (ctx) {
+          // Inicia um Timer para fechar o diálogo e redirecionar após 3 segundos
+          Timer(Duration(seconds: 3), () {
+            Navigator.of(ctx).pop(); // Fecha o diálogo
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => VerificacaoDeLogado()),
+            );
+          });
+
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text(
+              "Agendamento cancelado",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: Colors.black),
+              ),
+            ),
+            content: Text(
+              "Aguarde um instante...",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black45),
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print("ocorreu este erro:$e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +126,7 @@ class EditarAgendamento extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(60),
                                   child: Image.network(
-                                    corte.urlImagePerfilfoto,
+                                    widget.corte.urlImagePerfilfoto,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -66,7 +135,7 @@ class EditarAgendamento extends StatelessWidget {
                                 width: 10,
                               ),
                               Text(
-                                "${corte.clienteNome}",
+                                "${widget.corte.clienteNome}",
                                 style: GoogleFonts.openSans(
                                   textStyle: TextStyle(
                                     color: Colors.black,
@@ -108,7 +177,7 @@ class EditarAgendamento extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "R\$${corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
+                                "R\$${widget.corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
                                 style: GoogleFonts.openSans(
                                   textStyle: TextStyle(
                                     color: Colors.green.shade600,
@@ -151,7 +220,7 @@ class EditarAgendamento extends StatelessWidget {
                               ),
                               Container(
                                 child: Text(
-                                  "${corte.nomeServicoSelecionado}",
+                                  "${widget.corte.nomeServicoSelecionado}",
                                   style: GoogleFonts.openSans(
                                     textStyle: TextStyle(
                                       color: Colors.grey.shade400,
@@ -195,7 +264,7 @@ class EditarAgendamento extends StatelessWidget {
                               ),
                               Container(
                                 child: Text(
-                                  "${corte.ProfissionalSelecionado}",
+                                  "${widget.corte.ProfissionalSelecionado}",
                                   style: GoogleFonts.openSans(
                                     textStyle: TextStyle(
                                       color: Colors.grey.shade400,
@@ -242,7 +311,7 @@ class EditarAgendamento extends StatelessWidget {
                                 children: [
                                   Container(
                                     child: Text(
-                                      "${corte.diaSelecionado} de ${corte.MesSelecionado} - ${corte.horarioSelecionado}",
+                                      "${widget.corte.diaSelecionado} de ${widget.corte.MesSelecionado} - ${widget.corte.horarioSelecionado}",
                                       style: GoogleFonts.openSans(
                                         textStyle: TextStyle(
                                           color: Colors.grey.shade400,
@@ -261,7 +330,7 @@ class EditarAgendamento extends StatelessWidget {
                                         MaterialPageRoute(
                                           builder: (ctx) =>
                                               EditarODiaDoAgendamento(
-                                            corte: corte,
+                                            corte: widget.corte,
                                           ),
                                         ),
                                       );
@@ -323,7 +392,7 @@ class EditarAgendamento extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Comanda nº ${corte.id.replaceAll('.', '').substring(0, 5)}",
+                      "Comanda nº ${widget.corte.id.replaceAll('.', '').substring(0, 5)}",
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                           color: Colors.black,
@@ -424,29 +493,90 @@ class EditarAgendamento extends StatelessWidget {
                       //bloco do whatsap - fim
                       //bloco do cancelar - inicio
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.delete,
-                                color: Colors.red,
-                                size: 40,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Cancelar",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (ctx) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.white,
+                                    title: Text(
+                                      "Cancelar Agendamento?",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Dadosgeralapp().primaryColor,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    content: Text(
+                                      "Ao confirmar você retira este agendamento da agenda geral, e as comissões do barbeiro responsável referente a este serviço",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          "Cancelar",
+                                          style: GoogleFonts.openSans(
+                                            textStyle: TextStyle(
+                                              color: Colors.grey.shade500,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: confirmCancelamento,
+                                        child: Text(
+                                          "Confirmar",
+                                          style: GoogleFonts.openSans(
+                                            textStyle: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color:
+                                                  Dadosgeralapp().primaryColor,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                  size: 40,
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Cancelar",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -456,6 +586,15 @@ class EditarAgendamento extends StatelessWidget {
                 ),
               ),
             ),
+            if (isLoading == true) ...[
+              Opacity(
+                opacity: 0.5,
+                child: ModalBarrier(dismissible: false, color: Colors.black),
+              ),
+              Center(
+                child: CircularProgressIndicator(),
+              ),
+            ],
           ],
         ),
       ),

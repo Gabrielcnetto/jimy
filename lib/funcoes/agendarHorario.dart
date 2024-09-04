@@ -48,7 +48,7 @@ class Agendarhorario with ChangeNotifier {
         "pagoucomcupom": corte.pagoucomcupom,
         "pagouPeloApp": corte.pagouPeloApp,
         "pontosGanhos": corte.pontosGanhos,
-
+        "porcentagemDoProfissional": corte.porcentagemDoProfissional,
         //informacoes do dia e horario
         "idDoServicoSelecionado": corte.idDoServicoSelecionado,
         "nomeServicoSelecionado": corte.nomeServicoSelecionado,
@@ -58,6 +58,10 @@ class Agendarhorario with ChangeNotifier {
         "anoSelecionado": corte.anoSelecionado,
         "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
         "momentoDoAgendamento": corte.momentoDoAgendamento,
+        "horariosExtras": [
+          corte.horariosExtras[0],
+          corte.horariosExtras[1],
+        ],
       });
       //adicionado horarios extras, caso o prazo for mais de 1hr
       if (corte.preencher2horarios == true) {
@@ -448,16 +452,71 @@ class Agendarhorario with ChangeNotifier {
   }
 
   //mudar o dia do agendamento
-  Future<void> mudarDiaDoCorte({
-    required String horarioAntigo,
-    required String mesAntigo,
-    required String anoAntigo,
-    //novos
-    required String horarioNovo,
-    required String mesNovo,
-    required String anoNovo,
-    //informacoes gerais
+  Future<void> DesmarcarTotalFuncao({
+    required Corteclass corte,
     required String idBarbearia,
-    required String barbeiroDaTroca,
-  }) async {}
+  }) async {
+    //primeiro remove o caminho antigo => inicio
+    print("horario extra 1:${corte.horariosExtras[0]}");
+    print("horario extra 2:${corte.horariosExtras[1]}");
+    try {
+      if (corte.preencher2horarios) {
+        final remove2 = await database
+            .collection("agendas")
+            .doc(idBarbearia)
+            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+            .doc(corte.diaSelecionado)
+            .collection(corte.ProfissionalSelecionado)
+            .doc(corte.horariosExtras[0])
+            .delete();
+        final remove3 = await database
+            .collection("agendas")
+            .doc(idBarbearia)
+            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+            .doc(corte.diaSelecionado)
+            .collection(corte.ProfissionalSelecionado)
+            .doc(corte.horariosExtras[1])
+            .delete();
+      }
+      final remove = await database
+          .collection("agendas")
+          .doc(idBarbearia)
+          .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+          .doc(corte.diaSelecionado)
+          .collection(corte.ProfissionalSelecionado)
+          .doc(corte.horarioSelecionado)
+          .delete();
+    } catch (e) {
+      print("deu erro ao apagar o caminho antigo:$e");
+      throw e;
+    }
+    //primeiro remove o caminho antigo => fim
+
+    //Agora retira a comissao do barbeiro => inicio
+    try {
+      final attComissaoProfissional = await database
+          .collection("dadosBarbearias")
+          .doc(idBarbearia)
+          .collection("comissaoMensalBarbeiros")
+          .doc(corte.profissionalId)
+          .collection(corte.MesSelecionado)
+          .doc("dados")
+          .update({
+        "valor": FieldValue.increment(-corte.porcentagemDoProfissional),
+      });
+
+      //e aqui aproveita para tirar a comissao da aba que o gerente visualiza
+      final attComissaoGerente = await database
+          .collection("dadosBarbearias")
+          .doc(idBarbearia)
+          .collection("comissaoTotalGerenteMes")
+          .doc(corte.MesSelecionado)
+          .update({
+        "valor": FieldValue.increment(-corte.porcentagemDoProfissional),
+      });
+    } catch (e) {
+      print("ao tirar a comissao do profissional, deu isto:$e");
+    }
+    //agora retira a comissao do barbeiro =>fim
+  }
 }

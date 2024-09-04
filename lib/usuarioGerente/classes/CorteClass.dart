@@ -5,11 +5,12 @@ class Corteclass {
   final String urlImagePerfilfoto;
   //identificacao da barbearia
   final String barbeariaId;
-
+  
   //identificacao do profissional
   final String ProfissionalSelecionado;
   final String urlImageProfissionalFoto;
   final String profissionalId;
+  final double porcentagemDoProfissional;
 
   //verificacao de pagamento e procedimento
   final double valorCorte;
@@ -30,6 +31,7 @@ class Corteclass {
   final DateTime dataSelecionadaDateTime;
   final DateTime momentoDoAgendamento;
   Corteclass({
+    required this.porcentagemDoProfissional,
     required this.horariosExtras,
     required this.idDoServicoSelecionado,
     required this.nomeServicoSelecionado,

@@ -261,6 +261,7 @@ class Getsdeinformacoes with ChangeNotifier {
 
         print(data?["totalValue"].toString());
         return Corteclass(
+          porcentagemDoProfissional: data?["porcentagemDoProfissional"] ?? 0.0,
           JaCortou: data?["JaCortou"] ?? false,
           MesSelecionado: data?["MesSelecionado"] ?? "",
           ProfissionalSelecionado: data?["ProfissionalSelecionado"] ?? "",
@@ -273,7 +274,7 @@ class Getsdeinformacoes with ChangeNotifier {
           diaSelecionado: data?["diaSelecionado"] ?? "",
           horarioSelecionado: data?["horarioSelecionado"] ?? "",
           id: data?["id"] ?? "",
-          horariosExtras: data?["horariosExtras"] ?? [],
+          horariosExtras: List<String>.from(data?["horariosExtras"] ?? []),
           idDoServicoSelecionado: data?["idDoServicoSelecionado"] ?? "",
           momentoDoAgendamento:
               (data?["momentoDoAgendamento"] as Timestamp?)?.toDate() ??

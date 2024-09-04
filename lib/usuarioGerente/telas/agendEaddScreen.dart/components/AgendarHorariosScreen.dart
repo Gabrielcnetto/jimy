@@ -112,6 +112,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
 
   //load dos horários - fim
   //funcao de agendar:
+
   List<Horarios> _horariosPreenchidosParaEvitarDupNoCreate = [];
   Future<void> FuncaodeAgendar() async {
     Navigator.of(context).pop();
@@ -202,6 +203,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
       String monthName =
           await DateFormat('MMMM', 'pt_BR').format(dataSelectedInModal!);
       final Corteclass _corteCriado = Corteclass(
+        porcentagemDoProfissional: porcentagemDoProfissional,
         horariosExtras: selectedHorarios,
         idDoServicoSelecionado: idServicoSelecionado,
         nomeServicoSelecionado: nomeServicoSelecionado,
@@ -896,6 +898,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                                 listaBarbeiros[index]
                                                     .urlImageFoto;
                                                     porcentagemDoProfissional = listaBarbeiros[index].porcentagemCortes;
+                                           
                                           });
                                         } else {
                                           showDialog(
