@@ -175,7 +175,13 @@ class _EditarODiaDoAgendamentoState extends State<EditarODiaDoAgendamento> {
     );
   }
 
-  Future<void> removeAtualAndSetNew() async {}
+  Future<void> removeAtualAndSetNew() async {
+    try{
+      
+    }catch(e){
+      print("erro ao alterar o agendamento:$e");
+    }
+  }
   int selectedIndex = -1;
   Map<int, Color> itemColors = {};
   Map<int, Color> _textColor = {};

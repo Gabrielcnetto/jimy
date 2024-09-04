@@ -446,4 +446,18 @@ class Agendarhorario with ChangeNotifier {
       throw e;
     }
   }
+
+  //mudar o dia do agendamento
+  Future<void> mudarDiaDoCorte({
+    required String horarioAntigo,
+    required String mesAntigo,
+    required String anoAntigo,
+    //novos
+    required String horarioNovo,
+    required String mesNovo,
+    required String anoNovo,
+    //informacoes gerais
+    required String idBarbearia,
+    required String barbeiroDaTroca,
+  }) async {}
 }
