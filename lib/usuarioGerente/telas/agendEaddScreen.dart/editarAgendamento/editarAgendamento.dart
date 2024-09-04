@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
 
 class EditarAgendamento extends StatelessWidget {
   final Corteclass corte;
@@ -148,38 +149,17 @@ class EditarAgendamento extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "${corte.nomeServicoSelecionado}",
-                                      style: GoogleFonts.openSans(
-                                        textStyle: TextStyle(
-                                          color: Colors.grey.shade400,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                              Container(
+                                child: Text(
+                                  "${corte.nomeServicoSelecionado}",
+                                  style: GoogleFonts.openSans(
+                                    textStyle: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Colors.grey.shade600,
-                                      size: 15,
-                                    ),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
                             ],
                           ),
@@ -213,38 +193,17 @@ class EditarAgendamento extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      "${corte.ProfissionalSelecionado}",
-                                      style: GoogleFonts.openSans(
-                                        textStyle: TextStyle(
-                                          color: Colors.grey.shade400,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                              Container(
+                                child: Text(
+                                  "${corte.ProfissionalSelecionado}",
+                                  style: GoogleFonts.openSans(
+                                    textStyle: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Colors.grey.shade600,
-                                      size: 15,
-                                    ),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  )
-                                ],
+                                ),
                               ),
                             ],
                           ),
@@ -296,17 +255,29 @@ class EditarAgendamento extends StatelessWidget {
                                   SizedBox(
                                     width: 5,
                                   ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Colors.grey.shade600,
-                                      size: 15,
-                                    ),
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(20),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (ctx) =>
+                                              EditarODiaDoAgendamento(
+                                            corte: corte,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: Colors.grey.shade600,
+                                        size: 15,
+                                      ),
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -371,10 +342,11 @@ class EditarAgendamento extends StatelessWidget {
               left: 0,
               right: 0,
               child: Card(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 elevation: 5,
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15,horizontal: 15),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.2,
                   decoration: BoxDecoration(
@@ -387,7 +359,100 @@ class EditarAgendamento extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: Row(children: [],),
+                  child: Row(
+                    children: [
+                      //bloco da comanda - inicio
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.receipt_long,
+                                color: Dadosgeralapp().primaryColor,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Comanda",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      //bloco da comanda - fim
+                      //bloco do whatsapp - inicio
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 43,
+                                height: 43,
+                                child: Image.asset(
+                                  "imagesapp/whatsappLogo.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Lembrete",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      //bloco do whatsap - fim
+                      //bloco do cancelar - inicio
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                                size: 40,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Cancelar",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      //bloco do cancelar - fim
+                    ],
+                  ),
                 ),
               ),
             ),
