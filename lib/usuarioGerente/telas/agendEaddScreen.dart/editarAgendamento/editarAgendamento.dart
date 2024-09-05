@@ -6,6 +6,7 @@ import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/funcoes/agendarHorario.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
     });
     try {
       await Provider.of<Agendarhorario>(context, listen: false)
-          .DesmarcarTotalFuncao(
+          .apenasDesmarcar(
         corte: widget.corte,
         idBarbearia: widget.corte.barbeariaId,
       );
@@ -88,7 +89,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
         child: Stack(
           children: [
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.1,
+              top: MediaQuery.of(context).size.height * 0.14,
               left: 0,
               right: 0,
               child: Container(
@@ -362,46 +363,67 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
               ),
             ),
             Positioned(
-              top: 0,
-              left: 0,
+              top: 60,
+              left: 15,
               right: 0,
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.085,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                    bottom: BorderSide(
-                      width: 1,
-                      color: Colors.black26,
+                child: Text(
+                  "Detalhes da comanda",
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                height: MediaQuery.of(context).size.height * 0.08,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     InkWell(
-                      onTap: () {
+                      onTap: (){
                         Navigator.of(context).pop();
                       },
                       child: Icon(
                         Icons.arrow_back_ios,
-                        size: 25,
+                        size: 30,
                         color: Dadosgeralapp().primaryColor,
                       ),
                     ),
-                    Text(
-                      "Comanda nº ${widget.corte.id.replaceAll('.', '').substring(0, 5)}",
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Container(
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Dadosgeralapp().primaryColor,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                          ),
                         ),
                       ),
                     ),
-                    Container()
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.55,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -432,29 +454,34 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                     children: [
                       //bloco da comanda - inicio
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.receipt_long,
-                                color: Dadosgeralapp().primaryColor,
-                                size: 40,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Comanda",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>ComandaScreen(corte: widget.corte,),));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.receipt_long,
+                                  color: Dadosgeralapp().primaryColor,
+                                  size: 40,
                                 ),
-                              )
-                            ],
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "Comanda",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),

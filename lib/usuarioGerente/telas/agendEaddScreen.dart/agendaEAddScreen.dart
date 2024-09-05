@@ -719,6 +719,24 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
         ),
         floatingActionButton: FloatingActionBubble(
           items: <Bubble>[
+             Bubble(
+              icon: Icons.receipt_long,
+              iconColor: Dadosgeralapp().primaryColor,
+              title: "Abrir comanda",
+              titleStyle: GoogleFonts.poppins(
+                textStyle: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              bubbleColor: Colors.white,
+              onPress: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => AgendarHorarioScreen(),
+                ));
+              },
+            ),
             Bubble(
               icon: Icons.add_box,
               iconColor: Dadosgeralapp().primaryColor,
@@ -737,6 +755,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                 ));
               },
             ),
+            
           ],
           iconColor: Colors.white,
           backGroundColor: Dadosgeralapp().primaryColor,
