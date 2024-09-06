@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/funcoes/agendarHorario.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
@@ -22,6 +24,13 @@ class EditarAgendamento extends StatefulWidget {
 }
 
 class _EditarAgendamentoState extends State<EditarAgendamento> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setValoresIniciais();
+  }
+
   bool isLoading = false;
   Future<void> confirmCancelamento() async {
     Navigator.of(context).pop();
@@ -29,8 +38,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
       isLoading = true;
     });
     try {
-      await Provider.of<Agendarhorario>(context, listen: false)
-          .apenasDesmarcar(
+      await Provider.of<Agendarhorario>(context, listen: false).apenasDesmarcar(
         corte: widget.corte,
         idBarbearia: widget.corte.barbeariaId,
       );
@@ -81,6 +89,144 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
     }
   }
 
+  double valorProdutosTotal = 0;
+  double valorServicosTotal = 0;
+  double valorComandaTotal = 0;
+  final valorNovoController = TextEditingController();
+
+  void setValoresIniciais() {
+    setState(() {
+      valorComandaTotal = widget.corte.valorCorte;
+      valorNovoController.text = valorComandaTotal.toString();
+    });
+  }
+
+  void showModalEditarValorTotal() {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) {
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: Column(
+                children: [
+                  Text(
+                    "Valor total da comanda",
+                    style: GoogleFonts.openSans(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Text(
+                      "Ao alterar o valor final desta comanda por aqui, o valor não será aumentado na comissão ganha pelo barbeiro.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.openSans(
+                        textStyle: TextStyle(
+                          color: Colors.black45,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        CurrencyInputFormatter(),
+                      ],
+                      controller: valorNovoController,
+                      decoration: InputDecoration(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 0.7,
+                                  color: Colors.grey.shade600,
+                                ),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                "Voltar",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey.shade600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Dadosgeralapp().primaryColor,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Text(
+                              "Salvar",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,275 +235,427 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
         child: Stack(
           children: [
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.14,
+              top: MediaQuery.of(context).size.height * 0.15,
               left: 0,
               right: 0,
               child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                height: MediaQuery.of(context).size.height * 0.65,
+                width: double.infinity,
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 15,
-                      right: 15,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //container da foto - inicio
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: Colors.black38,
-                              ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //container da foto - inicio
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 0.2,
+                              color: Colors.black38,
                             ),
                           ),
-                          padding: EdgeInsets.only(top: 10, bottom: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(60),
-                                ),
-                                width: MediaQuery.of(context).size.width * 0.11,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.06,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(60),
-                                  child: Image.network(
-                                    widget.corte.urlImagePerfilfoto,
-                                    fit: BoxFit.cover,
-                                  ),
+                        ),
+                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(60),
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.11,
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(60),
+                                child: Image.network(
+                                  widget.corte.urlImagePerfilfoto,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "${widget.corte.clienteNome}",
+                              style: GoogleFonts.openSans(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
-                              Text(
-                                "${widget.corte.clienteNome}",
+                            ),
+                          ],
+                        ),
+                      ),
+                      //container da foto - fim
+                      SizedBox(
+                        height: 15,
+                      ),
+                      //container do preco - incio
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 0.2,
+                              color: Colors.black38,
+                            ),
+                          ),
+                        ),
+                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Valor",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "R\$${widget.corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
+                              style: GoogleFonts.openSans(
+                                textStyle: TextStyle(
+                                  color: Colors.green.shade600,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      //container do preco - incio
+                      SizedBox(
+                        height: 15,
+                      ),
+                      //container do serviço
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 0.2,
+                              color: Colors.black38,
+                            ),
+                          ),
+                        ),
+                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Serviço",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Text(
+                                "${widget.corte.nomeServicoSelecionado}",
                                 style: GoogleFonts.openSans(
                                   textStyle: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.grey.shade400,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        //container da foto - fim
-                        SizedBox(
-                          height: 15,
-                        ),
-                        //container do preco - incio
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: Colors.black38,
-                              ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      //container do servico
+                      //container do profissional
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 0.2,
+                              color: Colors.black38,
                             ),
                           ),
-                          padding: EdgeInsets.only(top: 10, bottom: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Valor",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                        ),
+                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Profissional",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              Text(
-                                "R\$${widget.corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
+                            ),
+                            Container(
+                              child: Text(
+                                "${widget.corte.ProfissionalSelecionado}",
                                 style: GoogleFonts.openSans(
                                   textStyle: TextStyle(
-                                    color: Colors.green.shade600,
+                                    color: Colors.grey.shade400,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //container do preco - incio
-                        SizedBox(
-                          height: 15,
-                        ),
-                        //container do serviço
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: Colors.black38,
                               ),
                             ),
+                          ],
+                        ),
+                      ),
+                      //container do profissional
+                      SizedBox(
+                        height: 15,
+                      ),
+                      //container data e hora
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 0.2,
+                              color: Colors.black38,
+                            ),
                           ),
-                          padding: EdgeInsets.only(top: 10, bottom: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Serviço",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                        ),
+                        padding: EdgeInsets.only(top: 10, bottom: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Data e hora",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
                                 ),
                               ),
-                              Container(
-                                child: Text(
-                                  "${widget.corte.nomeServicoSelecionado}",
-                                  style: GoogleFonts.openSans(
-                                    textStyle: TextStyle(
-                                      color: Colors.grey.shade400,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "${widget.corte.diaSelecionado} de ${widget.corte.MesSelecionado} - ${widget.corte.horarioSelecionado}",
+                                    style: GoogleFonts.openSans(
+                                      textStyle: TextStyle(
+                                        color: Colors.grey.shade400,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        //container do servico
-                        //container do profissional
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: Colors.black38,
-                              ),
-                            ),
-                          ),
-                          padding: EdgeInsets.only(top: 10, bottom: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Profissional",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                SizedBox(
+                                  width: 5,
                                 ),
-                              ),
-                              Container(
-                                child: Text(
-                                  "${widget.corte.ProfissionalSelecionado}",
-                                  style: GoogleFonts.openSans(
-                                    textStyle: TextStyle(
-                                      color: Colors.grey.shade400,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (ctx) =>
+                                            EditarODiaDoAgendamento(
+                                          corte: widget.corte,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Colors.grey.shade600,
+                                      size: 15,
+                                    ),
+                                    padding: EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
                                   ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Serviços feitos:",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.grey.shade600,
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //container do profissional
-                        SizedBox(
-                          height: 15,
-                        ),
-                        //container data e hora
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                width: 0.2,
-                                color: Colors.black38,
                               ),
                             ),
-                          ),
-                          padding: EdgeInsets.only(top: 10, bottom: 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Data e hora",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(15)),
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    child: Text(
-                                      "${widget.corte.diaSelecionado} de ${widget.corte.MesSelecionado} - ${widget.corte.horarioSelecionado}",
-                                      style: GoogleFonts.openSans(
-                                        textStyle: TextStyle(
-                                          color: Colors.grey.shade400,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                  Text(
+                                    "- ${widget.corte.nomeServicoSelecionado}",
+                                    style: GoogleFonts.openSans(
+                                      textStyle: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (ctx) =>
-                                              EditarODiaDoAgendamento(
-                                            corte: widget.corte,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: Colors.grey.shade600,
-                                        size: 15,
-                                      ),
-                                      padding: EdgeInsets.all(5),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade200,
-                                        borderRadius: BorderRadius.circular(20),
+                                  Text(
+                                    "R\$${widget.corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.green.shade600,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   )
                                 ],
                               ),
-                            ],
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              width: 0.2,
+                              color: Colors.grey.shade300,
+                            ),
                           ),
                         ),
-                        //container data e hora
-                      ],
-                    ),
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Produtos:",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(15)),
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "- Produto vendido",
+                                    style: GoogleFonts.openSans(
+                                      textStyle: TextStyle(
+                                        color: Colors.grey.shade800,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Preco",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.green.shade600,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Dadosgeralapp().primaryColor,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              width: double.infinity,
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Adicionar produto",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 15,
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -392,12 +690,12 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                 child: Row(
                   children: [
                     InkWell(
-                      onTap: (){
+                      onTap: () {
                         Navigator.of(context).pop();
                       },
                       child: Icon(
                         Icons.arrow_back_ios,
-                        size: 30,
+                        size: 25,
                         color: Dadosgeralapp().primaryColor,
                       ),
                     ),
@@ -432,184 +730,248 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                elevation: 5,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                        width: 0.2,
-                        color: Colors.black26,
-                      ),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.2,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.2,
+                      color: Colors.black26,
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      //bloco da comanda - inicio
-                      Expanded(
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>ComandaScreen(corte: widget.corte,),));
-                          },
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Valor total da comanda:",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              color: Colors.black38,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: showModalEditarValorTotal,
                           child: Container(
-                            alignment: Alignment.center,
-                            child: Column(
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.receipt_long,
-                                  color: Dadosgeralapp().primaryColor,
-                                  size: 40,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
                                 Text(
-                                  "Comanda",
+                                  "R\$${valorComandaTotal.toStringAsFixed(2).replaceAll('.', ',')}",
                                   style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                       color: Colors.black,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                                )
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Icon(
+                                  Icons.edit,
+                                  size: 15,
+                                  color: Colors.black,
+                                ),
                               ],
                             ),
                           ),
                         ),
-                      ),
-                      //bloco da comanda - fim
-                      //bloco do whatsapp - inicio
-                      Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                width: 43,
-                                height: 43,
-                                child: Image.asset(
-                                  "imagesapp/whatsappLogo.png",
-                                  fit: BoxFit.cover,
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        //bloco da comanda - inicio
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => ComandaScreen(
+                                  valorProdutoFinal: valorProdutosTotal,
+                                  valorServicoFinal: valorServicosTotal,
+                                  valorTotaldaComanda: valorComandaTotal,
+                                  corte: widget.corte,
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Lembrete",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700,
+                              ));
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.receipt_long,
+                                    color: Dadosgeralapp().tertiaryColor,
+                                    size: 25,
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      //bloco do whatsap - fim
-                      //bloco do cancelar - inicio
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (ctx) {
-                                  return AlertDialog(
-                                    backgroundColor: Colors.white,
-                                    title: Text(
-                                      "Cancelar Agendamento?",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                          color: Dadosgeralapp().primaryColor,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                    content: Text(
-                                      "Ao confirmar você retira este agendamento da agenda geral, e as comissões do barbeiro responsável referente a este serviço",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text(
-                                          "Cancelar",
-                                          style: GoogleFonts.openSans(
-                                            textStyle: TextStyle(
-                                              color: Colors.grey.shade500,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: confirmCancelamento,
-                                        child: Text(
-                                          "Confirmar",
-                                          style: GoogleFonts.openSans(
-                                            textStyle: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color:
-                                                  Dadosgeralapp().primaryColor,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.red,
-                                  size: 40,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "Cancelar",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                    ),
+                                  SizedBox(
+                                    height: 5,
                                   ),
-                                )
-                              ],
+                                  Text(
+                                    "Comanda",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        fontSize: 10,
+                                        color: Dadosgeralapp().tertiaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      //bloco do cancelar - fim
-                    ],
-                  ),
+                        //bloco da comanda - fim
+                        //bloco do whatsapp - inicio
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                            
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.feedback,
+                                    color: Dadosgeralapp().tertiaryColor,
+                                    size: 25,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "Lembrete",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        fontSize: 10,
+                                        color: Dadosgeralapp().tertiaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        //bloco do whatsap - fim
+                        //bloco do cancelar - inicio
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (ctx) {
+                                    return AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      title: Text(
+                                        "Cancelar Agendamento?",
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                            color: Dadosgeralapp().primaryColor,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                      content: Text(
+                                        "Ao confirmar você retira este agendamento da agenda geral, e as comissões do barbeiro responsável referente a este serviço",
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text(
+                                            "Cancelar",
+                                            style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                color: Colors.grey.shade500,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: confirmCancelamento,
+                                          child: Text(
+                                            "Confirmar",
+                                            style: GoogleFonts.openSans(
+                                              textStyle: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: Dadosgeralapp()
+                                                    .primaryColor,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.delete,
+                                    color: Dadosgeralapp().tertiaryColor,
+                                    size: 25,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    "Cancelar",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        fontSize: 10,
+                                        color: Dadosgeralapp().tertiaryColor,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        //bloco do cancelar - fim
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -624,6 +986,27 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CurrencyInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final rawText = newValue.text.replaceAll(RegExp('[^0-9]'), '');
+    final number = double.tryParse(rawText) ?? 0;
+    final formatter = NumberFormat.currency(
+      locale: 'pt_BR',
+      symbol: 'R\$',
+      decimalDigits: 2,
+    );
+    final formattedText = formatter.format(number / 100);
+    return TextEditingValue(
+      text: formattedText,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: formattedText.length),
       ),
     );
   }

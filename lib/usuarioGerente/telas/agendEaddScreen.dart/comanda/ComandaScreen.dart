@@ -4,9 +4,15 @@ import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 
 class ComandaScreen extends StatefulWidget {
+  final double valorTotaldaComanda;
+  final double valorServicoFinal;
+  final double valorProdutoFinal;
   final Corteclass corte;
   const ComandaScreen({
     super.key,
+    required this.valorTotaldaComanda,
+    required this.valorProdutoFinal,
+    required this.valorServicoFinal,
     required this.corte,
   });
 
@@ -32,7 +38,9 @@ class _ComandaScreenState extends State<ComandaScreen> {
   double valorFinalTotal = 0;
   void setPreValorInicial() {
     setState(() {
-      valorFinalTotal = widget.corte.valorCorte;
+      valorServicosAdicionados = widget.valorServicoFinal;
+      valorProdutosAdicionados = widget.valorProdutoFinal;
+      valorFinalTotal = widget.valorTotaldaComanda;
     });
   }
 
@@ -130,53 +138,14 @@ class _ComandaScreenState extends State<ComandaScreen> {
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Serviços feitos:",
+                              "Resumo final",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
-                                  color: Colors.grey.shade600,
+                                  color: Colors.grey.shade700,
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(15)),
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "- ${widget.corte.nomeServicoSelecionado}",
-                                    style: GoogleFonts.openSans(
-                                      textStyle: TextStyle(
-                                        color: Colors.grey.shade800,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "R\$${widget.corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        color: Colors.green.shade600,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  )
-                                ],
                               ),
                             )
                           ],
@@ -238,7 +207,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Adicional de Serviços:",
+                          "Total dos Serviços:",
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: Colors.black45,
