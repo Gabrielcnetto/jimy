@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/usuarioGerente/telas/adicionarProdutos/VisaoGeralProdutos.dart';
 import 'package:jimy/usuarioGerente/telas/adicionarProfissional/adicionarProfissionalScreen.dart';
 import 'package:jimy/usuarioGerente/telas/adicionarServicos/adicionarServicosScreen.dart';
 
@@ -98,6 +99,9 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
           ),
           Expanded(
             child: InkWell(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>VisaoGeralMeusProdutosScreen(),));
+              },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 decoration: BoxDecoration(

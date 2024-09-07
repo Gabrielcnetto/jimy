@@ -10,6 +10,7 @@ import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -49,6 +50,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (_) => Agendarhorario(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CriarEEnviarprodutos(),
         ),
       ],
       child: MaterialApp(

@@ -45,7 +45,7 @@ class _RankingProfissionaisHomeGerenteState
           AsyncSnapshot<List<Barbeiros>> snapshot,
         ) {
           List<Barbeiros> listabarbeirosprimaria =
-              snapshot.data as List<Barbeiros>;
+              snapshot.data as List<Barbeiros> ;
           if (snapshot.connectionState == ConnectionState.waiting) {
             // Mostra um indicador de carregamento enquanto os dados estão sendo carregados
             return Center(child: CircularProgressIndicator());
