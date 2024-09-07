@@ -31,7 +31,6 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setValoresIniciais();
   }
 
   bool isLoading = false;
@@ -95,12 +94,22 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
   double valorProdutosTotal = 0;
   double valorServicosTotal = 0;
   double valorComandaTotal = 0;
-  final valorNovoController = TextEditingController();
-
-  void setValoresIniciais() {
+  void somandoAComandaTotal() {
     setState(() {
-      valorComandaTotal = widget.corte.valorCorte;
-      valorNovoController.text = valorComandaTotal.toString();
+      valorComandaTotal = (valorProdutosTotal + valorServicosTotal);
+    });
+  }
+
+  void SomandoValorTotal() {
+    double totalProdutos = 0; // Variável temporária para armazenar o total
+
+    for (var item in _produtosAdicionados) {
+      totalProdutos += item.preco; // Acumula o preço dos produtos
+    }
+
+    setState(() {
+      valorProdutosTotal = totalProdutos; // Atualiza o valor total
+      somandoAComandaTotal(); // Atualiza o total da comanda
     });
   }
 
@@ -108,6 +117,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
   void recebendoALista(List<Produtosavenda> produtos) {
     setState(() {
       _produtosAdicionados = produtos;
+      SomandoValorTotal();
     });
   }
 
@@ -349,6 +359,110 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                         ),
                       ),
                       Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              width: 0.2,
+                              color: Colors.grey.shade300,
+                            ),
+                          ),
+                        ),
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Produtos:",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.grey.shade600,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            if (_produtosAdicionados.length == 0)
+                              Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.9,
+                                      child: Text(
+                                        "Vendeu algum produto?\nSome junto na comanda!",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                            color: Colors.grey.shade500,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(height: 5,),
+                                    Icon(
+                                      Icons.add,
+                                      size: 15,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            Column(
+                                children: _produtosAdicionados.map((item) {
+                              return ProdutoAdicionadoNaComanda(
+                                produto: item,
+                              );
+                            }).toList()),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            InkWell(
+                              onTap: showScreenComProdutos,
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Dadosgeralapp().primaryColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Adicionar produto",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Column(
@@ -406,76 +520,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                       SizedBox(
                         height: 5,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(
-                              width: 0.2,
-                              color: Colors.grey.shade300,
-                            ),
-                          ),
-                        ),
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Produtos:",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: Colors.grey.shade600,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Column(
-                                children: _produtosAdicionados.map((item) {
-                              return ProdutoAdicionadoNaComanda(
-                                produto: item,
-                              );
-                            }).toList()),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            InkWell(
-                              onTap: showScreenComProdutos,
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Dadosgeralapp().primaryColor,
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Adicionar produto",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 10,
-                                        ),
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 15,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+
                       SizedBox(
                         height: 60,
                       ),
