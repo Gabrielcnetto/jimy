@@ -69,7 +69,7 @@ class _VisaoGeralMeusProdutosScreenState
                       ),
                     ),
                     Text(
-                      'Catálogo de produtos',
+                      'Produtos e comandas',
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -133,7 +133,7 @@ class _VisaoGeralMeusProdutosScreenState
                               alignment: Alignment.center,
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
-                                "Vendidos na Loja",
+                                "Comandas Finalizadas",
                                 style: GoogleFonts.openSans(
                                   textStyle: TextStyle(
                                     fontWeight: FontWeight.w400,

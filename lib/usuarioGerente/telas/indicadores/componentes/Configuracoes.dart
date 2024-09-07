@@ -122,7 +122,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
                     ),
                     Container(
                       child: Text(
-                        "Cadastre Produtos",
+                        "Produtos & Comandas",
                         style: GoogleFonts.openSans(
                           textStyle: TextStyle(
                             fontWeight: FontWeight.w400,

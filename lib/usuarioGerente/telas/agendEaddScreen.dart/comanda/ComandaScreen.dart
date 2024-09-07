@@ -1,19 +1,33 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:jimy/usuarioGerente/classes/comanda.dart';
+import 'package:jimy/usuarioGerente/classes/produto.dart';
+import 'package:jimy/usuarioGerente/classes/servico.dart';
+import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
+import 'package:provider/provider.dart';
 
 class ComandaScreen extends StatefulWidget {
   final double valorTotaldaComanda;
   final double valorServicoFinal;
   final double valorProdutoFinal;
+  final List<Produtosavenda> produtosLista;
+  final List<Servico> servicoLista;
   final Corteclass corte;
   const ComandaScreen({
     super.key,
+    required this.servicoLista,
     required this.valorTotaldaComanda,
     required this.valorProdutoFinal,
     required this.valorServicoFinal,
     required this.corte,
+    required this.produtosLista,
   });
 
   @override
@@ -30,6 +44,16 @@ class _ComandaScreenState extends State<ComandaScreen> {
 
   void LoadInicialInfs() {
     setPreValorInicial();
+    loadloadIdBarbearia();
+  }
+
+  String? loadIdBarbearia;
+  Future<void> loadloadIdBarbearia() async {
+    String? id = await Getsdeinformacoes().getNomeIdBarbearia();
+
+    setState(() {
+      loadIdBarbearia = id;
+    });
   }
 
   //
@@ -42,6 +66,105 @@ class _ComandaScreenState extends State<ComandaScreen> {
       valorProdutosAdicionados = widget.valorProdutoFinal;
       valorFinalTotal = widget.valorTotaldaComanda;
     });
+  }
+
+  Future<void> FinalizandoComanda() async {
+    try {
+      Comanda _comanda = Comanda(
+        dataFinalizacao: DateTime.now(),
+        id: Random().nextDouble().toString(),
+        idBarbearia: widget.corte.barbeariaId,
+        idBarbeiroQueCriou: widget.corte.profissionalId,
+        nomeCliente: widget.corte.clienteNome,
+        produtosVendidos: widget.produtosLista,
+        servicosFeitos: widget.servicoLista,
+        valorTotalComanda: valorFinalTotal,
+      );
+      await Provider.of<Finalizarecarregarcomandas>(context, listen: false)
+          .finalizandoComanda(
+            corte: widget.corte,
+        comanda: _comanda,
+        idBarbearia: loadIdBarbearia!,
+      );
+      showDialog(
+          context: context,
+          barrierDismissible:
+              false, // Evita que o diálogo seja fechado ao tocar fora dele
+          builder: (ctx) {
+            // Inicia um Timer para fechar o diálogo e redirecionar após 3 segundos
+            Timer(Duration(seconds: 3), () {
+              Navigator.of(ctx).pop(); // Fecha o diálogo
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => VerificacaoDeLogado()),
+              );
+            });
+
+            return AlertDialog(
+              backgroundColor: Colors.white,
+              title: Text(
+                "Comanda finalizada",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
+                      color: Colors.black),
+                ),
+              ),
+              content: Text(
+                "Aguarde um instante...",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      color: Colors.black45),
+                ),
+              ),
+            );
+          });
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: Text(
+                "Erro ao finalizar",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              content: Text(
+                "Tente novamente em alguns segundos, se persistir entre em contato com o suporte. Resolveremos em instantes para você!",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    color: Colors.grey.shade50,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Fechar",
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          });
+      print("publicando a comanda");
+    }
   }
 
   @override
@@ -129,22 +252,6 @@ class _ComandaScreenState extends State<ComandaScreen> {
                                 textStyle: TextStyle(
                                   color: Dadosgeralapp().primaryColor,
                                   fontSize: 10,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Resumo final",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: Colors.grey.shade700,
                                 ),
                               ),
                             )
@@ -262,20 +369,24 @@ class _ComandaScreenState extends State<ComandaScreen> {
                     SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Dadosgeralapp().tertiaryColor,
-                          borderRadius: BorderRadius.circular(20)),
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      child: Text(
-                        "Finalizar agora",
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15,
+                    InkWell(
+                      splashColor: Colors.transparent,
+                      onTap: FinalizandoComanda,
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Dadosgeralapp().tertiaryColor,
+                            borderRadius: BorderRadius.circular(20)),
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text(
+                          "Finalizar agora",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 15,
+                            ),
                           ),
                         ),
                       ),

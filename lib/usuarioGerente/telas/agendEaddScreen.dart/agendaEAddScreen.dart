@@ -434,11 +434,14 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                             final List<Corteclass> cortesFiltrados = cortes!
                                 .where((corte) => corte.clienteNome != "extra")
                                 .toList();
-
+                            final List<Corteclass> corteFiltradoFinal =
+                                cortesFiltrados
+                                    .where((corte) => corte.JaCortou != true)
+                                    .toList();
                             return Column(
                               children: _horariosListFixa.map((horario) {
                                 List<Corteclass> cortesParaHorario =
-                                    cortesFiltrados
+                                    corteFiltradoFinal
                                         .where((corte) =>
                                             corte.horarioSelecionado ==
                                             horario.horario)
@@ -502,37 +505,40 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                         .only(
                                                                         top:
                                                                             10),
-                                                                child:
-                                                                    InkWell(
-                                                                      onTap: (){
-                                                                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>EditarAgendamento(corte: corte,)));
-                                                                      },
-                                                                      child: Container(
-                                                                                                                                        height: MediaQuery.of(
-                                                                                context)
+                                                                child: InkWell(
+                                                                  onTap: () {
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .push(MaterialPageRoute(
+                                                                            builder: (ctx) => EditarAgendamento(
+                                                                                  corte: corte,
+                                                                                )));
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    height: MediaQuery.of(context)
                                                                             .size
                                                                             .height *
                                                                         0.18,
-                                                                                                                                        decoration:
+                                                                    decoration:
                                                                         BoxDecoration(
                                                                       color: Dadosgeralapp()
                                                                           .tertiaryColor,
                                                                       borderRadius: corte.preencher2horarios ==
                                                                               false
-                                                                          ? BorderRadius
-                                                                              .circular(
-                                                                                  10)
+                                                                          ? BorderRadius.circular(
+                                                                              10)
                                                                           : BorderRadius.only(
-                                                                              topLeft:
-                                                                                  Radius.circular(10),
+                                                                              topLeft: Radius.circular(10),
                                                                               topRight: Radius.circular(10)),
-                                                                                                                                        ),
-                                                                                                                                        padding: EdgeInsets.symmetric(
+                                                                    ),
+                                                                    padding: EdgeInsets.symmetric(
                                                                         vertical:
                                                                             15,
                                                                         horizontal:
                                                                             10),
-                                                                                                                                        child: Column(
+                                                                    child:
+                                                                        Column(
                                                                       mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .spaceAround,
@@ -546,8 +552,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                           children: [
                                                                             Text(
                                                                               "Ínicio:",
-                                                                              style:
-                                                                                  GoogleFonts.poppins(
+                                                                              style: GoogleFonts.poppins(
                                                                                 textStyle: TextStyle(
                                                                                   fontWeight: FontWeight.w400,
                                                                                   color: Colors.white24,
@@ -556,13 +561,11 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                               ),
                                                                             ),
                                                                             SizedBox(
-                                                                              width:
-                                                                                  5,
+                                                                              width: 5,
                                                                             ),
                                                                             Text(
                                                                               corte.horarioSelecionado,
-                                                                              style:
-                                                                                  GoogleFonts.poppins(
+                                                                              style: GoogleFonts.poppins(
                                                                                 textStyle: TextStyle(
                                                                                   fontWeight: FontWeight.w400,
                                                                                   color: Colors.white,
@@ -577,10 +580,8 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                               CrossAxisAlignment.start,
                                                                           children: [
                                                                             Container(
-                                                                              width:
-                                                                                  MediaQuery.of(context).size.width * 0.65,
-                                                                              child:
-                                                                                  Text(
+                                                                              width: MediaQuery.of(context).size.width * 0.65,
+                                                                              child: Text(
                                                                                 corte.nomeServicoSelecionado,
                                                                                 style: GoogleFonts.poppins(
                                                                                   textStyle: TextStyle(
@@ -592,10 +593,8 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                               ),
                                                                             ),
                                                                             Container(
-                                                                              width:
-                                                                                  MediaQuery.of(context).size.width * 0.65,
-                                                                              child:
-                                                                                  Text(
+                                                                              width: MediaQuery.of(context).size.width * 0.65,
+                                                                              child: Text(
                                                                                 corte.clienteNome,
                                                                                 style: GoogleFonts.poppins(
                                                                                   textStyle: TextStyle(
@@ -617,14 +616,10 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                               MainAxisAlignment.end,
                                                                           children: [
                                                                             Container(
-                                                                              alignment:
-                                                                                  Alignment.center,
-                                                                              decoration:
-                                                                                  BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
-                                                                              padding:
-                                                                                  EdgeInsets.all(5),
-                                                                              child:
-                                                                                  Icon(
+                                                                              alignment: Alignment.center,
+                                                                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                                                                              padding: EdgeInsets.all(5),
+                                                                              child: Icon(
                                                                                 Icons.open_in_new,
                                                                                 size: 15,
                                                                               ),
@@ -632,9 +627,9 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                                                           ],
                                                                         ),
                                                                       ],
-                                                                                                                                        ),
-                                                                                                                                      ),
                                                                     ),
+                                                                  ),
+                                                                ),
                                                               )
                                                             : Container(
                                                                 height: MediaQuery.of(
@@ -719,7 +714,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
         ),
         floatingActionButton: FloatingActionBubble(
           items: <Bubble>[
-             Bubble(
+            Bubble(
               icon: Icons.receipt_long,
               iconColor: Dadosgeralapp().primaryColor,
               title: "Abrir comanda",
@@ -755,7 +750,6 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                 ));
               },
             ),
-            
           ],
           iconColor: Colors.white,
           backGroundColor: Dadosgeralapp().primaryColor,

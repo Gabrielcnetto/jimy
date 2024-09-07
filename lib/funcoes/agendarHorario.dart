@@ -146,7 +146,7 @@ class Agendarhorario with ChangeNotifier {
       try {
         //enviando dados da barbearia referente ao mes em que o corte foi feito
         final docRef = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("faturamentoMes")
             .doc(monthName);
@@ -166,7 +166,7 @@ class Agendarhorario with ChangeNotifier {
         }
         //enviando agora a quantidade de faturamento total
         final docRefFaturamentoTotal = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("faturamentoTotal")
             .doc("valor");
@@ -187,7 +187,7 @@ class Agendarhorario with ChangeNotifier {
 
         //quantidade de corte feita no mes
         final docRefquantidadeMensaldeCortesFeitos = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("quantiaCortesMesAtual")
             .doc("valor");
@@ -209,7 +209,7 @@ class Agendarhorario with ChangeNotifier {
 
         //enviando agora o total de cortes historico
         final docTotalCortesHistoria = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("totalCortesHistorico")
             .doc("valor");
@@ -336,7 +336,7 @@ class Agendarhorario with ChangeNotifier {
       double valorComissao = valorServico * (porcentagemProfissional / 100);
       print("#2 o valor final:${valorComissao}");
       final pubValorparaProfissional = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoMensalBarbeiros")
           .doc(ProfissionalId)
@@ -375,7 +375,7 @@ class Agendarhorario with ChangeNotifier {
       required String mes}) async {
     try {
       final pubFinalComissiao = database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoTotalGerenteMes")
           .doc(mes);
@@ -499,7 +499,7 @@ class Agendarhorario with ChangeNotifier {
     //Agora retira a comissao do barbeiro => inicio
     try {
       final attComissaoProfissional = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoMensalBarbeiros")
           .doc(corte.profissionalId)
@@ -511,7 +511,7 @@ class Agendarhorario with ChangeNotifier {
 
       //e aqui aproveita para tirar a comissao da aba que o gerente visualiza
       final attComissaoGerente = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoTotalGerenteMes")
           .doc(corte.MesSelecionado)
@@ -548,7 +548,7 @@ class Agendarhorario with ChangeNotifier {
         'profissionais': updatedProfissionais,
       });
       final attFaturamentoMes = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("faturamentoMes")
           .doc(corte.MesSelecionado)
@@ -556,7 +556,7 @@ class Agendarhorario with ChangeNotifier {
         "valor": FieldValue.increment(-corte.valorCorte),
       });
       final attFaturamentoTotal = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("faturamentoTotal")
           .doc("valor")
@@ -621,7 +621,7 @@ class Agendarhorario with ChangeNotifier {
     //Agora retira a comissao do barbeiro => inicio
     try {
       final attComissaoProfissional = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoMensalBarbeiros")
           .doc(corte.profissionalId)
@@ -633,7 +633,7 @@ class Agendarhorario with ChangeNotifier {
 
       //e aqui aproveita para tirar a comissao da aba que o gerente visualiza
       final attComissaoGerente = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoTotalGerenteMes")
           .doc(corte.MesSelecionado)
@@ -671,7 +671,7 @@ class Agendarhorario with ChangeNotifier {
       });
       //faturamento mes e total
       final attFaturamentoMes = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("faturamentoMes")
           .doc(corte.MesSelecionado)
@@ -679,7 +679,7 @@ class Agendarhorario with ChangeNotifier {
         "valor": FieldValue.increment(-corte.valorCorte),
       });
       final attFaturamentoTotal = await database
-          .collection("dadosBarbearias")
+          .collection("dadosEsperadosBarbearias")
           .doc(idBarbearia)
           .collection("faturamentoTotal")
           .doc("valor")
@@ -830,7 +830,7 @@ class Agendarhorario with ChangeNotifier {
       try {
         //enviando dados da barbearia referente ao mes em que o corte foi feito
         final docRef = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("faturamentoMes")
             .doc(monthName);
@@ -850,7 +850,7 @@ class Agendarhorario with ChangeNotifier {
         }
         //enviando agora a quantidade de faturamento total
         final docRefFaturamentoTotal = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("faturamentoTotal")
             .doc("valor");
@@ -871,7 +871,7 @@ class Agendarhorario with ChangeNotifier {
 
         //quantidade de corte feita no mes
         final docRefquantidadeMensaldeCortesFeitos = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("quantiaCortesMesAtual")
             .doc("valor");
@@ -893,7 +893,7 @@ class Agendarhorario with ChangeNotifier {
 
         //enviando agora o total de cortes historico
         final docTotalCortesHistoria = await database
-            .collection("dadosBarbearias")
+            .collection("dadosEsperadosBarbearias")
             .doc(idDaBarbearia)
             .collection("totalCortesHistorico")
             .doc("valor");
@@ -926,7 +926,7 @@ class Agendarhorario with ChangeNotifier {
         try {
           //enviando a porcentagem ao profissional selecionado
           final pubValorparaProfissional = await database
-              .collection("dadosBarbearias")
+              .collection("dadosEsperadosBarbearias")
               .doc(corte.barbeariaId)
               .collection("comissaoMensalBarbeiros")
               .doc(corte.profissionalId)
@@ -950,7 +950,7 @@ class Agendarhorario with ChangeNotifier {
 
           //agora na area da barbearia
           final pubFinalComissiao = database
-              .collection("dadosBarbearias")
+              .collection("dadosEsperadosBarbearias")
               .doc(corte.barbeariaId)
               .collection("comissaoTotalGerenteMes")
               .doc(corte.MesSelecionado);

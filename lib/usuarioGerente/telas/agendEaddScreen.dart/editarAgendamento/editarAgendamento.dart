@@ -9,10 +9,12 @@ import 'package:jimy/funcoes/agendarHorario.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/classes/produto.dart';
+import 'package:jimy/usuarioGerente/classes/servico.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/ProdutoAdicionadoNaAgenda.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsProdutos.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsServicos.dart';
 import 'package:provider/provider.dart';
 
 class EditarAgendamento extends StatefulWidget {
@@ -31,6 +33,8 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    valorInicialDaComanda();
+    setandoServicoPadraoNaLista();
   }
 
   bool isLoading = false;
@@ -94,6 +98,13 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
   double valorProdutosTotal = 0;
   double valorServicosTotal = 0;
   double valorComandaTotal = 0;
+  void valorInicialDaComanda() {
+    setState(() {
+      valorServicosTotal = widget.corte.valorCorte;
+      valorComandaTotal = valorServicosTotal;
+    });
+  }
+
   void somandoAComandaTotal() {
     setState(() {
       valorComandaTotal = (valorProdutosTotal + valorServicosTotal);
@@ -113,10 +124,30 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
     });
   }
 
+  void somandoServicosAMais() {
+    double totalServicos =0; // Inicia com o valor base do corte
+    // Adiciona o valor de cada serviço adicional
+    for (var item in _servicosadicionados) {
+      totalServicos += item.price;
+    }
+    setState(() {
+      valorServicosTotal =
+          totalServicos; // Atualiza o valor total de serviços com base e adicionais
+      somandoAComandaTotal(); // Atualiza o valor total da comanda
+    });
+  }
+
   List<Produtosavenda> _produtosAdicionados = [];
   void recebendoALista(List<Produtosavenda> produtos) {
     setState(() {
       _produtosAdicionados = produtos;
+      SomandoValorTotal();
+    });
+  }
+
+  void removeItem(Produtosavenda produto) {
+    setState(() {
+      _produtosAdicionados.remove(produto);
       SomandoValorTotal();
     });
   }
@@ -130,7 +161,49 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
       ),
     );
   }
+  //servicos:
 
+  List<Servico> _servicosadicionados = [];
+  void setandoServicoPadraoNaLista() {
+    Servico item = Servico(
+      quantiaEscolhida: 0,
+      active: true,
+      id: "",
+      ocupar2vagas: false,
+      name: widget.corte.nomeServicoSelecionado,
+      price: widget.corte.valorCorte,
+    );
+    setState(() {
+      _servicosadicionados.add(item);
+    });
+  }
+
+  void recebendoAListaDeServicos(List<Servico> ServicosItem) {
+    setState(() {
+      _servicosadicionados.addAll(ServicosItem);
+      somandoServicosAMais();
+    });
+  }
+
+  void removeServico(Servico servico) {
+    setState(() {
+      _servicosadicionados.remove(servico);
+      somandoServicosAMais();
+    });
+  }
+
+  void showScreenComServicos() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => TelaOndeMostraOsServicos(
+          onListaAdicionadosChanged: recebendoAListaDeServicos,
+          idDoServicoAtual: widget.corte.idDoServicoSelecionado,
+        ),
+      ),
+    );
+  }
+
+  //servi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,7 +288,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Valor",
+                              "Valor Inicial",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                   color: Colors.black,
@@ -405,7 +478,9 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 5,),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
                                     Icon(
                                       Icons.add,
                                       size: 15,
@@ -416,8 +491,35 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                               ),
                             Column(
                                 children: _produtosAdicionados.map((item) {
-                              return ProdutoAdicionadoNaComanda(
-                                produto: item,
+                              return Dismissible(
+                                onDismissed: (direction) {
+                                  // Remover o item da lista quando ele é deslizado
+                                  removeItem(item);
+                                },
+                                background: Container(
+                                  alignment: Alignment.centerRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 15),
+                                    child: Text(
+                                      "Remover",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Dadosgeralapp().tertiaryColor,
+                                  ),
+                                ),
+                                key: Key(item.id),
+                                direction: DismissDirection.endToStart,
+                                child: ProdutoAdicionadoNaComanda(
+                                  produto: item,
+                                ),
                               );
                             }).toList()),
                             SizedBox(
@@ -479,41 +581,138 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                             SizedBox(
                               height: 5,
                             ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(15)),
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "- ${widget.corte.nomeServicoSelecionado}",
-                                    style: GoogleFonts.openSans(
-                                      textStyle: TextStyle(
-                                        color: Colors.grey.shade800,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
+                            if (_servicosadicionados.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: _servicosadicionados.map((item) {
+                                    bool isSingleItem =
+                                        _servicosadicionados.length == 1;
+
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: Dismissible(
+                                        key: Key(item.id),
+                                        onDismissed: isSingleItem
+                                            ? null // Desativa o gesto de deslizar se houver apenas um item
+                                            : (direction) {
+                                                // Remover o item da lista quando ele é deslizado
+                                                removeServico(item);
+                                              },
+                                        direction: isSingleItem
+                                            ? DismissDirection
+                                                .none // Desativa a direção de deslizar se houver apenas um item
+                                            : DismissDirection.endToStart,
+                                        background: isSingleItem
+                                            ? null // Sem fundo de remoção se houver apenas um item
+                                            : Container(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 15),
+                                                  child: Text(
+                                                    "Remover",
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Dadosgeralapp()
+                                                      .tertiaryColor,
+                                                ),
+                                              ),
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.shade100,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          width: double.infinity,
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 15),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                "- ${item.name}",
+                                                style: GoogleFonts.openSans(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.grey.shade800,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                              Text(
+                                                "R\$${item.price.toStringAsFixed(2).replaceAll('.', ',')}",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color:
+                                                        Colors.green.shade600,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "R\$${widget.corte.valorCorte.toStringAsFixed(2).replaceAll('.', ',')}",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        color: Colors.green.shade600,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                    );
+                                  }).toList(),
+                                ),
                               ),
-                            )
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: InkWell(
+                                onTap: showScreenComServicos,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Dadosgeralapp().primaryColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Adicionar ou trocar serviço",
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                        size: 15,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -658,14 +857,18 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (ctx) => ComandaScreen(
-                                  valorProdutoFinal: valorProdutosTotal,
-                                  valorServicoFinal: valorServicosTotal,
-                                  valorTotaldaComanda: valorComandaTotal,
-                                  corte: widget.corte,
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (ctx) => ComandaScreen(
+                                    produtosLista: _produtosAdicionados,
+                                    servicoLista: _servicosadicionados,
+                                    valorProdutoFinal: valorProdutosTotal,
+                                    valorServicoFinal: valorServicosTotal,
+                                    valorTotaldaComanda: valorComandaTotal,
+                                    corte: widget.corte,
+                                  ),
                                 ),
-                              ));
+                              );
                             },
                             child: Container(
                               alignment: Alignment.center,
