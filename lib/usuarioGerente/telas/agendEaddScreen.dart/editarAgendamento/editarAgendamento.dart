@@ -8,8 +8,11 @@ import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/funcoes/agendarHorario.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:jimy/usuarioGerente/classes/produto.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/ProdutoAdicionadoNaAgenda.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
+import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsProdutos.dart';
 import 'package:provider/provider.dart';
 
 class EditarAgendamento extends StatefulWidget {
@@ -101,129 +104,20 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
     });
   }
 
-  void showModalEditarValorTotal() {
-    showModalBottomSheet(
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      context: context,
-      builder: (ctx) {
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: Column(
-                children: [
-                  Text(
-                    "Valor total da comanda",
-                    style: GoogleFonts.openSans(
-                      textStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Text(
-                      "Ao alterar o valor final desta comanda por aqui, o valor não será aumentado na comissão ganha pelo barbeiro.",
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.openSans(
-                        textStyle: TextStyle(
-                          color: Colors.black45,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: TextFormField(
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        CurrencyInputFormatter(),
-                      ],
-                      controller: valorNovoController,
-                      decoration: InputDecoration(),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 0.7,
-                                  color: Colors.grey.shade600,
-                                ),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Text(
-                                "Voltar",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Expanded(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                              color: Dadosgeralapp().primaryColor,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Text(
-                              "Salvar",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+  List<Produtosavenda> _produtosAdicionados = [];
+  void recebendoALista(List<Produtosavenda> produtos) {
+    setState(() {
+      _produtosAdicionados = produtos;
+    });
+  }
+
+  void showScreenComProdutos() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => telaOndeMostraOsProdutos(
+          onListaAdicionadosChanged: recebendoALista,
+        ),
+      ),
     );
   }
 
@@ -337,50 +231,6 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                       SizedBox(
                         height: 15,
                       ),
-                      //container do serviço
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              width: 0.2,
-                              color: Colors.black38,
-                            ),
-                          ),
-                        ),
-                        padding: EdgeInsets.only(top: 10, bottom: 20),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Serviço",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              child: Text(
-                                "${widget.corte.nomeServicoSelecionado}",
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    color: Colors.grey.shade400,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      //container do servico
                       //container do profissional
                       Container(
                         decoration: BoxDecoration(
@@ -581,72 +431,46 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                             SizedBox(
                               height: 5,
                             ),
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(15)),
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 15),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "- Produto vendido",
-                                    style: GoogleFonts.openSans(
-                                      textStyle: TextStyle(
-                                        color: Colors.grey.shade800,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Preco",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        color: Colors.green.shade600,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            Column(
+                                children: _produtosAdicionados.map((item) {
+                              return ProdutoAdicionadoNaComanda(
+                                produto: item,
+                              );
+                            }).toList()),
                             SizedBox(
                               height: 10,
                             ),
-                            Container(
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Dadosgeralapp().primaryColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Adicionar produto",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 10,
+                            InkWell(
+                              onTap: showScreenComProdutos,
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Dadosgeralapp().primaryColor,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Adicionar produto",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 10,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.add,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
-                                ],
+                                    Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
                               ),
                             )
                           ],
@@ -760,37 +584,21 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: showModalEditarValorTotal,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "R\$${valorComandaTotal.toStringAsFixed(2).replaceAll('.', ',')}",
-                                  style: GoogleFonts.poppins(
-                                    textStyle: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Icon(
-                                  Icons.edit,
-                                  size: 15,
-                                  color: Colors.black,
-                                ),
-                              ],
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Text(
+                            "R\$${valorComandaTotal.toStringAsFixed(2).replaceAll('.', ',')}",
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
@@ -846,9 +654,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                         //bloco do whatsapp - inicio
                         Expanded(
                           child: InkWell(
-                            onTap: () {
-                            
-                            },
+                            onTap: () {},
                             child: Container(
                               alignment: Alignment.center,
                               child: Column(
