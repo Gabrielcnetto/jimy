@@ -18,8 +18,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => AdicionarProfissional()));
+                Navigator.of(context).push(DialogRoute(context: context, builder: (ctx)=>AdicionarProfissional()));
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -100,7 +99,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx)=>VisaoGeralMeusProdutosScreen(),));
+                Navigator.of(context).push(DialogRoute(context: context, builder: (Ctx)=>VisaoGeralMeusProdutosScreen()));
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -181,9 +180,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => AdicionarServicosScreen(),
-                ));
+                Navigator.of(context).push(DialogRoute(context: context, builder:(ctx)=>AdicionarServicosScreen()));
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),

@@ -1,110 +1,66 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class BannerAnunciosPerfilGerente extends StatelessWidget {
+class BannerAnunciosPerfilGerente extends StatefulWidget {
   const BannerAnunciosPerfilGerente({super.key});
+
+  @override
+  State<BannerAnunciosPerfilGerente> createState() =>
+      _BannerAnunciosPerfilGerenteState();
+}
+
+class _BannerAnunciosPerfilGerenteState
+    extends State<BannerAnunciosPerfilGerente> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Container(
-        width: double.infinity,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        height: MediaQuery.of(context).size.height * 0.3,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: Stack(
-            children: [
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: Image.network(
-                  "https://cdn.dribbble.com/userupload/14846924/file/original-64752aaa8a8257365ceb61bd40a7a463.jpg?crop=147x0-1273x844&resize=640x480&vertical=center",
-                  fit: BoxFit.cover,
-                ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.sizeOf(context).width,
+          maxHeight: 250,
+        ),
+        child: CarouselView(
+          
+          itemSnapping: true,
+          itemExtent: 300,
+          children: [
+            Hero(
+              transitionOnUserGestures: true,
+              tag: 'image-1',
+              child: CachedNetworkImage(
+                imageUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/bannersTest%2Fbanner%201%20app%20(1).png?alt=media&token=4ba14c2a-459b-47a0-8767-4a556d8daf6b",
+                fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                decoration: BoxDecoration(
-                  color: Colors.white10,
-                ),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width * 0.1,
-                          height: MediaQuery.of(context).size.height * 0.04,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Image.network(
-                              "https://www.bozzano.com.br/img/icons/logo.png",
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 1,
-                        ),
-                        Text(
-                          "Nome do Anunciante",
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5)),
-                          padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Acessar Loja",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 10,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 2,
-                              ),
-                              Icon(
-                                Icons.open_in_new,
-                                size: 15,
-                                color: Colors.black,
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+            ),
+            Hero(
+              tag: 'image-1',
+              child: CachedNetworkImage(
+                imageUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/bannersTest%2Fbanner%202.png?alt=media&token=8a06b03c-b7f9-48dc-afc9-b6091bd6d2a7",
+                fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
               ),
-            ],
-          ),
+            ),
+            Hero(
+              tag: 'image-1',
+              child: CachedNetworkImage(
+                imageUrl:
+                    "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/bannersTest%2Fbanner%203.png?alt=media&token=220fbdc4-63bc-4810-844a-8d1aca23ced1",
+                fit: BoxFit.cover,
+                fadeInDuration: Duration.zero,
+              ),
+            ),
+          ],
         ),
       ),
     );

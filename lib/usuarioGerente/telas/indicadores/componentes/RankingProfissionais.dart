@@ -73,10 +73,7 @@ class _RankingProfissionaisHomeGerenteState
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => VisaoTodosOsProfissionais(),
-                          ),
-                        );
+                         DialogRoute(context: context, builder: (ctx)=>VisaoTodosOsProfissionais()));
                       },
                       child: Text(
                         "Ver todos",
@@ -527,10 +524,7 @@ class _RankingProfissionaisHomeGerenteState
                     InkWell(
                       onTap: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (ctx) => VisaoTodosOsProfissionais(),
-                          ),
-                        );
+                         DialogRoute(context: context, builder: (ctx)=>VisaoTodosOsProfissionais()));
                       },
                       child: Text(
                         "Ver todos",

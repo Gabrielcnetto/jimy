@@ -19,7 +19,8 @@ class Corteclass {
   final bool pagoucomcupom;
   final bool pagouPeloApp;
   final int pontosGanhos;
-
+  final double valorQueOProfissionalGanhaPorCortes;
+  final double valorQueOProfissionalGanhaPorProdutos;
   //informacoes do dia e horario
   final List<String>horariosExtras;
   final String idDoServicoSelecionado;
@@ -29,9 +30,11 @@ class Corteclass {
   final String MesSelecionado;
   final String anoSelecionado;
   final DateTime dataSelecionadaDateTime;
-  final DateTime momentoDoAgendamento;
+  final DateTime momentoDoAgendamento;  
   Corteclass({
     required this.porcentagemDoProfissional,
+    required this.valorQueOProfissionalGanhaPorCortes,
+    required this.valorQueOProfissionalGanhaPorProdutos,
     required this.horariosExtras,
     required this.idDoServicoSelecionado,
     required this.nomeServicoSelecionado,

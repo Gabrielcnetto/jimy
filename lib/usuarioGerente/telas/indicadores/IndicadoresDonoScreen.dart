@@ -33,19 +33,31 @@ class _IndicadoresScreenState extends State<IndicadoresScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeaderNomeMaisFoto(),
-                IndicadoresQuadroView(),
-                BannerAnunciosPerfilGerente(),
-                ConfiguracoeswidgetsSet(),
-                RankingProfissionaisHomeGerente(),
-                ShoppingParaGerente(),
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 15,right: 15,top: 10),
+                child: HeaderNomeMaisFoto(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15,right: 15),
+                child: IndicadoresQuadroView(),
+              ),
+              BannerAnunciosPerfilGerente(),
+              Padding(
+                padding: const EdgeInsets.only(left: 15,right: 15),
+                child: ConfiguracoeswidgetsSet(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15,right: 15),
+                child: RankingProfissionaisHomeGerente(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15,right: 15),
+                child: ShoppingParaGerente(),
+              ),
+            ],
           ),
         ),
       ),

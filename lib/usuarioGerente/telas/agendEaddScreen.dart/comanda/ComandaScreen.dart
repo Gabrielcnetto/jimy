@@ -82,6 +82,11 @@ class _ComandaScreenState extends State<ComandaScreen> {
       );
       await Provider.of<Finalizarecarregarcomandas>(context, listen: false)
           .finalizandoComanda(
+            porcentagemGanhaProfissionalCortes: widget.corte.valorQueOProfissionalGanhaPorCortes,
+            porcentagemGanhaProfissionalProdutos: widget.corte.valorQueOProfissionalGanhaPorProdutos,
+            valorTotalComanda: valorFinalTotal,
+            valorTotalServicos: valorServicosAdicionados,
+            valorTotalProdutos: valorProdutosAdicionados,
             corte: widget.corte,
         comanda: _comanda,
         idBarbearia: loadIdBarbearia!,
@@ -165,7 +170,8 @@ class _ComandaScreenState extends State<ComandaScreen> {
           });
       print("publicando a comanda");
     }
-  }
+  } 
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -174,6 +180,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
       body: SafeArea(
         child: Stack(
           children: [
+            // Conteúdo da tela
             Positioned(
               top: 60,
               left: 15,
@@ -199,9 +206,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
               child: Container(
                 height: MediaQuery.of(context).size.width * 0.95,
                 width: double.infinity,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 15),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
@@ -220,10 +225,8 @@ class _ComandaScreenState extends State<ComandaScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(60),
                                   ),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.11,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.06,
+                                  width: MediaQuery.of(context).size.width * 0.11,
+                                  height: MediaQuery.of(context).size.height * 0.06,
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(60),
                                     child: Image.network(
@@ -232,9 +235,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                SizedBox(width: 10),
                                 Text(
                                   "${widget.corte.clienteNome}",
                                   style: GoogleFonts.poppins(
@@ -250,11 +251,11 @@ class _ComandaScreenState extends State<ComandaScreen> {
                               "+${widget.corte.pontosGanhos} pontos",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
-                                  color: Dadosgeralapp().primaryColor,
+                                  color: Colors.red,
                                   fontSize: 10,
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -269,8 +270,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
               right: 0,
               child: Container(
                 width: double.infinity,
-                padding:
-                    EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 15),
+                padding: EdgeInsets.only(bottom: 20, left: 15, right: 15, top: 15),
                 decoration: BoxDecoration(
                   border: Border(
                     top: BorderSide(width: 0.8, color: Colors.grey.shade200),
@@ -279,7 +279,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    //valor produtos - inicio
+                    // valor produtos
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -305,11 +305,8 @@ class _ComandaScreenState extends State<ComandaScreen> {
                         ),
                       ],
                     ),
-                    //valor produtos - fim
-                    SizedBox(
-                      height: 15,
-                    ),
-                    //valor servicos - inicio
+                    SizedBox(height: 15),
+                    // valor servicos
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -335,11 +332,8 @@ class _ComandaScreenState extends State<ComandaScreen> {
                         ),
                       ],
                     ),
-                    //valor servicos - fim
-                    SizedBox(
-                      height: 15,
-                    ),
-                    //valor total - inicio
+                    SizedBox(height: 15),
+                    // valor total
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -365,18 +359,26 @@ class _ComandaScreenState extends State<ComandaScreen> {
                         ),
                       ],
                     ),
-                    //valor total - fim
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: 15),
                     InkWell(
                       splashColor: Colors.transparent,
-                      onTap: FinalizandoComanda,
+                      onTap: () async {
+                        setState(() {
+                          isLoading = true; // Ativa o loading
+                        });
+
+                        await FinalizandoComanda(); // Chama a função de finalização
+
+                        setState(() {
+                          isLoading = false; // Desativa o loading
+                        });
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            color: Dadosgeralapp().tertiaryColor,
-                            borderRadius: BorderRadius.circular(20)),
+                          color: Dadosgeralapp().primaryColor, // Substitua pela sua cor
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 15),
                         child: Text(
@@ -395,54 +397,18 @@ class _ComandaScreenState extends State<ComandaScreen> {
                 ),
               ),
             ),
-            Positioned(
-              top: 0,
-              right: 0,
-              left: 0,
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
-                height: MediaQuery.of(context).size.height * 0.08,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        size: 30,
-                        color: Dadosgeralapp().primaryColor,
-                      ),
+            // CircularProgressIndicator quando isLoading for true
+            if (isLoading)
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Dadosgeralapp().primaryColor), // Cor do indicador
                     ),
-                    Expanded(
-                      child: Container(
-                        height: 5,
-                        decoration: BoxDecoration(
-                          color: Dadosgeralapp().primaryColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            bottomLeft: Radius.circular(20),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      height: 5,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade100,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

@@ -261,6 +261,8 @@ class Getsdeinformacoes with ChangeNotifier {
 
         print(data?["totalValue"].toString());
         return Corteclass(
+          valorQueOProfissionalGanhaPorCortes: data?["valorQueOProfissionalGanhaPorCortes"] ?? 0.0,
+          valorQueOProfissionalGanhaPorProdutos: data?["valorQueOProfissionalGanhaPorProdutos"]??0.0,
           porcentagemDoProfissional: data?["porcentagemDoProfissional"] ?? 0.0,
           JaCortou: data?["JaCortou"] ?? false,
           MesSelecionado: data?["MesSelecionado"] ?? "",

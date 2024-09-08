@@ -14,15 +14,21 @@ class Agendarhorario with ChangeNotifier {
     required Corteclass corte,
     required double porcentagemProfissional,
   }) async {
+    print("#23preencher 2 espacos?: ${corte.preencher2horarios}");
+
     try {
-      print("acessei a funcao");
-      //enviando para a agenda
+      print(
+          "Acessei a função com preencher2horarios: ${corte.preencher2horarios}");
+
+      // Obtendo o nome do profissional e o nome do mês
       final String nomeProfissional =
           corte.ProfissionalSelecionado.replaceAll(' ', '');
       final nomeBarber = Uri.encodeFull(nomeProfissional);
       String monthName =
           DateFormat('MMMM', 'pt_BR').format(corte.dataSelecionadaDateTime);
       double valorComissao = corte.valorCorte * (porcentagemProfissional / 100);
+
+      // Publicando na agenda geral
       final pubAgendaGeral = await database
           .collection('agendas')
           .doc(idDaBarbearia)
@@ -31,18 +37,17 @@ class Agendarhorario with ChangeNotifier {
           .collection(nomeBarber)
           .doc(corte.horarioSelecionado)
           .set({
+        "valorQueOProfissionalGanhaPorCortes":
+            corte.valorQueOProfissionalGanhaPorCortes,
+        "valorQueOProfissionalGanhaPorProdutos":
+            corte.valorQueOProfissionalGanhaPorProdutos,
         "id": corte.id,
         "clienteNome": corte.clienteNome,
         "urlImagePerfilfoto": corte.urlImagePerfilfoto,
-        //identificacao da barbearia
         "barbeariaId": corte.barbeariaId,
-
-        //identificacao do profissional
         "ProfissionalSelecionado": corte.ProfissionalSelecionado,
         "urlImageProfissionalFoto": corte.urlImageProfissionalFoto,
         "profissionalId": corte.profissionalId,
-
-        //verificacao de pagamento e procedimento
         "valorCorte": corte.valorCorte,
         "preencher2horarios": corte.preencher2horarios,
         "JaCortou": corte.JaCortou,
@@ -50,7 +55,6 @@ class Agendarhorario with ChangeNotifier {
         "pagouPeloApp": corte.pagouPeloApp,
         "pontosGanhos": corte.pontosGanhos,
         "porcentagemDoProfissional": valorComissao,
-        //informacoes do dia e horario
         "idDoServicoSelecionado": corte.idDoServicoSelecionado,
         "nomeServicoSelecionado": corte.nomeServicoSelecionado,
         "horarioSelecionado": corte.horarioSelecionado,
@@ -58,208 +62,117 @@ class Agendarhorario with ChangeNotifier {
         "MesSelecionado": corte.MesSelecionado,
         "anoSelecionado": corte.anoSelecionado,
         "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
-        "momentoDoAgendamento": corte.momentoDoAgendamento,
-        "horariosExtras": [
-          corte.horariosExtras[0],
-          corte.horariosExtras[1],
-        ],
+        "horariosExtras":corte.horariosExtras,
       });
-      //adicionado horarios extras, caso o prazo for mais de 1hr
+
+      // Verificando se deve preencher 2 horários e se há horários extras disponíveis
       if (corte.preencher2horarios == true) {
-        final pubAgendaGeral = await database
-            .collection('agendas')
-            .doc(idDaBarbearia)
-            .collection("${monthName}.${corte.anoSelecionado}")
-            .doc(corte.diaSelecionado)
-            .collection(nomeBarber)
-            .doc(corte.horariosExtras[0])
-            .set({
-          "id": corte.id,
-          "clienteNome": "BARBANULO",
-          "urlImagePerfilfoto": corte.urlImagePerfilfoto,
-          //identificacao da barbearia
-          "barbeariaId": corte.barbeariaId,
+        print("#23preencher2horarios é verdadeiro");
 
-          //identificacao do profissional
-          "ProfissionalSelecionado": corte.ProfissionalSelecionado,
-          "urlImageProfissionalFoto": corte.urlImageProfissionalFoto,
-          "profissionalId": corte.profissionalId,
+        // Verifica se há pelo menos 2 horários extras disponíveis
+        if (corte.horariosExtras.length >= 2) {
+          print("#23Lista de horários extras tem mais de 2 itens");
 
-          //verificacao de pagamento e procedimento
-          "valorCorte": corte.valorCorte,
-          "preencher2horarios": corte.preencher2horarios,
-          "JaCortou": corte.JaCortou,
-          "pagoucomcupom": corte.pagoucomcupom,
-          "pagouPeloApp": corte.pagouPeloApp,
-          "pontosGanhos": corte.pontosGanhos,
+          // Publicando o primeiro horário extra
+          final pubAgendaGeral1 = await database
+              .collection('agendas')
+              .doc(idDaBarbearia)
+              .collection("${monthName}.${corte.anoSelecionado}")
+              .doc(corte.diaSelecionado)
+              .collection(nomeBarber)
+              .doc(corte.horariosExtras[0])
+              .set({
+            // Mesmos dados do agendamento principal
+            "valorQueOProfissionalGanhaPorCortes":
+                corte.valorQueOProfissionalGanhaPorCortes,
+            "valorQueOProfissionalGanhaPorProdutos":
+                corte.valorQueOProfissionalGanhaPorProdutos,
+            "id": corte.id,
+            "clienteNome": "BARBANULO",
+            "urlImagePerfilfoto": corte.urlImagePerfilfoto,
+            //identificacao da barbearia
+            "barbeariaId": corte.barbeariaId,
 
-          //informacoes do dia e horario
-          "idDoServicoSelecionado": corte.idDoServicoSelecionado,
-          "nomeServicoSelecionado": corte.nomeServicoSelecionado,
-          "horarioSelecionado": corte.horariosExtras[0],
-          "diaSelecionado": corte.diaSelecionado,
-          "MesSelecionado": corte.MesSelecionado,
-          "anoSelecionado": corte.anoSelecionado,
-          "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
-          "momentoDoAgendamento": corte.momentoDoAgendamento,
-        });
-        //colocando o 2
-        final pubAgendaGeral2 = await database
-            .collection('agendas')
-            .doc(idDaBarbearia)
-            .collection("${monthName}.${corte.anoSelecionado}")
-            .doc(corte.diaSelecionado)
-            .collection(nomeBarber)
-            .doc(corte.horariosExtras[1])
-            .set({
-          "id": corte.id,
-          "clienteNome": "BARBANULO",
-          "urlImagePerfilfoto": corte.urlImagePerfilfoto,
-          //identificacao da barbearia
-          "barbeariaId": corte.barbeariaId,
+            //identificacao do profissional
+            "ProfissionalSelecionado": corte.ProfissionalSelecionado,
+            "urlImageProfissionalFoto": corte.urlImageProfissionalFoto,
+            "profissionalId": corte.profissionalId,
 
-          //identificacao do profissional
-          "ProfissionalSelecionado": corte.ProfissionalSelecionado,
-          "urlImageProfissionalFoto": corte.urlImageProfissionalFoto,
-          "profissionalId": corte.profissionalId,
+            //verificacao de pagamento e procedimento
+            "valorCorte": corte.valorCorte,
+            "preencher2horarios": corte.preencher2horarios,
+            "JaCortou": corte.JaCortou,
+            "pagoucomcupom": corte.pagoucomcupom,
+            "pagouPeloApp": corte.pagouPeloApp,
+            "pontosGanhos": corte.pontosGanhos,
 
-          //verificacao de pagamento e procedimento
-          "valorCorte": corte.valorCorte,
-          "preencher2horarios": corte.preencher2horarios,
-          "JaCortou": corte.JaCortou,
-          "pagoucomcupom": corte.pagoucomcupom,
-          "pagouPeloApp": corte.pagouPeloApp,
-          "pontosGanhos": corte.pontosGanhos,
+            //informacoes do dia e horario
+            "idDoServicoSelecionado": corte.idDoServicoSelecionado,
+            "nomeServicoSelecionado": corte.nomeServicoSelecionado,
+            "horarioSelecionado": corte.horariosExtras[0],
+            "diaSelecionado": corte.diaSelecionado,
+            "MesSelecionado": corte.MesSelecionado,
+            "anoSelecionado": corte.anoSelecionado,
+            "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
+            "momentoDoAgendamento": corte.momentoDoAgendamento,
+          });
 
-          //informacoes do dia e horario
-          "idDoServicoSelecionado": corte.idDoServicoSelecionado,
-          "nomeServicoSelecionado": corte.nomeServicoSelecionado,
-          "horarioSelecionado": corte.horariosExtras[1],
-          "diaSelecionado": corte.diaSelecionado,
-          "MesSelecionado": corte.MesSelecionado,
-          "anoSelecionado": corte.anoSelecionado,
-          "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
-          "momentoDoAgendamento": corte.momentoDoAgendamento,
-        });
-      }
-      //enviando os dados/indicadores
-      try {
-        //enviando dados da barbearia referente ao mes em que o corte foi feito
-        final docRef = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("faturamentoMes")
-            .doc(monthName);
+          // Publicando o segundo horário extra
+          final pubAgendaGeral2 = await database
+              .collection('agendas')
+              .doc(idDaBarbearia)
+              .collection("${monthName}.${corte.anoSelecionado}")
+              .doc(corte.diaSelecionado)
+              .collection(nomeBarber)
+              .doc(corte.horariosExtras[1])
+              .set({
+            // Mesmos dados do agendamento principal
+            "valorQueOProfissionalGanhaPorCortes":
+                corte.valorQueOProfissionalGanhaPorCortes,
+            "valorQueOProfissionalGanhaPorProdutos":
+                corte.valorQueOProfissionalGanhaPorProdutos,
+            "id": corte.id,
+            "clienteNome": "BARBANULO",
+            "urlImagePerfilfoto": corte.urlImagePerfilfoto,
+            //identificacao da barbearia
+            "barbeariaId": corte.barbeariaId,
 
-        final docSnapshot = await docRef.get();
+            //identificacao do profissional
+            "ProfissionalSelecionado": corte.ProfissionalSelecionado,
+            "urlImageProfissionalFoto": corte.urlImageProfissionalFoto,
+            "profissionalId": corte.profissionalId,
 
-        if (docSnapshot.exists) {
-          // Se o documento existir, use update()
-          await docRef.update({
-            'valor': FieldValue.increment(corte.valorCorte),
+            //verificacao de pagamento e procedimento
+            "valorCorte": corte.valorCorte,
+            "preencher2horarios": corte.preencher2horarios,
+            "JaCortou": corte.JaCortou,
+            "pagoucomcupom": corte.pagoucomcupom,
+            "pagouPeloApp": corte.pagouPeloApp,
+            "pontosGanhos": corte.pontosGanhos,
+
+            //informacoes do dia e horario
+            "idDoServicoSelecionado": corte.idDoServicoSelecionado,
+            "nomeServicoSelecionado": corte.nomeServicoSelecionado,
+            "horarioSelecionado": corte.horariosExtras[1],
+            "diaSelecionado": corte.diaSelecionado,
+            "MesSelecionado": corte.MesSelecionado,
+            "anoSelecionado": corte.anoSelecionado,
+            "dataSelecionadaDateTime": corte.dataSelecionadaDateTime,
+            "momentoDoAgendamento": corte.momentoDoAgendamento,
           });
         } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRef.set({
-            'valor': FieldValue.increment(corte.valorCorte),
-          }, SetOptions(merge: true));
+          print(
+              "#23Erro: Não há horários extras suficientes para preencher 2 espaços.");
         }
-        //enviando agora a quantidade de faturamento total
-        final docRefFaturamentoTotal = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("faturamentoTotal")
-            .doc("valor");
-
-        final docSnapshotFaturamentoTotal = await docRefFaturamentoTotal.get();
-
-        if (docSnapshotFaturamentoTotal.exists) {
-          // Se o documento existir, use update()
-          await docRefFaturamentoTotal.update({
-            'valor': FieldValue.increment(corte.valorCorte),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRefFaturamentoTotal.set({
-            'valor': FieldValue.increment(corte.valorCorte),
-          }, SetOptions(merge: true));
-        }
-
-        //quantidade de corte feita no mes
-        final docRefquantidadeMensaldeCortesFeitos = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("quantiaCortesMesAtual")
-            .doc("valor");
-
-        final docSnapshotQuantiaCorteFeitoEsteMes =
-            await docRefquantidadeMensaldeCortesFeitos.get();
-
-        if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
-          // Se o documento existir, use update()
-          await docRefquantidadeMensaldeCortesFeitos.update({
-            'valor': FieldValue.increment(1),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRefquantidadeMensaldeCortesFeitos.set({
-            'valor': FieldValue.increment(1),
-          }, SetOptions(merge: true));
-        }
-
-        //enviando agora o total de cortes historico
-        final docTotalCortesHistoria = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("totalCortesHistorico")
-            .doc("valor");
-
-        final docSnapTotalCorteHistorico = await docTotalCortesHistoria.get();
-
-        if (docSnapTotalCorteHistorico.exists) {
-          // Se o documento existir, use update()
-          await docTotalCortesHistoria.update({
-            'valor': FieldValue.increment(1),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docTotalCortesHistoria.set({
-            'valor': FieldValue.increment(1),
-          }, SetOptions(merge: true));
-        }
-      } catch (e) {
-        print("ao enviar os dados deu isto:$e");
-      }
-
-      //agora atualizando na classe da barbearia os servicos selecionados, e também o profissional
-      try {
-        await atualizandoQuantiasNaClasseDaBarbearia(
-          idBarbearia: idDaBarbearia,
-          profissionalId: corte.profissionalId,
-          serviceIdSelecionado: corte.idDoServicoSelecionado,
-        );
-
-        try {
-          //enviando a porcentagem ao profissional selecionado
-          await enviandoPorcentagensDeComissao(
-            idBarbearia: idDaBarbearia,
-            ProfissionalId: corte.profissionalId,
-            mesAtual: monthName,
-            porcentagemProfissional: porcentagemProfissional,
-            valorServico: corte.valorCorte,
-          );
-        } catch (e) {
-          print("erro:$e");
-        }
-      } catch (e) {
+      } else {
         print(
-            "ao enviar um att ao barbeiro e servico de selecionado deu isto:$e");
+            "#23preencher2horarios é falso, não vou preencher horários extras.");
       }
-      print("acessei a funcao, feito");
     } catch (e) {
       print("ao agendar, houve este erro: ${e}");
       throw e;
     }
+
     notifyListeners();
   }
 
@@ -458,13 +371,13 @@ class Agendarhorario with ChangeNotifier {
     required String idBarbearia,
   }) async {
     //primeiro remove o caminho antigo => inicio
-    print("horario extra 1:${corte.horariosExtras[0]}");
-    print("horario extra 2:${corte.horariosExtras[1]}");
+ 
     try {
       //antes de excluir cria um novo => inicio
-
+    bool entrarNoPreencher = await corte.preencher2horarios;
+    print("entro? ${entrarNoPreencher}");
       //antes de excluir, cria o novo => fim
-      if (corte.preencher2horarios) {
+      if (entrarNoPreencher == true) {
         final remove2 = await database
             .collection("agendas")
             .doc(idBarbearia)
@@ -481,91 +394,29 @@ class Agendarhorario with ChangeNotifier {
             .collection(corte.ProfissionalSelecionado)
             .doc(corte.horariosExtras[1])
             .delete();
+        final remove = await database
+            .collection("agendas")
+            .doc(idBarbearia)
+            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+            .doc(corte.diaSelecionado)
+            .collection(corte.ProfissionalSelecionado)
+            .doc(corte.horarioSelecionado)
+            .delete();
+      } else {
+         final remove = await database
+            .collection("agendas")
+            .doc(idBarbearia)
+            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+            .doc(corte.diaSelecionado)
+            .collection(corte.ProfissionalSelecionado)
+            .doc(corte.horarioSelecionado)
+            .delete();
       }
-      final remove = await database
-          .collection("agendas")
-          .doc(idBarbearia)
-          .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
-          .doc(corte.diaSelecionado)
-          .collection(corte.ProfissionalSelecionado)
-          .doc(corte.horarioSelecionado)
-          .delete();
     } catch (e) {
       print("deu erro ao apagar o caminho antigo:$e");
       throw e;
     }
-    //primeiro remove o caminho antigo => fim
 
-    //Agora retira a comissao do barbeiro => inicio
-    try {
-      final attComissaoProfissional = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("comissaoMensalBarbeiros")
-          .doc(corte.profissionalId)
-          .collection(corte.MesSelecionado)
-          .doc("dados")
-          .update({
-        "valor": FieldValue.increment(-corte.porcentagemDoProfissional),
-      });
-
-      //e aqui aproveita para tirar a comissao da aba que o gerente visualiza
-      final attComissaoGerente = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("comissaoTotalGerenteMes")
-          .doc(corte.MesSelecionado)
-          .update({
-        "valor": FieldValue.increment(-corte.porcentagemDoProfissional),
-      });
-
-      //aqui retira 1 da quantia de cortes feitos
-      DocumentSnapshot documentSnapshot =
-          await database.collection('Barbearias').doc(idBarbearia).get();
-
-      if (!documentSnapshot.exists) {
-        print('Documento não encontrado!');
-        return;
-      }
-
-      // Passo 2: Encontre o barbeiro e a lista de profissionais
-      List<dynamic> profissionais = await documentSnapshot.get('profissionais');
-      List<Map<String, dynamic>> updatedProfissionais =
-          List.from(profissionais);
-
-      for (int i = 0; i < updatedProfissionais.length; i++) {
-        if (updatedProfissionais[i]['id'] == corte.profissionalId) {
-          // Verificando se o totalCortes é double ou int e convertendo para int
-          int totalCortesAtual =
-              await (updatedProfissionais[i]['totalCortes'] as num).toInt();
-          updatedProfissionais[i]['totalCortes'] = totalCortesAtual - 1;
-          break;
-        }
-      }
-
-      // Passo 3: Atualize o documento com a lista modificada
-      await database.collection('Barbearias').doc(idBarbearia).update({
-        'profissionais': updatedProfissionais,
-      });
-      final attFaturamentoMes = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("faturamentoMes")
-          .doc(corte.MesSelecionado)
-          .update({
-        "valor": FieldValue.increment(-corte.valorCorte),
-      });
-      final attFaturamentoTotal = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("faturamentoTotal")
-          .doc("valor")
-          .update({
-        "valor": FieldValue.increment(-corte.valorCorte),
-      });
-    } catch (e) {
-      print("ao tirar a comissao do profissional, deu isto:$e");
-    }
     //agora retira a comissao do barbeiro =>fim
   }
 
@@ -576,8 +427,7 @@ class Agendarhorario with ChangeNotifier {
     required String idBarbearia,
   }) async {
     //primeiro remove o caminho antigo => inicio
-    print("horario extra 1:${corte.horariosExtras[0]}");
-    print("horario extra 2:${corte.horariosExtras[1]}");
+ 
     try {
       //antes de excluir cria um novo => inicio
       await agendarHorararioParaProfissionais2ParaRemarcacao(
@@ -612,80 +462,6 @@ class Agendarhorario with ChangeNotifier {
           .collection(corte.ProfissionalSelecionado)
           .doc(corte.horarioSelecionado)
           .delete();
-    } catch (e) {
-      print("deu erro ao apagar o caminho antigo:$e");
-      throw e;
-    }
-    //primeiro remove o caminho antigo => fim
-
-    //Agora retira a comissao do barbeiro => inicio
-    try {
-      final attComissaoProfissional = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("comissaoMensalBarbeiros")
-          .doc(corte.profissionalId)
-          .collection(corte.MesSelecionado)
-          .doc("dados")
-          .update({
-        "valor": FieldValue.increment(-corte.porcentagemDoProfissional),
-      });
-
-      //e aqui aproveita para tirar a comissao da aba que o gerente visualiza
-      final attComissaoGerente = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("comissaoTotalGerenteMes")
-          .doc(corte.MesSelecionado)
-          .update({
-        "valor": FieldValue.increment(-corte.porcentagemDoProfissional),
-      });
-
-      //aqui retira 1 da quantia de cortes feitos
-      DocumentSnapshot documentSnapshot =
-          await database.collection('Barbearias').doc(idBarbearia).get();
-
-      if (!documentSnapshot.exists) {
-        print('Documento não encontrado!');
-        return;
-      }
-
-      // Passo 2: Encontre o barbeiro e a lista de profissionais
-      List<dynamic> profissionais = await documentSnapshot.get('profissionais');
-      List<Map<String, dynamic>> updatedProfissionais =
-          List.from(profissionais);
-
-      for (int i = 0; i < updatedProfissionais.length; i++) {
-        if (updatedProfissionais[i]['id'] == corte.profissionalId) {
-          // Verificando se o totalCortes é double ou int e convertendo para int
-          int totalCortesAtual =
-              await (updatedProfissionais[i]['totalCortes'] as num).toInt();
-          updatedProfissionais[i]['totalCortes'] = totalCortesAtual - 1;
-          break;
-        }
-      }
-
-      // Passo 3: Atualize o documento com a lista modificada
-      await database.collection('Barbearias').doc(idBarbearia).update({
-        'profissionais': updatedProfissionais,
-      });
-      //faturamento mes e total
-      final attFaturamentoMes = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("faturamentoMes")
-          .doc(corte.MesSelecionado)
-          .update({
-        "valor": FieldValue.increment(-corte.valorCorte),
-      });
-      final attFaturamentoTotal = await database
-          .collection("dadosEsperadosBarbearias")
-          .doc(idBarbearia)
-          .collection("faturamentoTotal")
-          .doc("valor")
-          .update({
-        "valor": FieldValue.increment(-corte.valorCorte),
-      });
     } catch (e) {
       print("ao tirar a comissao do profissional, deu isto:$e");
     }
@@ -826,155 +602,6 @@ class Agendarhorario with ChangeNotifier {
           "momentoDoAgendamento": corte.momentoDoAgendamento,
         });
       }
-      //enviando os dados/indicadores
-      try {
-        //enviando dados da barbearia referente ao mes em que o corte foi feito
-        final docRef = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("faturamentoMes")
-            .doc(monthName);
-
-        final docSnapshot = await docRef.get();
-
-        if (docSnapshot.exists) {
-          // Se o documento existir, use update()
-          await docRef.update({
-            'valor': FieldValue.increment(corte.valorCorte),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRef.set({
-            'valor': FieldValue.increment(corte.valorCorte),
-          }, SetOptions(merge: true));
-        }
-        //enviando agora a quantidade de faturamento total
-        final docRefFaturamentoTotal = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("faturamentoTotal")
-            .doc("valor");
-
-        final docSnapshotFaturamentoTotal = await docRefFaturamentoTotal.get();
-
-        if (docSnapshotFaturamentoTotal.exists) {
-          // Se o documento existir, use update()
-          await docRefFaturamentoTotal.update({
-            'valor': FieldValue.increment(corte.valorCorte),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRefFaturamentoTotal.set({
-            'valor': FieldValue.increment(corte.valorCorte),
-          }, SetOptions(merge: true));
-        }
-
-        //quantidade de corte feita no mes
-        final docRefquantidadeMensaldeCortesFeitos = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("quantiaCortesMesAtual")
-            .doc("valor");
-
-        final docSnapshotQuantiaCorteFeitoEsteMes =
-            await docRefquantidadeMensaldeCortesFeitos.get();
-
-        if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
-          // Se o documento existir, use update()
-          await docRefquantidadeMensaldeCortesFeitos.update({
-            'valor': FieldValue.increment(1),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRefquantidadeMensaldeCortesFeitos.set({
-            'valor': FieldValue.increment(1),
-          }, SetOptions(merge: true));
-        }
-
-        //enviando agora o total de cortes historico
-        final docTotalCortesHistoria = await database
-            .collection("dadosEsperadosBarbearias")
-            .doc(idDaBarbearia)
-            .collection("totalCortesHistorico")
-            .doc("valor");
-
-        final docSnapTotalCorteHistorico = await docTotalCortesHistoria.get();
-
-        if (docSnapTotalCorteHistorico.exists) {
-          // Se o documento existir, use update()
-          await docTotalCortesHistoria.update({
-            'valor': FieldValue.increment(1),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docTotalCortesHistoria.set({
-            'valor': FieldValue.increment(1),
-          }, SetOptions(merge: true));
-        }
-      } catch (e) {
-        print("ao enviar os dados deu isto:$e");
-      }
-
-      //agora atualizando na classe da barbearia os servicos selecionados, e também o profissional
-      try {
-        await atualizandoQuantiasNaClasseDaBarbearia(
-          idBarbearia: idDaBarbearia,
-          profissionalId: corte.profissionalId,
-          serviceIdSelecionado: corte.idDoServicoSelecionado,
-        );
-
-        try {
-          //enviando a porcentagem ao profissional selecionado
-          final pubValorparaProfissional = await database
-              .collection("dadosEsperadosBarbearias")
-              .doc(corte.barbeariaId)
-              .collection("comissaoMensalBarbeiros")
-              .doc(corte.profissionalId)
-              .collection(corte.MesSelecionado)
-              .doc("dados");
-
-          final docSnapshotQuantiaCorteFeitoEsteMes =
-              await pubValorparaProfissional.get();
-
-          if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
-            // Se o documento existir, use update()
-            await pubValorparaProfissional.update({
-              'valor': FieldValue.increment(ValorFinalComissao),
-            });
-          } else {
-            // Se o documento não existir, use set() com merge: true para criá-lo
-            await pubValorparaProfissional.set({
-              'valor': FieldValue.increment(ValorFinalComissao),
-            }, SetOptions(merge: true));
-          }
-
-          //agora na area da barbearia
-          final pubFinalComissiao = database
-              .collection("dadosEsperadosBarbearias")
-              .doc(corte.barbeariaId)
-              .collection("comissaoTotalGerenteMes")
-              .doc(corte.MesSelecionado);
-          final docAttComissaoDistribuicao = await pubFinalComissiao.get();
-
-          if (docAttComissaoDistribuicao.exists) {
-            // Se o documento existir, use update()
-            await pubFinalComissiao.update({
-              'valor': FieldValue.increment(ValorFinalComissao),
-            });
-          } else {
-            // Se o documento não existir, use set() com merge: true para criá-lo
-            await pubFinalComissiao.set({
-              'valor': FieldValue.increment(ValorFinalComissao),
-            }, SetOptions(merge: true));
-          }
-        } catch (e) {
-          print("erro:$e");
-        }
-      } catch (e) {
-        print(
-            "ao enviar um att ao barbeiro e servico de selecionado deu isto:$e");
-      }
-      print("acessei a funcao, feito");
     } catch (e) {
       print("ao agendar, houve este erro: ${e}");
       throw e;

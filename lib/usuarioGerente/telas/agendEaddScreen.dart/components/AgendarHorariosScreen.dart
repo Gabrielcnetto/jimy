@@ -59,9 +59,10 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   double valorServicoSelecionado = 0.0;
   bool ocupar2EspacosAgenda = false;
   double porcentagemDoProfissional = 100;
+  double porcentagemQueOProfisionalGanhaPorCortes = 100;
+  double porcentagemQueOProfisionalGanhaPorProdutos = 100;
   //load dos horários - inicio
   Future<void> loadListCortes() async {
-    
     horarioFinal.clear();
     Horariopreenchidos.clear();
     List<Horarios> listaTemporaria = [];
@@ -115,6 +116,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
 
   List<Horarios> _horariosPreenchidosParaEvitarDupNoCreate = [];
   Future<void> FuncaodeAgendar() async {
+ 
     Navigator.of(context).pop();
     setState(() {
       isloading = true;
@@ -203,6 +205,10 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
       String monthName =
           await DateFormat('MMMM', 'pt_BR').format(dataSelectedInModal!);
       final Corteclass _corteCriado = Corteclass(
+        valorQueOProfissionalGanhaPorCortes:
+            porcentagemQueOProfisionalGanhaPorCortes,
+        valorQueOProfissionalGanhaPorProdutos:
+            porcentagemQueOProfisionalGanhaPorProdutos,
         porcentagemDoProfissional: porcentagemDoProfissional,
         horariosExtras: selectedHorarios,
         idDoServicoSelecionado: idServicoSelecionado,
@@ -229,7 +235,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
       );
       await Provider.of<Agendarhorario>(context, listen: false)
           .agendarHorararioParaProfissionais(
-            porcentagemProfissional: porcentagemDoProfissional,
+        porcentagemProfissional: porcentagemDoProfissional,
         idDaBarbearia: loadIdBarbearia!,
         corte: _corteCriado,
       );
@@ -303,7 +309,7 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
           setState(() {
             dataSelectedInModal = selectUserDate;
             loadListCortes();
-            FocusScope.of(context).requestFocus(FocusNode()); 
+            FocusScope.of(context).requestFocus(FocusNode());
           });
         }
       } catch (e) {
@@ -680,6 +686,18 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                                       listaServico[index]
                                                           .ocupar2vagas;
                                                 });
+                                                print(
+                                                    "_selectedIndexService:${_selectedIndexService}");
+                                                print(
+                                                    "valorServicoSelecionado:${valorServicoSelecionado}");
+                                                print(
+                                                    "nomeServicoSelecionado:${nomeServicoSelecionado}");
+                                                print(
+                                                    "idServicoSelecionado:${idServicoSelecionado}");
+                                                print(
+                                                    "ocupar2EspacosAgenda:${ocupar2EspacosAgenda}");
+                                                print(
+                                                    "dataSelectedInModal: ${dataSelectedInModal}");
                                               },
                                               child: Row(
                                                 mainAxisAlignment:
@@ -897,8 +915,15 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                                             urlImagemPerfilProfissional =
                                                 listaBarbeiros[index]
                                                     .urlImageFoto;
-                                                    porcentagemDoProfissional = listaBarbeiros[index].porcentagemCortes;
-                                           
+                                            porcentagemDoProfissional =
+                                                listaBarbeiros[index]
+                                                    .porcentagemCortes;
+                                            porcentagemQueOProfisionalGanhaPorCortes =
+                                                listaBarbeiros[index]
+                                                    .porcentagemCortes;
+                                            porcentagemQueOProfisionalGanhaPorProdutos =
+                                                listaBarbeiros[index]
+                                                    .porcentagemProdutos;
                                           });
                                         } else {
                                           showDialog(
@@ -1001,7 +1026,8 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
                       SizedBox(
                         height: 15,
                       ),
-                      if (profissionalSelecionado.isNotEmpty && nomeServicoSelecionado != "")
+                      if (profissionalSelecionado.isNotEmpty &&
+                          nomeServicoSelecionado != "")
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [

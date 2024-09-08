@@ -125,7 +125,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
   }
 
   void somandoServicosAMais() {
-    double totalServicos =0; // Inicia com o valor base do corte
+    double totalServicos = 0; // Inicia com o valor base do corte
     // Adiciona o valor de cada serviço adicional
     for (var item in _servicosadicionados) {
       totalServicos += item.price;
@@ -203,7 +203,8 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
     );
   }
 
-  //servi
+  //editar valor final da comanda
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
