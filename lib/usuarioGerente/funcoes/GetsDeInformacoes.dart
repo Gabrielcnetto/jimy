@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
@@ -261,8 +262,10 @@ class Getsdeinformacoes with ChangeNotifier {
 
         print(data?["totalValue"].toString());
         return Corteclass(
-          valorQueOProfissionalGanhaPorCortes: data?["valorQueOProfissionalGanhaPorCortes"] ?? 0.0,
-          valorQueOProfissionalGanhaPorProdutos: data?["valorQueOProfissionalGanhaPorProdutos"]??0.0,
+          valorQueOProfissionalGanhaPorCortes:
+              data?["valorQueOProfissionalGanhaPorCortes"] ?? 0.0,
+          valorQueOProfissionalGanhaPorProdutos:
+              data?["valorQueOProfissionalGanhaPorProdutos"] ?? 0.0,
           porcentagemDoProfissional: data?["porcentagemDoProfissional"] ?? 0.0,
           JaCortou: data?["JaCortou"] ?? false,
           MesSelecionado: data?["MesSelecionado"] ?? "",
@@ -301,4 +304,178 @@ class Getsdeinformacoes with ChangeNotifier {
     print("o tamanho da lista é manager ${_managerListCortes.length}");
     notifyListeners();
   }
+
+  //coisas relacionadas aos indicadores da home - inicio
+  Future<double?> getFaturamentoMensalGerente() async {
+    final userId = await authSettings.currentUser!.uid;
+    String idBarbearia = await "";
+    try {
+      await database.collection("usuarios").doc(userId).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          idBarbearia = data['idBarbearia'];
+        }
+      });
+    } catch (e) {
+      print("erro ao pegar o id da barbearia:$e");
+    }
+    DateTime momento = DateTime.now();
+    String monthName = await DateFormat('MMMM', 'pt_BR').format(momento);
+
+    double? faturamentoMensal;
+    await database
+        .collection("DadosConcretosBarbearias")
+        .doc(idBarbearia)
+        .collection("faturamentoMes")
+        .doc(monthName)
+        .get()
+        .then(
+      (event) {
+        Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+        faturamentoMensal = data["valor"];
+      },
+    );
+    return faturamentoMensal;
+  }
+
+  Future<double?> getComissaoTotalMensalGerente() async {
+    final userId = await authSettings.currentUser!.uid;
+    String idBarbearia = await "";
+    try {
+      await database.collection("usuarios").doc(userId).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          idBarbearia = data['idBarbearia'];
+        }
+      });
+    } catch (e) {
+      print("erro ao pegar o id da barbearia:$e");
+    }
+    DateTime momento = DateTime.now();
+    String monthName = await DateFormat('MMMM', 'pt_BR').format(momento);
+
+    double? comissaoTotalMes;
+    await database
+        .collection("DadosConcretosBarbearias")
+        .doc(idBarbearia)
+        .collection("comissaoTotalGerenteMes")
+        .doc(monthName)
+        .get()
+        .then(
+      (event) {
+        Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+        comissaoTotalMes = data["valor"];
+      },
+    );
+    return comissaoTotalMes;
+  }
+
+  Future<double?> calculoTicketMedio() async {
+    try {
+      final userId = authSettings.currentUser!.uid;
+
+      // Obtém o idBarbearia do usuário
+      final userDoc = await database.collection("usuarios").doc(userId).get();
+      if (!userDoc.exists) {
+        print("Usuário não encontrado");
+        return null;
+      }
+      final idBarbearia =
+          (userDoc.data() as Map<String, dynamic>)['idBarbearia'];
+
+      if (idBarbearia == null) {
+        print("idBarbearia não encontrado");
+        return null;
+      }
+
+      // Obtém o mês atual
+      final momento = DateTime.now();
+      final monthName = DateFormat('MMMM', 'pt_BR').format(momento);
+
+      // Obtém o faturamento mensal
+      final faturamentoDoc = await database
+          .collection("DadosConcretosBarbearias")
+          .doc(idBarbearia)
+          .collection("faturamentoMes")
+          .doc(monthName)
+          .get();
+
+      final faturamentoMensal = faturamentoDoc.exists
+          ? (faturamentoDoc.data() as Map<String, dynamic>)["valor"] as double?
+          : null;
+
+      if (faturamentoMensal == null) {
+        print("Faturamento mensal não encontrado");
+        return null;
+      }
+
+      // Conta o número de comandas
+      final comandasSnapshot = await database
+          .collection("comandas")
+          .doc(idBarbearia)
+          .collection(monthName)
+          .get();
+
+      final tamanhoDaLista = comandasSnapshot.docs.length.toDouble();
+
+      if (tamanhoDaLista == 0) {
+        print("Não há comandas para calcular o ticket médio");
+        return null;
+      }
+
+      // Calcula o ticket médio
+      final ticketMedioCalculado = faturamentoMensal / tamanhoDaLista;
+      return ticketMedioCalculado;
+    } catch (e) {
+      print("Erro ao calcular o ticket médio: $e");
+      return null;
+    }
+  }
+
+  Future<int?> getTotalClientesMes() async {
+    try {
+      final userId = authSettings.currentUser!.uid;
+
+      // Obtém o idBarbearia do usuário
+      final userDoc = await database.collection("usuarios").doc(userId).get();
+      if (!userDoc.exists) {
+        print("Usuário não encontrado");
+        return null;
+      }
+      final idBarbearia =
+          (userDoc.data() as Map<String, dynamic>)['idBarbearia'];
+
+      if (idBarbearia == null) {
+        print("idBarbearia não encontrado");
+        return null;
+      }
+
+      // Obtém o mês atual
+      final momento = DateTime.now();
+      final monthName = DateFormat('MMMM', 'pt_BR').format(momento);
+      // Conta o número de comandas
+      final comandasSnapshot = await database
+          .collection("comandas")
+          .doc(idBarbearia)
+          .collection(monthName)
+          .get();
+
+      final tamanhoDaLista = comandasSnapshot.docs.length;
+
+      if (tamanhoDaLista == 0) {
+        print("Não há comandas para calcular o ticket médio");
+        return null;
+      }
+
+      // Calcula o ticket médio
+
+      return tamanhoDaLista;
+    } catch (e) {
+      print("Erro ao calcular o ticket médio: $e");
+      return null;
+    }
+  }
+  //coisas relacionadas aos indicadores da home - fim
 }

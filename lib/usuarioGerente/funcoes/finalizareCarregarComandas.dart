@@ -18,6 +18,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
     required double porcentagemGanhaProfissionalCortes,
     required double porcentagemGanhaProfissionalProdutos,
   }) async {
+    print("valorTotalServicos:${valorTotalServicos}");
     try {
       // Converte os serviços e produtos em mapas
       final servicosMap =
@@ -28,7 +29,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection("comandas")
           .doc(idBarbearia)
-          .collection("todasascomandas")
+          .collection(corte.MesSelecionado)
           .doc(comanda.id)
           .set(
         {
@@ -44,38 +45,41 @@ class Finalizarecarregarcomandas with ChangeNotifier {
       );
 
       //ativando o "jacortou"
-      try {
-        final attJaCortou = await database
-            .collection("agendas")
-            .doc(idBarbearia)
-            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
-            .doc(corte.diaSelecionado)
-            .collection(corte.ProfissionalSelecionado)
-            .doc(corte.horarioSelecionado)
-            .update({
-          "JaCortou": true,
-        });
-        //removendo o 2
-        final attJaCortou2 = await database
-            .collection("agendas")
-            .doc(idBarbearia)
-            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
-            .doc(corte.diaSelecionado)
-            .collection(corte.ProfissionalSelecionado)
-            .doc(corte.horariosExtras[0])
-            .delete();
-        final attJaCortou3 = await database
-            .collection("agendas")
-            .doc(idBarbearia)
-            .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
-            .doc(corte.diaSelecionado)
-            .collection(corte.ProfissionalSelecionado)
-            .doc(corte.horariosExtras[1])
-            .delete();
-      } catch (e) {
-        print("erro ao mudar o ja cortou :$e");
-        throw e;
-      }
+      if (!corte.clienteNome.contains("CmddCriada"))
+        try {
+          final attJaCortou = await database
+              .collection("agendas")
+              .doc(idBarbearia)
+              .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+              .doc(corte.diaSelecionado)
+              .collection(corte.ProfissionalSelecionado)
+              .doc(corte.horarioSelecionado)
+              .update({
+            "JaCortou": true,
+          });
+          //removendo o 2
+          if(corte.preencher2horarios == true){
+            final attJaCortou2 = await database
+              .collection("agendas")
+              .doc(idBarbearia)
+              .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+              .doc(corte.diaSelecionado)
+              .collection(corte.ProfissionalSelecionado)
+              .doc(corte.horariosExtras[0])
+              .delete();
+          final attJaCortou3 = await database
+              .collection("agendas")
+              .doc(idBarbearia)
+              .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+              .doc(corte.diaSelecionado)
+              .collection(corte.ProfissionalSelecionado)
+              .doc(corte.horariosExtras[1])
+              .delete();
+          }
+        } catch (e) {
+          print("erro ao mudar o ja cortou :$e");
+          throw e;
+        }
 
       //PARTE 2
       //agora atualizando a porcentagem de cortes e ganhos da barbearia(faturamento)e comissoes(profissionais)
@@ -122,47 +126,49 @@ class Finalizarecarregarcomandas with ChangeNotifier {
         }
 
         //quantidade de corte feita no mes
-        final docRefquantidadeMensaldeCortesFeitos = await database
-            .collection("DadosConcretosBarbearias")
-            .doc(idBarbearia)
-            .collection("quantiaCortesMesAtual")
-            .doc("valor");
+        if (!corte.clienteNome.contains("CmddCriada")) {
+          final docRefquantidadeMensaldeCortesFeitos = await database
+              .collection("DadosConcretosBarbearias")
+              .doc(idBarbearia)
+              .collection("quantiaCortesMesAtual")
+              .doc("valor");
 
-        final docSnapshotQuantiaCorteFeitoEsteMes =
-            await docRefquantidadeMensaldeCortesFeitos.get();
+          final docSnapshotQuantiaCorteFeitoEsteMes =
+              await docRefquantidadeMensaldeCortesFeitos.get();
 
-        if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
-          // Se o documento existir, use update()
-          await docRefquantidadeMensaldeCortesFeitos.update({
-            'valor': FieldValue.increment(1),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docRefquantidadeMensaldeCortesFeitos.set({
-            'valor': FieldValue.increment(1),
-          }, SetOptions(merge: true));
+          if (docSnapshotQuantiaCorteFeitoEsteMes.exists) {
+            // Se o documento existir, use update()
+            await docRefquantidadeMensaldeCortesFeitos.update({
+              'valor': FieldValue.increment(1),
+            });
+          } else {
+            // Se o documento não existir, use set() com merge: true para criá-lo
+            await docRefquantidadeMensaldeCortesFeitos.set({
+              'valor': FieldValue.increment(1),
+            }, SetOptions(merge: true));
+          }
+          final docTotalCortesHistoria = await database
+              .collection("DadosConcretosBarbearias")
+              .doc(idBarbearia)
+              .collection("totalCortesHistorico")
+              .doc("valor");
+
+          final docSnapTotalCorteHistorico = await docTotalCortesHistoria.get();
+
+          if (docSnapTotalCorteHistorico.exists) {
+            // Se o documento existir, use update()
+            await docTotalCortesHistoria.update({
+              'valor': FieldValue.increment(1),
+            });
+          } else {
+            // Se o documento não existir, use set() com merge: true para criá-lo
+            await docTotalCortesHistoria.set({
+              'valor': FieldValue.increment(1),
+            }, SetOptions(merge: true));
+          }
         }
 
         //enviando agora o total de cortes historico
-        final docTotalCortesHistoria = await database
-            .collection("DadosConcretosBarbearias")
-            .doc(idBarbearia)
-            .collection("totalCortesHistorico")
-            .doc("valor");
-
-        final docSnapTotalCorteHistorico = await docTotalCortesHistoria.get();
-
-        if (docSnapTotalCorteHistorico.exists) {
-          // Se o documento existir, use update()
-          await docTotalCortesHistoria.update({
-            'valor': FieldValue.increment(1),
-          });
-        } else {
-          // Se o documento não existir, use set() com merge: true para criá-lo
-          await docTotalCortesHistoria.set({
-            'valor': FieldValue.increment(1),
-          }, SetOptions(merge: true));
-        }
       } catch (e) {
         print("ao enviar os dados deu isto:$e");
       }
@@ -181,9 +187,10 @@ class Finalizarecarregarcomandas with ChangeNotifier {
             idBarbearia: idBarbearia,
             ProfissionalId: corte.profissionalId,
             mesAtual: corte.MesSelecionado,
-            porcentagemProfissionalProdutos: porcentagemGanhaProfissionalProdutos,
+            porcentagemProfissionalProdutos:
+                porcentagemGanhaProfissionalProdutos,
             porcentagemProfissionalCortes: porcentagemGanhaProfissionalCortes,
-            valorServico: corte.valorCorte,
+            valorServico: valorTotalServicos,
           );
         } catch (e) {
           print("erro:$e");
@@ -197,6 +204,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
       throw e;
     }
   }
+
   Future<void> atualizandoQuantiasNaClasseDaBarbearia({
     required String idBarbearia,
     required String profissionalId,
@@ -261,7 +269,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
 
   Future<void> enviandoPorcentagensDeComissao({
     required double porcentagemProfissionalCortes,
-     required double porcentagemProfissionalProdutos,
+    required double porcentagemProfissionalProdutos,
     required String idBarbearia,
     required String ProfissionalId,
     required String mesAtual,
@@ -269,10 +277,18 @@ class Finalizarecarregarcomandas with ChangeNotifier {
     required double valorProdutos,
   }) async {
     try {
-      double valorComissaoCortes = await valorServico * (porcentagemProfissionalCortes / 100);
-    double valorComissaoProdutos = await valorProdutos * (porcentagemProfissionalProdutos / 100);
-    double ValoFinalEnviado = (valorComissaoCortes + valorComissaoProdutos);
-      print("#2 o valor final:${ValoFinalEnviado}");
+      double valorComissaoCortes =
+          await valorServico * (porcentagemProfissionalCortes / 100);
+      double valorComissaoProdutos =
+          await valorProdutos * (porcentagemProfissionalProdutos / 100);
+      double ValoFinalEnviado =
+          await (valorComissaoCortes + valorComissaoProdutos);
+      print("#2valorServico:${valorServico}");
+      print("#2valorProdutos:${valorProdutos}");
+
+      print("#2valorComissaoCortes:${valorComissaoCortes}");
+      print("#2valorComissaoProdutos:${valorComissaoProdutos}");
+      print("#ValoFinalEnviado:${ValoFinalEnviado}");
       final pubValorparaProfissional = await database
           .collection("DadosConcretosBarbearias")
           .doc(idBarbearia)

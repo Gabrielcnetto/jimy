@@ -1,9 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 
-class IndicadoresQuadroView extends StatelessWidget {
+class IndicadoresQuadroView extends StatefulWidget {
   const IndicadoresQuadroView({super.key});
 
+  @override
+  State<IndicadoresQuadroView> createState() => _IndicadoresQuadroViewState();
+}
+
+class _IndicadoresQuadroViewState extends State<IndicadoresQuadroView> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    loadTotal();
+  }
+
+  void loadTotal() {
+    loadFaturamentoMensal();
+    loadTotalComissaoMes();
+    loadTicketmedioMensal();
+    loadTotalclientes();
+  }
+
+  double faturamento = 0;
+
+  Future<void> loadFaturamentoMensal() async {
+    double? valor = await Getsdeinformacoes().getFaturamentoMensalGerente();
+
+    setState(() {
+      faturamento = valor!;
+    });
+  }
+
+  double comissoes = 0;
+  Future<void> loadTotalComissaoMes() async {
+    double? valor = await Getsdeinformacoes().getComissaoTotalMensalGerente();
+
+    setState(() {
+      comissoes = valor!;
+    });
+  }
+  double ticketMedio = 0;
+  Future<void> loadTicketmedioMensal() async {
+    double? valor = await Getsdeinformacoes().calculoTicketMedio();
+
+    setState(() {
+      ticketMedio = valor!;
+    });
+  }
+ int totalClientes = 0;
+  Future<void> loadTotalclientes() async {
+    int? valor = await Getsdeinformacoes().getTotalClientesMes();
+
+    setState(() {
+      totalClientes = valor!;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +106,8 @@ class IndicadoresQuadroView extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            "R\$12.000",
+                            "R\$${faturamento.toStringAsFixed(2).replaceAll('.', ',')}",
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                 fontWeight: FontWeight.w600,
@@ -66,6 +121,7 @@ class IndicadoresQuadroView extends StatelessWidget {
                           ),
                           Text(
                             "Faturamento Total",
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                 fontWeight: FontWeight.w400,
@@ -109,7 +165,7 @@ class IndicadoresQuadroView extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "320 Clientes",
+                                          "${totalClientes} Clientes",
                                           style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -160,7 +216,7 @@ class IndicadoresQuadroView extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "R\$49,90",
+                                          "R\$${ticketMedio.toStringAsFixed(2).replaceAll(".", ',')}",
                                           style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -211,7 +267,7 @@ class IndicadoresQuadroView extends StatelessWidget {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "R\$39,90",
+                                          "R\$${comissoes.toStringAsFixed(2).replaceAll('.', ',')}",
                                           style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
                                               fontWeight: FontWeight.w600,
@@ -248,7 +304,8 @@ class IndicadoresQuadroView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                         alignment: Alignment.center,
                         height: MediaQuery.of(context).size.height * 0.1,
                         decoration: BoxDecoration(
@@ -288,7 +345,8 @@ class IndicadoresQuadroView extends StatelessWidget {
                     ),
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                         alignment: Alignment.center,
                         height: MediaQuery.of(context).size.height * 0.1,
                         decoration: BoxDecoration(

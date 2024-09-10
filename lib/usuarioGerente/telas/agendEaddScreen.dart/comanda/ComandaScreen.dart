@@ -40,6 +40,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
     // TODO: implement initState
     super.initState();
     LoadInicialInfs();
+    print("valorServicosTotal: ${widget.valorServicoFinal}");
   }
 
   void LoadInicialInfs() {

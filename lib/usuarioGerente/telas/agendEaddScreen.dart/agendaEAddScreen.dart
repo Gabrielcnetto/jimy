@@ -8,6 +8,7 @@ import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/classes/horarios.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/telas/abrirApenasComanda/abrirApenasComanda.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart';
@@ -728,7 +729,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
               bubbleColor: Colors.white,
               onPress: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (ctx) => AgendarHorarioScreen(),
+                  builder: (ctx) => AbrirApenasComanda(),
                 ));
               },
             ),

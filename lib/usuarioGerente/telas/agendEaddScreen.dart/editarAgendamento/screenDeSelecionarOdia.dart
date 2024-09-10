@@ -27,7 +27,7 @@ class _EditarODiaDoAgendamentoState extends State<EditarODiaDoAgendamento> {
   List<Horarios> horarioFinal = [];
   List<Horarios> Horariopreenchidos = [];
   List<Horarios> _horariosPreenchidosParaEvitarDupNoCreate = [];
-  List<String>selectedHorarios = [];
+  List<String> selectedHorarios = [];
   bool prontoparaexibir = false;
   Future<void> loadListCortes() async {
     // Limpa as listas
@@ -176,177 +176,179 @@ class _EditarODiaDoAgendamentoState extends State<EditarODiaDoAgendamento> {
         );
       },
     );
-  } 
-  
-  bool isloading = false;
- Future<void> removeAtualAndSetNew() async {
-  // Adicione a lógica de verificação de horários aqui
-  bool ocupar2EspacosAgenda = widget.corte.preencher2horarios;
-  List<String> selectedHorarios = [];
-  if (ocupar2EspacosAgenda == true) {
-    // Encontrar o índice do horário selecionado na lista _horariosSemana
-    int selectedIndex = listaHorariosFixos.indexWhere(
-        (horario) => horario.horario == hourSetForUser);
+  }
 
-    if (selectedIndex != -1 &&
-        selectedIndex + 3 < listaHorariosFixos.length) {
-      for (int i = 1; i <= 3; i++) {
-        String horarioExtra = listaHorariosFixos[selectedIndex + i].horario;
-        // Verificar se o horário extra está presente na lista de horários preenchidos
-        bool horarioJaPreenchido = _horariosPreenchidosParaEvitarDupNoCreate
-            .any((horario) => horario.horario == horarioExtra);
-        print(
-            "o tamanho da lista é # ${_horariosPreenchidosParaEvitarDupNoCreate.length}");
-        if (horarioJaPreenchido == true) {
-          // Mostrar um dialog para o usuário selecionar outro horário
-          await showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(
-                  'Horário Indisponível',
-                  style: GoogleFonts.openSans(
-                    textStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Dadosgeralapp().primaryColor,
-                    ),
-                  ),
-                ),
-                content: Text(
-                  'O Serviço selecionado leva mais tempo, ao selecionar este horário pode bagunçar sua rotina. Escolha outro por favor.',
-                  style: GoogleFonts.openSans(
-                    textStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                      // Fechar o dialog
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+  bool isloading = false;
+  Future<void> removeAtualAndSetNew() async {
+    // Adicione a lógica de verificação de horários aqui
+    bool ocupar2EspacosAgenda = widget.corte.preencher2horarios;
+    List<String> selectedHorarios = [];
+    if (ocupar2EspacosAgenda == true) {
+      // Encontrar o índice do horário selecionado na lista _horariosSemana
+      int selectedIndex = listaHorariosFixos
+          .indexWhere((horario) => horario.horario == hourSetForUser);
+
+      if (selectedIndex != -1 &&
+          selectedIndex + 3 < listaHorariosFixos.length) {
+        for (int i = 1; i <= 3; i++) {
+          String horarioExtra = listaHorariosFixos[selectedIndex + i].horario;
+          // Verificar se o horário extra está presente na lista de horários preenchidos
+          bool horarioJaPreenchido = _horariosPreenchidosParaEvitarDupNoCreate
+              .any((horario) => horario.horario == horarioExtra);
+          print(
+              "o tamanho da lista é # ${_horariosPreenchidosParaEvitarDupNoCreate.length}");
+          if (horarioJaPreenchido == true) {
+            // Mostrar um dialog para o usuário selecionar outro horário
+            await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                    'Horário Indisponível',
+                    style: GoogleFonts.openSans(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w600,
                         color: Dadosgeralapp().primaryColor,
-                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Text(
-                        'Escolher outro',
-                        style: GoogleFonts.openSans(
-                          textStyle: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                    ),
+                  ),
+                  content: Text(
+                    'O Serviço selecionado leva mais tempo, ao selecionar este horário pode bagunçar sua rotina. Escolha outro por favor.',
+                    style: GoogleFonts.openSans(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        // Fechar o dialog
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Dadosgeralapp().primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          'Escolher outro',
+                          style: GoogleFonts.openSans(
+                            textStyle: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            },
-          );
-          setState(() {
-            isloading = false;
-          });
-          // Abortar a adição ao provider
-          return;
-        }
+                  ],
+                );
+              },
+            );
+            setState(() {
+              isloading = false;
+            });
+            // Abortar a adição ao provider
+            return;
+          }
 
-        selectedHorarios.add(horarioExtra);
+          selectedHorarios.add(horarioExtra);
+        }
       }
     }
-  }
 
-  // Continuar com o processo de remoção e agendamento
-  Navigator.of(context).pop();
-  setState(() {
-    isloading = true;
-  });
-  try {
-    String monthName =
-        await DateFormat('MMMM', 'pt_BR').format(dataSelectedInModal!);
-    Corteclass corte2 = Corteclass(
-      valorQueOProfissionalGanhaPorCortes: widget.corte.valorQueOProfissionalGanhaPorCortes,
-      valorQueOProfissionalGanhaPorProdutos: widget.corte.valorQueOProfissionalGanhaPorProdutos,
-      porcentagemDoProfissional: widget.corte.porcentagemDoProfissional,
-      horariosExtras: selectedHorarios,
-      idDoServicoSelecionado: widget.corte.idDoServicoSelecionado,
-      nomeServicoSelecionado: widget.corte.nomeServicoSelecionado,
-      JaCortou: widget.corte.JaCortou,
-      MesSelecionado: monthName,
-      ProfissionalSelecionado: widget.corte.ProfissionalSelecionado,
-      anoSelecionado: dataSelectedInModal!.year.toString(),
-      barbeariaId: widget.corte.barbeariaId,
-      clienteNome: widget.corte.clienteNome,
-      dataSelecionadaDateTime: dataSelectedInModal!,
-      diaSelecionado: dataSelectedInModal!.day.toString(),
-      horarioSelecionado: hourSetForUser,
-      id: widget.corte.id,
-      momentoDoAgendamento: DateTime.now(),
-      pagouPeloApp: widget.corte.pagouPeloApp,
-      pagoucomcupom: widget.corte.pagoucomcupom,
-      pontosGanhos: widget.corte.pontosGanhos,
-      preencher2horarios: widget.corte.preencher2horarios,
-      profissionalId: widget.corte.profissionalId,
-      urlImagePerfilfoto: widget.corte.urlImagePerfilfoto,
-      urlImageProfissionalFoto: widget.corte.urlImageProfissionalFoto,
-      valorCorte: widget.corte.valorCorte,
-    );
-    Provider.of<Agendarhorario>(context, listen: false).DesmarcareReagendar(
-      corte2: corte2,
-      corte: widget.corte,
-      idBarbearia: widget.corte.barbeariaId,
-    );
+    // Continuar com o processo de remoção e agendamento
+    Navigator.of(context).pop();
     setState(() {
-      isloading = false;
+      isloading = true;
     });
-    showDialog(
-      context: context,
-      barrierDismissible: false, // Evita que o diálogo seja fechado ao tocar fora dele
-      builder: (ctx) {
-        // Inicia um Timer para fechar o diálogo e redirecionar após 3 segundos
-        Timer(Duration(seconds: 3), () {
-          Navigator.of(ctx).pop(); // Fecha o diálogo
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => VerificacaoDeLogado()),
+    try {
+      String monthName =
+          await DateFormat('MMMM', 'pt_BR').format(dataSelectedInModal!);
+      Corteclass corte2 = Corteclass(
+        valorQueOProfissionalGanhaPorCortes:
+            widget.corte.valorQueOProfissionalGanhaPorCortes,
+        valorQueOProfissionalGanhaPorProdutos:
+            widget.corte.valorQueOProfissionalGanhaPorProdutos,
+        porcentagemDoProfissional: widget.corte.porcentagemDoProfissional,
+        horariosExtras: selectedHorarios,
+        idDoServicoSelecionado: widget.corte.idDoServicoSelecionado,
+        nomeServicoSelecionado: widget.corte.nomeServicoSelecionado,
+        JaCortou: widget.corte.JaCortou,
+        MesSelecionado: monthName,
+        ProfissionalSelecionado: widget.corte.ProfissionalSelecionado,
+        anoSelecionado: dataSelectedInModal!.year.toString(),
+        barbeariaId: widget.corte.barbeariaId,
+        clienteNome: widget.corte.clienteNome,
+        dataSelecionadaDateTime: dataSelectedInModal!,
+        diaSelecionado: dataSelectedInModal!.day.toString(),
+        horarioSelecionado: hourSetForUser,
+        id: widget.corte.id,
+        momentoDoAgendamento: DateTime.now(),
+        pagouPeloApp: widget.corte.pagouPeloApp,
+        pagoucomcupom: widget.corte.pagoucomcupom,
+        pontosGanhos: widget.corte.pontosGanhos,
+        preencher2horarios: widget.corte.preencher2horarios,
+        profissionalId: widget.corte.profissionalId,
+        urlImagePerfilfoto: widget.corte.urlImagePerfilfoto,
+        urlImageProfissionalFoto: widget.corte.urlImageProfissionalFoto,
+        valorCorte: widget.corte.valorCorte,
+      );
+      Provider.of<Agendarhorario>(context, listen: false).DesmarcareReagendar(
+        corte2: corte2,
+        corte: widget.corte,
+        idBarbearia: widget.corte.barbeariaId,
+      );
+      setState(() {
+        isloading = false;
+      });
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Evita que o diálogo seja fechado ao tocar fora dele
+        builder: (ctx) {
+          // Inicia um Timer para fechar o diálogo e redirecionar após 3 segundos
+          Timer(Duration(seconds: 3), () {
+            Navigator.of(ctx).pop(); // Fecha o diálogo
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => VerificacaoDeLogado()),
+            );
+          });
+
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text(
+              "Troca realizada!",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: Colors.black),
+              ),
+            ),
+            content: Text(
+              "Aguarde um instante...",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black45),
+              ),
+            ),
           );
-        });
-
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          title: Text(
-            "Troca realizada!",
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15,
-                  color: Colors.black),
-            ),
-          ),
-          content: Text(
-            "Aguarde um instante...",
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 15,
-                  color: Colors.black45),
-            ),
-          ),
-        );
-      },
-    );
-  } catch (e) {
-    setState(() {
-      isloading = false;
-    });
-    print("erro ao alterar o agendamento:$e");
+        },
+      );
+    } catch (e) {
+      setState(() {
+        isloading = false;
+      });
+      print("erro ao alterar o agendamento:$e");
+    }
   }
-}
-
 
   int selectedIndex = -1;
   Map<int, Color> itemColors = {};

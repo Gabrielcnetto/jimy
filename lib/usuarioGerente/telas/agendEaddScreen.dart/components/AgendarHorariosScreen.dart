@@ -116,7 +116,6 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
 
   List<Horarios> _horariosPreenchidosParaEvitarDupNoCreate = [];
   Future<void> FuncaodeAgendar() async {
- 
     Navigator.of(context).pop();
     setState(() {
       isloading = true;
@@ -279,7 +278,6 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
   //data
   bool prontoparaexibir = true;
 
-  DateTime? DataFolgaDatabase;
   Future<void> ShowModalData() async {
     setState(() {
       dataSelectedInModal = null;
@@ -288,19 +286,8 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
       context: context,
       locale: const Locale('pt', 'BR'),
       firstDate: DateTime.now(),
-      lastDate: DateTime(2040),
+      lastDate: DateTime(2090),
       selectableDayPredicate: (DateTime day) {
-        // Desativa domingos
-        if (day.weekday == DateTime.sunday) {
-          return false;
-        }
-        // Bloqueia a data contida em dataOffselectOfManger
-        if (DataFolgaDatabase != null &&
-            day.year == DataFolgaDatabase!.year &&
-            day.month == DataFolgaDatabase!.month &&
-            day.day == DataFolgaDatabase!.day) {
-          return false;
-        }
         return true;
       },
     ).then((selectUserDate) {
