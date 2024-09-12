@@ -29,7 +29,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
       await FirebaseFirestore.instance
           .collection("comandas")
           .doc(idBarbearia)
-          .collection(corte.MesSelecionado)
+          .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
           .doc(comanda.id)
           .set(
         {
@@ -43,7 +43,23 @@ class Finalizarecarregarcomandas with ChangeNotifier {
         },
         SetOptions(merge: true),
       );
-
+      await FirebaseFirestore.instance
+          .collection("TodasAscomandas")
+          .doc(idBarbearia)
+          .collection("lista")
+          .doc(comanda.id)
+          .set(
+        {
+          "nomeCliente": comanda.nomeCliente,
+          "idBarbearia": idBarbearia,
+          "idBarbeiroQueCriou": comanda.idBarbeiroQueCriou,
+          "valorTotalComanda": comanda.valorTotalComanda,
+          "dataFinalizacao": comanda.dataFinalizacao.toIso8601String(),
+          "servicosFeitos": FieldValue.arrayUnion(servicosMap),
+          "produtosVendidos": produtosMap,
+        },
+        SetOptions(merge: true),
+      );
       //ativando o "jacortou"
       if (!corte.clienteNome.contains("CmddCriada"))
         try {
@@ -58,23 +74,23 @@ class Finalizarecarregarcomandas with ChangeNotifier {
             "JaCortou": true,
           });
           //removendo o 2
-          if(corte.preencher2horarios == true){
+          if (corte.preencher2horarios == true) {
             final attJaCortou2 = await database
-              .collection("agendas")
-              .doc(idBarbearia)
-              .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
-              .doc(corte.diaSelecionado)
-              .collection(corte.ProfissionalSelecionado)
-              .doc(corte.horariosExtras[0])
-              .delete();
-          final attJaCortou3 = await database
-              .collection("agendas")
-              .doc(idBarbearia)
-              .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
-              .doc(corte.diaSelecionado)
-              .collection(corte.ProfissionalSelecionado)
-              .doc(corte.horariosExtras[1])
-              .delete();
+                .collection("agendas")
+                .doc(idBarbearia)
+                .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+                .doc(corte.diaSelecionado)
+                .collection(corte.ProfissionalSelecionado)
+                .doc(corte.horariosExtras[0])
+                .delete();
+            final attJaCortou3 = await database
+                .collection("agendas")
+                .doc(idBarbearia)
+                .collection("${corte.MesSelecionado}.${corte.anoSelecionado}")
+                .doc(corte.diaSelecionado)
+                .collection(corte.ProfissionalSelecionado)
+                .doc(corte.horariosExtras[1])
+                .delete();
           }
         } catch (e) {
           print("erro ao mudar o ja cortou :$e");
@@ -89,7 +105,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
             .collection("DadosConcretosBarbearias")
             .doc(idBarbearia)
             .collection("faturamentoMes")
-            .doc(corte.MesSelecionado);
+            .doc("${corte.MesSelecionado}.${corte.anoSelecionado}");
 
         final docSnapshot = await docRef.get();
 
@@ -294,7 +310,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
           .doc(idBarbearia)
           .collection("comissaoMensalBarbeiros")
           .doc(ProfissionalId)
-          .collection(mesAtual)
+          .collection("${mesAtual}.${DateTime.now().year}")
           .doc("dados");
 
       final docSnapshotQuantiaCorteFeitoEsteMes =
@@ -332,7 +348,7 @@ class Finalizarecarregarcomandas with ChangeNotifier {
           .collection("DadosConcretosBarbearias")
           .doc(idBarbearia)
           .collection("comissaoTotalGerenteMes")
-          .doc(mes);
+          .doc("${mes}.${DateTime.now().year}");
       final docAttComissaoDistribuicao = await pubFinalComissiao.get();
 
       if (docAttComissaoDistribuicao.exists) {

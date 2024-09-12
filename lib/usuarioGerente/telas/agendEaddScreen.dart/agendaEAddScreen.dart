@@ -12,6 +12,7 @@ import 'package:jimy/usuarioGerente/telas/abrirApenasComanda/abrirApenasComanda.
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart';
+import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/CadastrarDespesa.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -715,6 +716,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
         ),
         floatingActionButton: FloatingActionBubble(
           items: <Bubble>[
+             
             Bubble(
               icon: Icons.receipt_long,
               iconColor: Dadosgeralapp().primaryColor,
@@ -748,6 +750,24 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
               onPress: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => AgendarHorarioScreen(),
+                ));
+              },
+            ),
+            Bubble(
+              icon: Icons.shopping_cart_checkout,
+              iconColor: Dadosgeralapp().primaryColor,
+              title: "Cadastrar despesa",
+              titleStyle: GoogleFonts.poppins(
+                textStyle: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              bubbleColor: Colors.white,
+              onPress: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (ctx) => cadastrarNovaDespesa(),
                 ));
               },
             ),

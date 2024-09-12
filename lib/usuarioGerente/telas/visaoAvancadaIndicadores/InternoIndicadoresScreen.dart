@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
@@ -17,22 +18,127 @@ class InternoIndicadoresScreen extends StatefulWidget {
 }
 
 class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
+  List<Barbeiros> _profissionais = [];
+  int anoMesSelecionado = 2024;
+  int anoMesAnteriorAoselecionado = 2024;
+  String mesAnteriorDoSelecionado = "";
+  String mesSelecionadoFinal = "";
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     LoadTotal();
   }
 
-  List<Barbeiros> _profissionais = [];
-  void LoadTotal() {
+  void LoadTotal() async {
+    // Carrega os profissionais
     Provider.of<Getsdeinformacoes>(context, listen: false).getProfissionais;
     setState(() {
       _profissionais =
           Provider.of<Getsdeinformacoes>(context, listen: false).profList;
     });
+
+    // Atualiza os meses e calcula as diferenças de faturamento
+    String mesSelecionado = "Setembro"; // Exemplo
+    await atualizarMes(mesSelecionado);
+    calculoDiferencaFaturamento();
   }
 
+  Future<void> atualizarMes(String mesSelecionado) async {
+    // Lista dos meses em português
+    List<String> meses = [
+      "janeiro",
+      "fevereiro",
+      "março",
+      "abril",
+      "maio",
+      "junho",
+      "julho",
+      "agosto",
+      "setembro",
+      "outubro",
+      "novembro",
+      "dezembro"
+    ];
+
+    // Encontrar o índice do mês selecionado
+    int mesAtualIndex = meses.indexOf(mesSelecionado.toLowerCase());
+
+    if (mesAtualIndex == -1) {
+      print("Mês inválido!");
+      return;
+    }
+
+    // Calcular o mês anterior
+    int mesAnteriorIndex = (mesAtualIndex - 1) < 0 ? 11 : mesAtualIndex - 1;
+
+    String mesAtual = meses[mesAtualIndex];
+    String mesAnterior = meses[mesAnteriorIndex];
+
+    setState(() {
+      mesAnteriorDoSelecionado = mesAnterior;
+      mesSelecionadoFinal = mesAtual;
+    });
+
+    await loadFaturamentoMesAtual();
+    await loadFaturamentoMesAnterior();
+  }
+
+  double faturamentoMesAnterior = 0;
+  double faturamentoMesAtual = 0;
+
+  Future<void> loadFaturamentoMesAnterior() async {
+    double? valor = await Getsdeinformacoes()
+        .getFaturamentoMensalGerenteMesAnterior(
+            anoDeBusca: anoMesAnteriorAoselecionado,
+            mesAnterior: mesAnteriorDoSelecionado);
+
+    setState(() {
+      faturamentoMesAnterior = valor ?? 0;
+      print("Faturamento mês anterior: $faturamentoMesAnterior");
+    });
+  }
+
+  Future<void> loadFaturamentoMesAtual() async {
+    double? valor = await Getsdeinformacoes()
+        .getFaturamentoMensalGerenteMesSelecionado(
+            anoDeBusca: anoMesSelecionado, mesSelecionado: mesSelecionadoFinal);
+
+    setState(() {
+      faturamentoMesAtual = valor ?? 0;
+      print("Faturamento mês atual: $faturamentoMesAtual");
+    });
+  }
+  double porcentagemFinal = 0;
+  double diferencaFaturamento = 0;
+  void calcularPercentualDiferenca(double valorAtual, double valorAnterior) {
+    if (valorAnterior == 0) {
+      // Evita divisão por zero, retornando 0% se o valor anterior for zero
+     setState(() {
+        porcentagemFinal = 0;
+     });
+    } 
+    double valorFinal = ((valorAtual - valorAnterior) / valorAnterior) * 100;
+    print("porcentagem Final faturamento:${valorFinal}");
+    setState(() {
+      porcentagemFinal = valorFinal;
+    });
+  }
+
+  void calculoDiferencaFaturamento() {
+    setState(() {
+      diferencaFaturamento = faturamentoMesAtual - faturamentoMesAnterior;
+    });
+
+    // Calcula a porcentagem de diferença
+    final percentualDiferenca = calcularPercentualDiferenca(
+        faturamentoMesAtual, faturamentoMesAnterior);
+
+    print('Diferença de faturamento: $diferencaFaturamento');
+   
+  }
+
+  //get do mes atual(todas as informacoes) - fim
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,8 +245,8 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                 children: [
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 15),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
@@ -155,8 +261,8 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                               Icon(
                                 Icons.paid,
                                 size: 18,
-                                color: Dadosgeralapp()
-                                    .cinzaParaSubtitulosOuDescs,
+                                color:
+                                    Dadosgeralapp().cinzaParaSubtitulosOuDescs,
                               ),
                               SizedBox(
                                 width: 5,
@@ -175,18 +281,17 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                             ],
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  "R\$15.000",
+                                  "R\$${faturamentoMesAtual.toStringAsFixed(2).replaceAll('.', ',')}",
                                   style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -200,16 +305,16 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                                     horizontal: 5,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        Icons.arrow_upward,
+                                      porcentagemFinal >= 0?  Icons.arrow_upward : Icons.arrow_downward,
                                         size: 12,
-                                        color: Colors.green.shade700,
+                                        color:porcentagemFinal >= 0? Colors.green.shade700 : Colors.red,
                                       ),
+                                      if(porcentagemFinal >=0)
                                       Text(
-                                        "+12.5%",
+                                        "${porcentagemFinal.toStringAsFixed(0)}%",
                                         style: GoogleFonts.poppins(
                                           textStyle: TextStyle(
                                             color: Colors.green.shade700,
@@ -218,11 +323,22 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                                           ),
                                         ),
                                       ),
+                                       if(porcentagemFinal <0)
+                                      Text(
+                                        "${porcentagemFinal.toStringAsFixed(0)}%",
+                                        style: GoogleFonts.poppins(
+                                          textStyle: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.green.shade100
-                                        .withOpacity(0.7),
+                                    color:
+                                       porcentagemFinal >=0 ? Colors.green.shade100.withOpacity(0.7) : Colors.red.shade100.withOpacity(0.5),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -232,19 +348,32 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                "+R\$118,80",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                    color: Colors.green.shade700,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 10,
+                              if (diferencaFaturamento < 0)
+                                Text(
+                                  "-R\$${diferencaFaturamento.toStringAsFixed(2).replaceAll('.', ',').replaceAll('-', '')}",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                    ),
                                   ),
                                 ),
-                              ),
+                              if (diferencaFaturamento >= 0)
+                                Text(
+                                  "+R\$${diferencaFaturamento.toStringAsFixed(2).replaceAll('.', ',')}",
+                                  textAlign: TextAlign.center,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                      color: Colors.green.shade700,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ),
                               Text(
-                                " vs Agosto",
+                                " vs ${mesAnteriorDoSelecionado}",
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                     color: Dadosgeralapp()
@@ -265,8 +394,8 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                   ),
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 15),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
@@ -281,8 +410,8 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                               Icon(
                                 Icons.shopping_cart_checkout,
                                 size: 18,
-                                color: Dadosgeralapp()
-                                    .cinzaParaSubtitulosOuDescs,
+                                color:
+                                    Dadosgeralapp().cinzaParaSubtitulosOuDescs,
                               ),
                               SizedBox(
                                 width: 5,
@@ -301,8 +430,7 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                             ],
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -312,7 +440,7 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                                   style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -326,8 +454,7 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                                     horizontal: 5,
                                   ),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
                                         Icons.arrow_downward,
@@ -347,8 +474,7 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                                     ],
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.red.shade100
-                                        .withOpacity(0.7),
+                                    color: Colors.red.shade100.withOpacity(0.7),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
@@ -370,7 +496,7 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                                 ),
                               ),
                               Text(
-                                " vs Agosto",
+                                " vs ${mesAnteriorDoSelecionado}",
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                     color: Dadosgeralapp()
@@ -407,49 +533,55 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
                 height: 5,
               ),
               Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20)),
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.calendar_today,
-                              size: 18,
-                              color: Colors.black,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Setembro",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)),
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.calendar_today,
+                            size: 18,
+                            color: Colors.black,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            mesSelecionadoFinal.toUpperCase(),
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Column(
-                        children: _profissionais.map((profissional) {
-                          return ItemVisaoComissao(
-                            barbeiro: profissional,
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  )),
+                    ),
+                    Column(
+                      children: _profissionais.map((profissional) {
+                        return ItemVisaoComissao(
+                          mesDeBusca: mesSelecionadoFinal,
+                          anoDeBusca: anoMesSelecionado,
+                          barbeiro: profissional,
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 25,
+              ),
             ],
           ),
         ),

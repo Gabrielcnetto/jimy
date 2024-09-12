@@ -339,6 +339,101 @@ class Getsdeinformacoes with ChangeNotifier {
     return faturamentoMensal;
   }
 
+  //
+  Future<double> getFaturamentoMensalGerenteMesSelecionado({
+  required String mesSelecionado,
+  required int anoDeBusca,
+}) async {
+  final userId = authSettings.currentUser!.uid;
+  String idBarbearia = "";
+
+  try {
+    // Pegar o ID da barbearia
+    await database.collection("usuarios").doc(userId).get().then((event) {
+      if (event.exists) {
+        Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+        idBarbearia = data['idBarbearia'];
+      }
+    });
+  } catch (e) {
+    print("Erro ao pegar o id da barbearia: $e");
+    return 0.0; // Retorna 0.0 em caso de erro
+  }
+
+  try {
+    double faturamentoMensal = 0.0;
+    
+    // Pegar o faturamento do mês selecionado
+    final docSnapshot = await database
+        .collection("DadosConcretosBarbearias")
+        .doc(idBarbearia)
+        .collection("faturamentoMes")
+        .doc("${mesSelecionado.toLowerCase()}.${anoDeBusca}")
+        .get();
+
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data();
+      if (data != null && data.containsKey("valor")) {
+        // Converte o valor para double
+        faturamentoMensal = (data["valor"] as num).toDouble();
+      }
+    }
+    return faturamentoMensal;
+  } catch (e) {
+    print("Erro ao pegar o mês selecionado: $e");
+    return 0.0; // Retorna 0.0 em caso de erro
+  }
+}
+
+
+  //
+  Future<double?> getFaturamentoMensalGerenteMesAnterior({
+  required String mesAnterior,
+  required int anoDeBusca,
+}) async {
+  final userId = authSettings.currentUser!.uid;
+  String idBarbearia = "";
+
+  try {
+    // Pegar o ID da barbearia
+    await database.collection("usuarios").doc(userId).get().then((event) {
+      if (event.exists) {
+        Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+        idBarbearia = data['idBarbearia'];
+      }
+    });
+  } catch (e) {
+    print("Erro ao pegar o id da barbearia: $e");
+    return 0.0; // Retorna 0.0 em caso de erro
+  }
+
+  try {
+    double faturamentoMensal = 0.0;
+
+    // Pegar o faturamento do mês anterior
+    final docSnapshot = await database
+        .collection("DadosConcretosBarbearias")
+        .doc(idBarbearia)
+        .collection("faturamentoMes")
+        .doc("${mesAnterior.toLowerCase()}.${anoDeBusca}")
+        .get();
+
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data();
+      if (data != null && data.containsKey("valor")) {
+        // Converte o valor para double
+        faturamentoMensal = (data["valor"] as num).toDouble();
+      }
+    }
+    return faturamentoMensal;
+  } catch (e) {
+    print("Erro ao pegar o mês anterior: $e");
+    return 0.0; // Retorna 0.0 em caso de erro
+  }
+}
+
+
+
   Future<double?> getComissaoTotalMensalGerente() async {
     final userId = await authSettings.currentUser!.uid;
     String idBarbearia = await "";
@@ -361,7 +456,7 @@ class Getsdeinformacoes with ChangeNotifier {
         .collection("DadosConcretosBarbearias")
         .doc(idBarbearia)
         .collection("comissaoTotalGerenteMes")
-        .doc(monthName)
+        .doc("${monthName}.${momento.year}")
         .get()
         .then(
       (event) {
@@ -399,7 +494,7 @@ class Getsdeinformacoes with ChangeNotifier {
           .collection("DadosConcretosBarbearias")
           .doc(idBarbearia)
           .collection("faturamentoMes")
-          .doc(monthName)
+          .doc("${monthName}.${momento.year}")
           .get();
 
       final faturamentoMensal = faturamentoDoc.exists
@@ -415,7 +510,7 @@ class Getsdeinformacoes with ChangeNotifier {
       final comandasSnapshot = await database
           .collection("comandas")
           .doc(idBarbearia)
-          .collection(monthName)
+          .collection("${monthName}.${DateTime.now().year}")
           .get();
 
       final tamanhoDaLista = comandasSnapshot.docs.length.toDouble();
@@ -459,7 +554,7 @@ class Getsdeinformacoes with ChangeNotifier {
       final comandasSnapshot = await database
           .collection("comandas")
           .doc(idBarbearia)
-          .collection(monthName)
+          .collection("${monthName}.${momento.year}")
           .get();
 
       final tamanhoDaLista = comandasSnapshot.docs.length;
@@ -477,5 +572,53 @@ class Getsdeinformacoes with ChangeNotifier {
       return null;
     }
   }
+
+
+  Future<double> getComissaoDoBarbeiroPeloMesInterno({
+  required String mesSelecionado,
+  required int anoDaBusca,
+  required String barbeiroId,
+}) async {
+  final userId = await authSettings.currentUser!.uid;
+  String idBarbearia = "";
+  try {
+    final userDoc = await database.collection("usuarios").doc(userId).get();
+    if (userDoc.exists) {
+      Map<String, dynamic>? data = userDoc.data();
+      idBarbearia = data?['idBarbearia'] ?? "";
+    } else {
+      print("Erro: Documento do usuário não encontrado");
+      return 0.0;
+    }
+  } catch (e) {
+    print("Erro ao pegar o id da barbearia: $e");
+    return 0.0;
+  }
+
+  try {
+    final comissaoDoc = await database
+        .collection("DadosConcretosBarbearias")
+        .doc(idBarbearia)
+        .collection("comissaoMensalBarbeiros")
+        .doc(barbeiroId)
+        .collection("${mesSelecionado}.${anoDaBusca}")
+        .doc("dados")
+        .get();
+
+    if (comissaoDoc.exists) {
+      Map<String, dynamic>? data = comissaoDoc.data();
+      double comissaoTotalMes = data?["valor"]?.toDouble() ?? 0.0;
+      return comissaoTotalMes;
+    } else {
+      print("Erro: Documento de comissão não encontrado");
+      return 0.0;
+    }
+  } catch (e) {
+    print("Erro ao pegar a comissão: $e");
+    return 0.0;
+  }
+}
+
+
   //coisas relacionadas aos indicadores da home - fim
 }
