@@ -4,7 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/usuarioGerente/classes/Despesa.dart';
+import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
+import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/componentes/itemVisualDespesa.dart';
 import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/primeiraVisaoCadastro.dart';
+import 'package:provider/provider.dart';
 
 class cadastrarNovaDespesa extends StatefulWidget {
   const cadastrarNovaDespesa({super.key});
@@ -14,12 +18,19 @@ class cadastrarNovaDespesa extends StatefulWidget {
 }
 
 class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<DespesasFunctions>(context, listen: false).getDespesasLoad();
+  }
+
   final nomeDespesaControler = TextEditingController();
   final precoProdutoControler = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey.shade50,
       body: SafeArea(
         child: Stack(
           children: [
@@ -29,7 +40,7 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
               right: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                color: Colors.white,
+                color:  Colors.grey.shade50,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -104,8 +115,49 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 height: MediaQuery.of(context).size.height * 0.7,
-                color: Colors.blue.shade100,
-                child: Text("teste"),
+                child: StreamBuilder(
+                  stream: Provider.of<DespesasFunctions>(context, listen: false)
+                      .getDespesaList,
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Dadosgeralapp().primaryColor,
+                        ),
+                      );
+                    }
+                    if (snapshot.data!.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "Nenhuma Despesa criada",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    if (snapshot.hasData) {
+                      List<Despesa> listaDespesa =
+                          snapshot.data as List<Despesa>;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: listaDespesa.map(
+                          (item) {
+                            return ItemVisualDespesa(
+                              despesa: item,
+                            );
+                          },
+                        ).toList(),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
               ),
             ),
           ],

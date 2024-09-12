@@ -11,6 +11,7 @@ import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
 import 'package:jimy/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -57,6 +58,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (_) => Finalizarecarregarcomandas(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DespesasFunctions(),
         ),
       ],
       child: MaterialApp(
