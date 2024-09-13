@@ -8,12 +8,14 @@ class Despesa {
   final bool despesaUnica;
   final DateTime dataDeCobrancaDatetime;
   final DateTime momentoFinalizacao;
+  final bool pagoDeInicio;
   bool PagoEsteMes;
 
   Despesa({
     required this.PagoEsteMes,
     required this.dataDeCobrancaDatetime,
     required this.despesaUnica,
+    required this.pagoDeInicio,
     required this.diaCobranca,
     required this.id,
     required this.mesDeCobranca,
@@ -26,6 +28,7 @@ class Despesa {
   // Converte o objeto em um mapa
   Map<String, dynamic> toMap() {
     return {
+      'pagoDeInicio': pagoDeInicio,
       'id': id,
       'name': name,
       'diaCobranca': diaCobranca,
@@ -42,6 +45,7 @@ class Despesa {
   // Método para criar um objeto a partir de um mapa
   factory Despesa.fromMap(Map<String, dynamic> map) {
     return Despesa(
+      pagoDeInicio: map["pagoDeInicio"] ?? false,
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       diaCobranca: map['diaCobranca'] ?? '',

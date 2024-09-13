@@ -66,7 +66,7 @@ class _PrimeiraVisaoCadastroBarbeariaState
     showDatePicker(
       context: context,
       locale: const Locale('pt', 'BR'),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(DateTime.now().year, DateTime.now().month, 1),
       lastDate: DateTime(2090),
       selectableDayPredicate: (DateTime day) {
         return true;
@@ -111,8 +111,9 @@ class _PrimeiraVisaoCadastroBarbeariaState
     });
   }
 
+  bool pagoDeInicio = false;
   bool isLoading = false;
-  Future<void> salvandoDespesaNovaCriadaRecorrente() async {
+  Future<void> salvandoDespesaCriada() async {
     setState(() {
       isLoading = true;
     });
@@ -125,9 +126,10 @@ class _PrimeiraVisaoCadastroBarbeariaState
       String monthName =
           await DateFormat('MMMM', 'pt_BR').format(dataVencimento!);
       Despesa _despesa = Despesa(
+        pagoDeInicio: pagoDeInicio,
         PagoEsteMes: false,
         dataDeCobrancaDatetime: dataVencimento!,
-        despesaUnica: false,
+        despesaUnica: apenasEsteMes,
         diaCobranca: dataVencimento!.day.toString(),
         id: Random().nextDouble().toString(),
         mesDeCobranca: monthName,
@@ -137,7 +139,8 @@ class _PrimeiraVisaoCadastroBarbeariaState
         recorrente: recorrente,
       );
       await Provider.of<DespesasFunctions>(context, listen: false)
-          .criandoUmaDespesaRecorrenteESalvando(
+          .criandoDespesa(
+        isRecorrente: recorrente,
         despesaCriada: _despesa,
         idBarbearia: loadIdBarbearia!,
       );
@@ -154,6 +157,9 @@ class _PrimeiraVisaoCadastroBarbeariaState
           Timer(Duration(seconds: 3), () {
             Navigator.of(ctx).pop(); // Fecha o diálogo
             Navigator.of(ctx).pop();
+            if (recorrente == false) {
+              Navigator.of(context).pop();
+            }
           });
 
           return AlertDialog(
@@ -493,8 +499,9 @@ class _PrimeiraVisaoCadastroBarbeariaState
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  if (_formKey.currentState!.validate() && dataVencimento !=null) {
-                                    salvandoDespesaNovaCriadaRecorrente();
+                                  if (_formKey.currentState!.validate() &&
+                                      dataVencimento != null) {
+                                    salvandoDespesaCriada();
                                   }
                                 },
                                 child: Container(
@@ -521,22 +528,174 @@ class _PrimeiraVisaoCadastroBarbeariaState
                             ),
                             if (!recorrente)
                               Expanded(
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 20),
-                                  decoration: BoxDecoration(
-                                    color: Dadosgeralapp().primaryColor,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Text(
-                                    "Finalizar",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 12),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (Ctx) {
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 20),
+                                          child: Center(
+                                            child: Container(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 15, vertical: 15),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.7,
+                                                    child: Text(
+                                                      "Esta despesa foi paga?",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: InkWell(
+                                                          onTap: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 5,
+                                                                    horizontal:
+                                                                        10),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Dadosgeralapp()
+                                                                  .tertiaryColor,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                            child: Text(
+                                                              "Ainda não",
+                                                              style: GoogleFonts
+                                                                  .openSans(
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .white60,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10,
+                                                      ),
+                                                      Expanded(
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            setState(() {
+                                                              pagoDeInicio =
+                                                                  true;
+                                                            });
+                                                            salvandoDespesaCriada();
+                                                          },
+                                                          child: Container(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            padding: EdgeInsets
+                                                                .symmetric(
+                                                                    vertical: 5,
+                                                                    horizontal:
+                                                                        10),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Dadosgeralapp()
+                                                                  .primaryColor,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                            ),
+                                                            child: Text(
+                                                              "Sim",
+                                                              style: GoogleFonts
+                                                                  .poppins(
+                                                                textStyle:
+                                                                    TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              width: double.infinity,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.25,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    decoration: BoxDecoration(
+                                      color: Dadosgeralapp().primaryColor,
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
+                                    child: Text(
+                                      "Finalizar",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12),
+                                      ),
+                                    ),
+                                    alignment: Alignment.center,
                                   ),
-                                  alignment: Alignment.center,
                                 ),
                               ),
                           ],

@@ -22,11 +22,19 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    setMesAtual();
     Provider.of<DespesasFunctions>(context, listen: false).getDespesasLoad();
   }
 
   final nomeDespesaControler = TextEditingController();
   final precoProdutoControler = TextEditingController();
+  int MesAtual = 0;
+  void setMesAtual() {
+    setState(() {
+      MesAtual = DateTime.now().month;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +48,7 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
               right: 0,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                color:  Colors.grey.shade50,
+                color: Colors.grey.shade50,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -144,15 +152,20 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
                     if (snapshot.hasData) {
                       List<Despesa> listaDespesa =
                           snapshot.data as List<Despesa>;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: listaDespesa.map(
-                          (item) {
-                            return ItemVisualDespesa(
-                              despesa: item,
-                            );
-                          },
-                        ).toList(),
+                      List<Despesa> listaDespesaFiltrada = listaDespesa
+                          .where((atributo) => atributo.pagoDeInicio == false && atributo.momentoFinalizacao.month != MesAtual)
+                          .toList();
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: listaDespesaFiltrada.map(
+                            (item) {
+                              return ItemVisualDespesa(
+                                despesa: item,
+                              );
+                            },
+                          ).toList(),
+                        ),
                       );
                     }
                     return Container();
