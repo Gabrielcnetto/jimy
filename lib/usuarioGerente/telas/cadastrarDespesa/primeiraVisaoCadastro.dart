@@ -126,6 +126,8 @@ class _PrimeiraVisaoCadastroBarbeariaState
       String monthName =
           await DateFormat('MMMM', 'pt_BR').format(dataVencimento!);
       Despesa _despesa = Despesa(
+        historicoPagamentos: [],
+        urlImageComprovante: "",
         pagoDeInicio: pagoDeInicio,
         PagoEsteMes: false,
         dataDeCobrancaDatetime: dataVencimento!,

@@ -2,6 +2,8 @@ class Despesa {
   final String id;
   final String name;
   final String diaCobranca;
+  final String urlImageComprovante;
+  final List<DateTime> historicoPagamentos;
   final String mesDeCobranca;
   final double preco;
   final bool recorrente;
@@ -12,6 +14,8 @@ class Despesa {
   bool PagoEsteMes;
 
   Despesa({
+    required this.historicoPagamentos,
+    required this.urlImageComprovante,
     required this.PagoEsteMes,
     required this.dataDeCobrancaDatetime,
     required this.despesaUnica,
@@ -39,6 +43,8 @@ class Despesa {
       'dataDeCobrancaDatetime': dataDeCobrancaDatetime.toIso8601String(),
       'momentoFinalizacao': momentoFinalizacao.toIso8601String(),
       'PagoEsteMes': PagoEsteMes,
+      'urlImageComprovante': urlImageComprovante,
+      'historicoPagamentos': historicoPagamentos.map((date) => date.toIso8601String()).toList(),
     };
   }
 
@@ -58,6 +64,10 @@ class Despesa {
       dataDeCobrancaDatetime: DateTime.parse(map['dataDeCobrancaDatetime']),
       momentoFinalizacao: DateTime.parse(map['momentoFinalizacao']),
       PagoEsteMes: map['PagoEsteMes'] ?? false,
+      urlImageComprovante: map['urlImageComprovante'] ?? '',
+      historicoPagamentos: (map['historicoPagamentos'] as List)
+          .map((dateString) => DateTime.parse(dateString))
+          .toList(),
     );
   }
 }

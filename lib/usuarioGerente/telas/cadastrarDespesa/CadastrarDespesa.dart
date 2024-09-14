@@ -7,6 +7,8 @@ import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/Despesa.dart';
 import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
 import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/componentes/itemVisualDespesa.dart';
+import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoCompletoDeSa%C3%ADdas.dart';
+import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoSaidasEsteMes.dart';
 import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/primeiraVisaoCadastro.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,8 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
     super.initState();
     setMesAtual();
     Provider.of<DespesasFunctions>(context, listen: false).getDespesasLoad();
+    Provider.of<DespesasFunctions>(context, listen: false)
+        .getDespesasPosPagaLoad();
   }
 
   final nomeDespesaControler = TextEditingController();
@@ -32,6 +36,16 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
   void setMesAtual() {
     setState(() {
       MesAtual = DateTime.now().month;
+    });
+  }
+
+  bool verHistoricoGeral = false;
+  void setNewView() {
+    setState(() {
+      verHistoricoGeral = !verHistoricoGeral;
+      Provider.of<DespesasFunctions>(context, listen: false).getDespesasLoad();
+      Provider.of<DespesasFunctions>(context, listen: false)
+          .getDespesasPosPagaLoad();
     });
   }
 
@@ -71,17 +85,70 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
                     SizedBox(
                       height: 15,
                     ),
-                    Container(
-                      child: Text(
-                        "Saídas",
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: setNewView,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: verHistoricoGeral == false ? 1 : 0,
+                                  color: verHistoricoGeral == false
+                                      ? Colors.black
+                                      : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              "Saídas",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: verHistoricoGeral == false
+                                      ? Colors.black
+                                      : Colors.black45,
+                                  fontSize:
+                                      verHistoricoGeral == false ? 25 : 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          splashColor: Colors.transparent,
+                          onTap: setNewView,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: verHistoricoGeral == true ? 1 : 0,
+                                  color: verHistoricoGeral == true
+                                      ? Colors.black
+                                      : Colors.transparent,
+                                ),
+                              ),
+                            ),
+                            child: Text(
+                              "Histórico",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: verHistoricoGeral == true
+                                      ? Colors.black
+                                      : Colors.black45,
+                                  fontSize: verHistoricoGeral == true ? 25 : 14,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -123,54 +190,11 @@ class _cadastrarNovaDespesaState extends State<cadastrarNovaDespesa> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 height: MediaQuery.of(context).size.height * 0.7,
-                child: StreamBuilder(
-                  stream: Provider.of<DespesasFunctions>(context, listen: false)
-                      .getDespesaList,
-                  builder: (ctx, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: Dadosgeralapp().primaryColor,
-                        ),
-                      );
-                    }
-                    if (snapshot.data!.isEmpty) {
-                      return Center(
-                        child: Text(
-                          "Nenhuma Despesa criada",
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
-                            textStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    if (snapshot.hasData) {
-                      List<Despesa> listaDespesa =
-                          snapshot.data as List<Despesa>;
-                      List<Despesa> listaDespesaFiltrada = listaDespesa
-                          .where((atributo) => atributo.pagoDeInicio == false && atributo.momentoFinalizacao.month != MesAtual)
-                          .toList();
-                      return SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: listaDespesaFiltrada.map(
-                            (item) {
-                              return ItemVisualDespesa(
-                                despesa: item,
-                              );
-                            },
-                          ).toList(),
-                        ),
-                      );
-                    }
-                    return Container();
-                  },
-                ),
+                child: verHistoricoGeral == false
+                    ? SaidasEsteMes(
+                        mesAtual: MesAtual,
+                      )
+                    : HistoricoCompletoDeSaidas(),
               ),
             ),
           ],
