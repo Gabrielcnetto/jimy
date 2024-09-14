@@ -9,21 +9,16 @@ import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart';
 import 'package:provider/provider.dart';
 
-class InternoIndicadoresScreen extends StatefulWidget {
-  const InternoIndicadoresScreen({super.key});
+class InternoIndicadoresScreenV2 extends StatefulWidget {
+  const InternoIndicadoresScreenV2({super.key});
 
   @override
-  State<InternoIndicadoresScreen> createState() =>
-      _InternoIndicadoresScreenState();
+  State<InternoIndicadoresScreenV2> createState() =>
+      _InternoIndicadoresScreenV2State();
 }
 
-class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
-  List<Barbeiros> _profissionais = [];
-  int anoMesSelecionado = 2024;
-  int anoMesAnteriorAoselecionado = 2024;
-  String mesAnteriorDoSelecionado = "";
-  String mesSelecionadoFinal = "";
-
+class _InternoIndicadoresScreenV2State
+    extends State<InternoIndicadoresScreenV2> {
   @override
   void initState() {
     super.initState();
@@ -43,10 +38,6 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
     setState(() {
       atualizarMes(mesSelecionado: mesSelecionado);
     });
-    calculoDiferencaFaturamento();
-    loadValorRecorrentes();
-    loadDespesasTotal();
-    calculoDiferencaFaturamento();
   }
 
   List<String> meses = [
@@ -63,27 +54,6 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
     "novembro",
     "dezembro"
   ];
-  void reloadAllFunctions() async {
-    setState(() {
-      _profissionais = [];
-      isLoading = true;
-    });
-    await loadFaturamentoMesAtual();
-    await loadFaturamentoMesAnterior();
-    setState(() {
-      atualizarMes(mesSelecionado: mesSelecionadoFinal);
-    });
-    await loadDespesasTotal();
-    await calculardespesaCorretamenteAposMesSelecionado();
-    await calculoDiferente();
-    setState(() {
-      _profissionais =
-          Provider.of<Getsdeinformacoes>(context, listen: false).profList;
-    });
-    setState(() {
-      isLoading = false;
-    });
-  }
 
   Future<void> atualizarMes({required String mesSelecionado}) async {
     // Lista dos meses em português
@@ -106,28 +76,9 @@ class _InternoIndicadoresScreenState extends State<InternoIndicadoresScreen> {
       mesAnteriorDoSelecionado = mesAnterior;
       mesSelecionadoFinal = mesAtual;
     });
-
-    await loadFaturamentoMesAtual();
-    await loadFaturamentoMesAnterior();
   }
 
-  double faturamentoMesAnterior = 0;
-  double faturamentoMesAtual = 0;
-
-  Future<void> loadFaturamentoMesAnterior() async {
-    double? valor = await Getsdeinformacoes()
-        .getFaturamentoMensalGerenteMesAnterior(
-       
-            anoDeBusca: anoMesAnteriorAoselecionado,
-            mesAnterior: mesAnteriorDoSelecionado);
-
-    setState(() {
-      faturamentoMesAnterior = valor ?? 0;
-      print("Faturamento mês anterior: $faturamentoMesAnterior");
-      calculoDiferencaFaturamento();
-    });
-  }
-String? loadIdBarbearia;
+  String? loadIdBarbearia;
   Future<void> loadloadIdBarbearia() async {
     String? id = await Getsdeinformacoes().getNomeIdBarbearia();
 
@@ -135,140 +86,179 @@ String? loadIdBarbearia;
       loadIdBarbearia = id;
     });
   }
-  Future<void> loadFaturamentoMesAtual() async {
-    double? valor = await Getsdeinformacoes()
-        .getFaturamentoMensalGerenteMesSelecionado(
 
-            anoDeBusca: anoMesSelecionado, mesSelecionado: mesSelecionadoFinal);
-
+  //load e soma das despesas agora - fim
+  List<Barbeiros> _profissionais = [];
+  int anoMesSelecionado = 2024;
+  int anoMesAnteriorAoselecionado = 2024;
+  String mesAnteriorDoSelecionado = "";
+  String mesSelecionadoFinal = "";
+  void reloadTodososCalculos() {
     setState(() {
-      faturamentoMesAtual = valor ?? 0;
-      print("Faturamento mês atual: $faturamentoMesAtual");
-      calculoDiferencaFaturamento();
+      atualizarMes(mesSelecionado: mesSelecionadoFinal);
+      loadFaturamentoMesSelecionadoFN();
+      loadTotaldespesas();
     });
   }
 
-  double porcentagemFinal = 0;
+  double faturamentoMesSelecionado = 0;
+  double faturamentoAnteriorAoMesSelecionado = 0;
   double diferencaFaturamento = 0;
-
-  void calcularPercentualDiferenca(double valorAtual, double valorAnterior) {
-    if (valorAnterior == 0) {
-      setState(() {
-        porcentagemFinal = valorAtual > 0
-            ? 100
-            : 0; // Se o valor atual for positivo, 100%. Se for 0, 0%.
-      });
-    } else {
-      double valorFinal = ((valorAtual - valorAnterior) / valorAnterior) * 100;
-      print("Porcentagem final faturamento: $valorFinal");
-      setState(() {
-        porcentagemFinal = valorFinal;
-      });
-    }
-  }
-
-  void calculoDiferencaFaturamento() {
-    setState(() {
-      diferencaFaturamento = faturamentoMesAtual - faturamentoMesAnterior;
-    });
-
-    // Calcula a porcentagem de diferença
-    final percentualDiferenca = calcularPercentualDiferenca(
-        faturamentoMesAtual, faturamentoMesAnterior);
-
-    print('Diferença de faturamento: $diferencaFaturamento');
-  }
-
-  //get do mes atual(todas as informacoes) - fim
-
-  //load e soma das despesas agora - inicio
-  //se o mes atual for o selecionado somamos as despesas  recorrentes(valor junto)
-  double valorfinalDespesa = 0;
-  double valorRecorrentes = 0;
-  double despesaMesAnteriorAoSelecionado = 0;
-  double diferencaDeDespesas = 0;
-  double valorDespesaMesSelecionado = 0;
-  loadDespesasTotal() async {
-    loadValorRecorrentes();
-    loadDespesaMesPassado();
-    calculardespesaCorretamenteAposMesSelecionado();
-    print("diferencaDeDespesas:${diferencaDeDespesas}");
-  }
-
-  Future<void> loadValorRecorrentes() async {
-    double? valor = await Getsdeinformacoes().getValorDeRecorrentesEsteMes();
-
-    setState(() {
-      valorRecorrentes = valor ?? 0;
-      calculardespesaCorretamenteAposMesSelecionado();
-    });
-  }
-
-  Future<void> loadValorDespesaMesSelecionado() async {
-    double? valor = await Getsdeinformacoes().getDespesaMesSelecionado(
+  double porcentagemFaturamento = 0;
+  Future<void> loadFaturamentoMesSelecionadoFN() async {
+    double dbDataMesSelecionado =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+            .getFaturamentoMensalGerenteMesSelecionado(
       anoDeBusca: anoMesSelecionado,
       mesSelecionado: mesSelecionadoFinal,
     );
 
+    double? dbDataMesAnterior =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+            .getFaturamentoMensalGerenteMesAnterior(
+      anoDeBusca: anoMesAnteriorAoselecionado,
+      mesAnterior: mesAnteriorDoSelecionado,
+    );
+
     setState(() {
-      valorDespesaMesSelecionado = valor ?? 0;
-      calculardespesaCorretamenteAposMesSelecionado();
+      faturamentoMesSelecionado = dbDataMesSelecionado;
+      faturamentoAnteriorAoMesSelecionado = dbDataMesAnterior!;
+      calculoDeDiferencaEntreOsFaturamentos(); // Calcula somente após os dois valores serem carregados
+      calcularPorcentagemDeDiferenca();
     });
   }
 
-  Future<void> loadDespesaMesPassado() async {
-    double? valor = await Getsdeinformacoes().getDespesaMesAnterior(
-        anoDeBusca: anoMesAnteriorAoselecionado,
-        mesSelecionado: mesAnteriorDoSelecionado);
+  void calculoDeDiferencaEntreOsFaturamentos() {
+    double valorCalculado =
+        faturamentoMesSelecionado - faturamentoAnteriorAoMesSelecionado;
+    setState(() {
+      diferencaFaturamento = valorCalculado;
+    });
+    print('diferencaFaturamento: $diferencaFaturamento');
+  }
 
-    setState(() {
-      despesaMesAnteriorAoSelecionado = valor ?? 0;
-      calculardespesaCorretamenteAposMesSelecionado();
-      calcularPercentualDiferencaDespesa(
-          valorAnterior: despesaMesAnteriorAoSelecionado,
-          valorAtual: valorfinalDespesa);
-    });
-  }
-   calculoDiferente(){
-    setState(() {
-      diferencaDeDespesas =
-            valorfinalDespesa - despesaMesAnteriorAoSelecionado;
-    });
-  }
-  DateTime momentoAtual = DateTime.now();
-   calculardespesaCorretamenteAposMesSelecionado() async {
-    String mesAtual = DateFormat('MMMM', 'pt_BR').format(momentoAtual);
-    if (mesSelecionadoFinal == mesAtual) {
+  void calcularPorcentagemDeDiferenca() {
+    if (faturamentoAnteriorAoMesSelecionado == 0 &&
+        faturamentoMesSelecionado > 0) {
+      // Caso especial: faturamento anterior foi 0, então o crescimento é 100%
       setState(() {
-        valorfinalDespesa = valorRecorrentes;
-        calculoDiferente();
+        porcentagemFaturamento = 100;
       });
-    } else {
-      await loadValorDespesaMesSelecionado();
+      print('Porcentagem de diferença: 100% (crescimento total)');
+    } else if (faturamentoAnteriorAoMesSelecionado != 0) {
+      // Cálculo normal de porcentagem de diferença
+      double diferenca =
+          faturamentoMesSelecionado - faturamentoAnteriorAoMesSelecionado;
+      double porcentagem =
+          (diferenca / faturamentoAnteriorAoMesSelecionado) * 100;
+
       setState(() {
-        valorfinalDespesa = valorDespesaMesSelecionado;
+        porcentagemFaturamento = porcentagem;
+      });
+      print('Porcentagem de diferença: $porcentagemFaturamento%');
+    } else {
+      // Evitar divisão por zero e caso ambos os faturamentos sejam zero
+      setState(() {
+        porcentagemFaturamento = 0;
+      });
+      print('Porcentagem de diferença: 0% (sem crescimento)');
+    }
+  }
+
+  double valorfinalDespesa = 0;
+  double MesSelecionadoDespesa = 0;
+  double mesAnteriorDespesa = 0;
+  double valorRecorrente = 0;
+  double porcentagemDespesa = 0;
+  double diferencaDeDespesas = 0;
+  DateTime dateMomento = DateTime.now();
+  Future<void> loadTotaldespesas() async {
+    print("acessei load das despesas");
+    double? recorrente =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+                .getValorDeRecorrentesEsteMes() ??
+            0.0;
+    print("recorrente:${recorrente}");
+    double? valorDespesaEsteMes =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+                .getDespesaMesSelecionado(
+              anoDeBusca: anoMesSelecionado,
+              mesSelecionado: mesSelecionadoFinal,
+            ) ??
+            0.0;
+
+    print("valorDespesaEsteMes:${valorDespesaEsteMes}");
+    double? valorDespesaMesAnterior =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+                .getDespesaMesAnterior(
+              anoDeBusca: anoMesAnteriorAoselecionado,
+              mesSelecionado: mesAnteriorDoSelecionado,
+            ) ??
+            0.0;
+    print("valorDespesaMesAnterior:${valorDespesaMesAnterior}");
+    String monthName = await DateFormat('MMMM', 'pt_BR').format(dateMomento);
+
+    if (mesSelecionadoFinal == monthName) {
+      setState(() {
+        valorRecorrente = recorrente!;
+        MesSelecionadoDespesa = valorDespesaEsteMes;
+        mesAnteriorDespesa = valorDespesaMesAnterior;
+        valorfinalDespesa = MesSelecionadoDespesa + valorRecorrente;
+        calculoDeDiferencaEntreAsDespesas();
+         calcularPorcentagemDeDiferencaDespesas();
+      });
+      print("MesSelecionadoDespesa:${MesSelecionadoDespesa}");
+    } else {
+      setState(() {
+        MesSelecionadoDespesa = valorDespesaEsteMes;
+        mesAnteriorDespesa = valorDespesaMesAnterior;
+        valorfinalDespesa = MesSelecionadoDespesa;
+        calculoDeDiferencaEntreAsDespesas();
+        calcularPorcentagemDeDiferencaDespesas();
       });
     }
   }
 
-  double porcentagemFinalDespesa = 0;
-  void calcularPercentualDiferencaDespesa(
-      {required double valorAtual, required double valorAnterior}) {
-    if (valorAnterior == 0) {
-      // Evita divisão por zero e define a porcentagem de acordo com o valor atual
+  void calculoDeDiferencaEntreAsDespesas() {
+    print("#2tu valorfinalDespesa:${valorfinalDespesa}");
+    print("#2tu mesAnteriorDespesa:${mesAnteriorDespesa}");
+    double valorCalculadoDespesas = valorfinalDespesa - mesAnteriorDespesa;
+    setState(() {
+      diferencaDeDespesas = valorCalculadoDespesas;
+    });
+    print("#hg: valorfinalDespesa:${valorfinalDespesa}");
+    print("#hg: mesAnteriorDespesa:${mesAnteriorDespesa}");
+    print('#hg: diferencaDespesa: $diferencaDeDespesas');
+  }
+
+  void calcularPorcentagemDeDiferencaDespesas() {
+    if (mesAnteriorDespesa == 0 && valorfinalDespesa > 0) {
+      // Caso especial: faturamento anterior foi 0, então o crescimento é 100%
       setState(() {
-        porcentagemFinalDespesa = valorAtual > 0 ? 100 : 0;
+        porcentagemDespesa = 100;
       });
+      print('Porcentagem de diferença: 100% (crescimento total)');
+    } else if (mesAnteriorDespesa != 0) {
+      // Cálculo normal de porcentagem de diferença
+      double diferenca =
+          valorfinalDespesa - mesAnteriorDespesa;
+      double porcentagem =
+          (diferenca / mesAnteriorDespesa) * 100;
+
+      setState(() {
+        porcentagemDespesa = porcentagem;
+      });
+      print('Porcentagem de diferença: $porcentagemDespesa%');
     } else {
-      double valorFinal = ((valorAtual - valorAnterior) / valorAnterior) * 100;
-      print("Porcentagem final despesa: $valorFinal");
+      // Evitar divisão por zero e caso ambos os faturamentos sejam zero
       setState(() {
-        porcentagemFinalDespesa = valorFinal;
+        porcentagemDespesa = 0;
       });
+      print('Porcentagem de diferença: 0% (sem crescimento)');
     }
   }
 
-  //load e soma das despesas agora - fim
+  // Fim do load
   void _mostrarMenu(BuildContext context, Offset position) {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
@@ -299,7 +289,7 @@ String? loadIdBarbearia;
       if (mesSelecionado != null) {
         setState(() {
           mesSelecionadoFinal = mesSelecionado;
-          reloadAllFunctions();
+          reloadTodososCalculos();
         });
         print('Mês selecionado: $mesSelecionado');
       }
@@ -464,7 +454,7 @@ String? loadIdBarbearia;
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "R\$${faturamentoMesAtual.toStringAsFixed(2).replaceAll('.', ',')}",
+                                      "R\$${faturamentoMesSelecionado.toStringAsFixed(2).replaceAll('.', ',')}",
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
                                           color: Colors.black,
@@ -486,17 +476,17 @@ String? loadIdBarbearia;
                                             MainAxisAlignment.center,
                                         children: [
                                           Icon(
-                                            porcentagemFinal >= 0
+                                            porcentagemFaturamento >= 0
                                                 ? Icons.arrow_upward
                                                 : Icons.arrow_downward,
                                             size: 12,
-                                            color: porcentagemFinal >= 0
+                                            color: porcentagemFaturamento >= 0
                                                 ? Colors.green.shade700
                                                 : Colors.red,
                                           ),
-                                          if (porcentagemFinal >= 0)
+                                          if (porcentagemFaturamento >= 0)
                                             Text(
-                                              "${porcentagemFinal.toStringAsFixed(0)}%",
+                                              "${porcentagemFaturamento.toStringAsFixed(0)}%",
                                               style: GoogleFonts.poppins(
                                                 textStyle: TextStyle(
                                                   color: Colors.green.shade700,
@@ -505,9 +495,9 @@ String? loadIdBarbearia;
                                                 ),
                                               ),
                                             ),
-                                          if (porcentagemFinal < 0)
+                                          if (porcentagemFaturamento < 0)
                                             Text(
-                                              "${porcentagemFinal.toStringAsFixed(0)}%",
+                                              "${porcentagemFaturamento.toStringAsFixed(0)}%",
                                               style: GoogleFonts.poppins(
                                                 textStyle: TextStyle(
                                                   color: Colors.red,
@@ -519,7 +509,7 @@ String? loadIdBarbearia;
                                         ],
                                       ),
                                       decoration: BoxDecoration(
-                                        color: porcentagemFinal >= 0
+                                        color: porcentagemFaturamento >= 0
                                             ? Colors.green.shade100
                                                 .withOpacity(0.7)
                                             : Colors.red.shade100
@@ -644,22 +634,21 @@ String? loadIdBarbearia;
                                             MainAxisAlignment.center,
                                         children: [
                                           Icon(
-                                            porcentagemFinalDespesa <= 0
+                                            porcentagemDespesa <= 0
                                                 ? Icons.arrow_downward
                                                 : Icons.arrow_upward,
                                             size: 12,
-                                            color: porcentagemFinalDespesa <= 0
+                                            color: porcentagemDespesa <= 0
                                                 ? Colors.green.shade700
                                                 : Colors.red,
                                           ),
                                           Text(
-                                            "${porcentagemFinalDespesa.toStringAsFixed(0)}%",
+                                            "${porcentagemDespesa.toStringAsFixed(0)}%",
                                             style: GoogleFonts.poppins(
                                               textStyle: TextStyle(
-                                                color:
-                                                    porcentagemFinalDespesa <= 0
-                                                        ? Colors.green.shade700
-                                                        : Colors.red,
+                                                color: porcentagemDespesa <= 0
+                                                    ? Colors.green.shade700
+                                                    : Colors.red,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 10,
                                               ),
@@ -668,7 +657,7 @@ String? loadIdBarbearia;
                                         ],
                                       ),
                                       decoration: BoxDecoration(
-                                        color: porcentagemFinalDespesa <= 0
+                                        color: porcentagemDespesa <= 0
                                             ? Colors.green.shade100
                                                 .withOpacity(0.7)
                                             : Colors.red.shade100

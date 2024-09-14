@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/InternoIndicadoresScreen.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
 
 class IndicadoresQuadroView extends StatefulWidget {
   const IndicadoresQuadroView({super.key});
@@ -87,7 +88,7 @@ class _IndicadoresQuadroViewState extends State<IndicadoresQuadroView> {
               Navigator.of(context).push(
                 DialogRoute(
                   context: context,
-                  builder: (ctx) => InternoIndicadoresScreen(),
+                  builder: (ctx) => InternoIndicadoresScreenV2(),
                 ),
               );
             },

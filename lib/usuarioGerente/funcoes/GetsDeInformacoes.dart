@@ -328,7 +328,7 @@ class Getsdeinformacoes with ChangeNotifier {
         .collection("DadosConcretosBarbearias")
         .doc(idBarbearia)
         .collection("faturamentoMes")
-        .doc(monthName)
+        .doc("${monthName}.${momento.year}")
         .get()
         .then(
       (event) {
@@ -616,38 +616,51 @@ class Getsdeinformacoes with ChangeNotifier {
   }
 
   //coisas relacionadas aos indicadores da home - fim
-  Future<double?> getValorDeRecorrentesEsteMes() async {
+ Future<double?> getValorDeRecorrentesEsteMes() async {
+  try {
     final userId = await authSettings.currentUser!.uid;
-    String idBarbearia = await "";
+    String idBarbearia = "";
+    
     try {
-      await database.collection("usuarios").doc(userId).get().then((event) {
-        if (event.exists) {
-          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
-
-          idBarbearia = data['idBarbearia'];
+      final userDoc = await database.collection("usuarios").doc(userId).get();
+      if (userDoc.exists) {
+        Map<String, dynamic>? data = userDoc.data();
+        if (data != null) {
+          idBarbearia = data['idBarbearia'] ?? "";
         }
-      });
+      }
     } catch (e) {
-      print("erro ao pegar o id da barbearia:$e");
+      print("Erro ao pegar o id da barbearia: $e");
     }
+
     DateTime momento = DateTime.now();
-    String monthName = await DateFormat('MMMM', 'pt_BR').format(momento);
+    String monthName = DateFormat('MMMM', 'pt_BR').format(momento);
 
     double? valorEmDespesaRecorrenteEsteMes;
-    await database
-        .collection("Despesa")
-        .doc(idBarbearia)
-        .collection("valorTotalDespesasRecorrentes")
-        .doc("valor")
-        .get()
-        .then(
-      (event) {
-        Map<String, dynamic> data = event.data() as Map<String, dynamic>;
-        valorEmDespesaRecorrenteEsteMes = data["valor"];
-      },
-    );
+
+    try {
+      final despesaDoc = await database
+          .collection("Despesa")
+          .doc(idBarbearia)
+          .collection("valorTotalDespesasRecorrentes")
+          .doc("valor")
+          .get();
+      if (despesaDoc.exists) {
+        Map<String, dynamic>? data = despesaDoc.data();
+        if (data != null) {
+          valorEmDespesaRecorrenteEsteMes = data["valor"]?.toDouble();
+        }
+      }
+    } catch (e) {
+      print("Erro ao buscar o valor das despesas recorrentes: $e");
+    }
+
     return valorEmDespesaRecorrenteEsteMes;
+  } catch (e) {
+    print("Erro ao buscar getValorDeRecorrentesEsteMes: $e");
   }
+}
+
   //get da despesa do mes anterior
   Future<double> getDespesaMesAnterior({
     required String mesSelecionado,
@@ -738,5 +751,4 @@ class Getsdeinformacoes with ChangeNotifier {
       return 0.0; // Retorna 0.0 em caso de erro
     }
   }
-
 }
