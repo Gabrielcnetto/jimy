@@ -355,4 +355,46 @@ class DespesasFunctions with ChangeNotifier {
       print("Erro ao carregar as despesas: $e");
     }
   }
+
+  Future<void> removendoDespesa({
+    required Despesa despesa,
+    required String idBarbearia,
+  }) async {
+    try {
+      print("entrei na funcao");
+      if (despesa.recorrente == true) {
+        final deleteRecorrente = await database
+            .collection("Despesa")
+            .doc(idBarbearia)
+            .collection("despesasRecorrentes")
+            .doc(despesa.id)
+            .delete();
+        final ajustValorCobrancaRecorrenteInicial = await database
+            .collection("Despesa")
+            .doc(idBarbearia)
+            .collection("valorTotalDespesasRecorrentes")
+            .doc("valor")
+            .update({
+          'valor': FieldValue.increment(-despesa.preco),
+        });
+        final deleteTodasAsDespesas = await database
+            .collection("Despesa")
+            .doc(idBarbearia)
+            .collection("TodasasDespesas")
+            .doc(despesa.id)
+            .delete();
+        print("finalizei a funcao");
+      } else {
+        final deleteTodasAsDespesas = await database
+            .collection("Despesa")
+            .doc(idBarbearia)
+            .collection("TodasasDespesas")
+            .doc(despesa.id)
+            .delete();
+      }
+    } catch (e) {
+      print("ao remover a cobrança recorrente deu este erro:$e");
+      throw e;
+    }
+  }
 }

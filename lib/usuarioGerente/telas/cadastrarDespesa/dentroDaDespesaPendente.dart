@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/classes/Despesa.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
@@ -126,8 +127,121 @@ class _DentroDaDespesaPendenteState extends State<DentroDaDespesaPendente> {
   }
 
   Future<void> removerFuncao() async {
-    try {} catch (e) {
+    try {
+      showDialog(
+          context: context,
+          builder: (ctx) {
+            return AlertDialog(
+              title: Text(
+                "Confirme a Exclusão",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              content: Text(
+                "Atenção, se esta for uma cobraça recorrente. Ela deixará de ser cobrada nos próximos meses!",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    "Voltar",
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                ),
+                TextButton(
+                  onPressed:apagarDeFatoDespesa,
+                  child: Text(
+                    "Confirmar",
+                    style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                        color: Dadosgeralapp().primaryColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          });
+    } catch (e) {
       print("ao remover deu este erro:$e");
+    }
+  }
+
+  Future<void> apagarDeFatoDespesa() async {
+    Navigator.of(context).pop();
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await Provider.of<DespesasFunctions>(context, listen: false)
+          .removendoDespesa(
+        despesa: widget.despesaInfs,
+        idBarbearia: loadIdBarbearia!,
+      );
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Evita que o diálogo seja fechado ao tocar fora dele
+        builder: (ctx) {
+          // Inicia um Timer para fechar o diálogo e redirecionar após 3 segundos
+          Timer(Duration(seconds: 3), () {
+            Navigator.of(ctx).pop(); // Fecha o diálogo
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => VerificacaoDeLogado()),
+            );
+          });
+
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            title: Text(
+              "Despesa Excluída",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                    color: Colors.black),
+              ),
+            ),
+            content: Text(
+              "Aguarde um instante...",
+              style: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black45),
+              ),
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      print("Erro ao apagar, deu isto:$e");
     }
   }
 
@@ -181,17 +295,21 @@ class _DentroDaDespesaPendenteState extends State<DentroDaDespesaPendente> {
                             ),
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color:
-                                Dadosgeralapp().tertiaryColor.withOpacity(0.1),
-                          ),
-                          child: Icon(
-                            Icons.delete,
-                            color: Dadosgeralapp().tertiaryColor,
-                            size: 20,
+                        GestureDetector(
+                          onTap: removerFuncao,
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Dadosgeralapp()
+                                  .tertiaryColor
+                                  .withOpacity(0.1),
+                            ),
+                            child: Icon(
+                              Icons.delete,
+                              color: Dadosgeralapp().tertiaryColor,
+                              size: 20,
+                            ),
                           ),
                         ),
                       ],
