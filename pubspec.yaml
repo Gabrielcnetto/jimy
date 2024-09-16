@@ -83,6 +83,7 @@ flutter:
     - imagesapp/bannersBase/banner 1.png
     - imagesapp/bannersBase/banner 2.png
     - imagesapp/bannersBase/banner 3.png
+    - imagesapp/hairicon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -189,6 +189,15 @@ class Finalizarecarregarcomandas with ChangeNotifier {
         print("ao enviar os dados deu isto:$e");
       }
       //agora atualizando na classe da barbearia os servicos selecionados, e também o profissional
+      //atualizando quando tem produto
+      if (valorTotalProdutos > 0) {
+        for (var produto in comanda.produtosVendidos) {
+          atualizandoQuandoTemProduto(
+            idBarbearia: idBarbearia,
+            productId: produto.id,
+          );
+        }
+      }
       try {
         await atualizandoQuantiasNaClasseDaBarbearia(
           idBarbearia: idBarbearia,
@@ -218,6 +227,25 @@ class Finalizarecarregarcomandas with ChangeNotifier {
     } catch (e) {
       print("Erro ao finalizar comanda: $e");
       throw e;
+    }
+  }
+
+  Future<void> atualizandoQuandoTemProduto({
+    required String idBarbearia,
+    required String productId,
+  }) async {
+    try {
+      database
+          .collection("Produtos")
+          .doc(idBarbearia)
+          .collection("lista")
+          .doc(productId)
+          .update({
+        "quantiavendida": FieldValue.increment(1),
+        "estoque": FieldValue.increment(-1),
+      });
+    } catch (e) {
+      print("ao atualizar o produto(quantidade vendida), deu isso:$e");
     }
   }
 

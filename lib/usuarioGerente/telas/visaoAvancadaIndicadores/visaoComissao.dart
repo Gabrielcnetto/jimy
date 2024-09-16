@@ -27,6 +27,8 @@ class _ItemVisaoComissaoState extends State<ItemVisaoComissao> {
     super.initState();
     loadComissaoDoMes();
   }
+
+  
   double valorDaComissao = 0;
   Future<void> loadComissaoDoMes() async {
     double? valor = await Provider.of<Getsdeinformacoes>(context, listen: false)

@@ -1,12 +1,21 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:jimy/usuarioGerente/classes/produto.dart';
+import 'package:jimy/usuarioGerente/classes/servico.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:jimy/usuarioGerente/telas/indicadores/componentes/grafico.dart';
+import 'package:jimy/usuarioGerente/telas/indicadores/componentes/ticketmedioTicket.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/graficoIndicadorPrincipal.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoView.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
 import 'package:provider/provider.dart';
 
 class InternoIndicadoresScreenV2 extends StatefulWidget {
@@ -27,12 +36,19 @@ class _InternoIndicadoresScreenV2State
 
   void LoadTotal() async {
     // Carrega os profissionais
-    Provider.of<Getsdeinformacoes>(context, listen: false).getProfissionais;
+
+    DateTime datetimeAtual = DateTime.now();
+    String monthName = await DateFormat('MMMM', 'pt_BR').format(datetimeAtual);
+    await Provider.of<Getsdeinformacoes>(context, listen: false)
+        .getListaServicos();
     setState(() {
+      mesSelecionadoFinal = monthName.toLowerCase();
       _profissionais =
           Provider.of<Getsdeinformacoes>(context, listen: false).profList;
+      reloadTodososCalculos();
     });
-
+    Provider.of<CriarEEnviarprodutos>(context, listen: false)
+        .LoadProductsBarbearia();
     // Atualiza os meses e calcula as diferenças de faturamento
     String mesSelecionado = mesSelecionadoFinal; // Exemplo
     setState(() {
@@ -91,13 +107,22 @@ class _InternoIndicadoresScreenV2State
   List<Barbeiros> _profissionais = [];
   int anoMesSelecionado = 2024;
   int anoMesAnteriorAoselecionado = 2024;
-  String mesAnteriorDoSelecionado = "";
-  String mesSelecionadoFinal = "";
-  void reloadTodososCalculos() {
+
+  void reloadTodososCalculos() async {
     setState(() {
+      isLoading = true;
+    });
+    setState(() {
+      _profissionais = []; // Limpa a lista antes de recarregar
+    });
+    await Future.delayed(Duration(milliseconds: 100));
+    setState(() async {
       atualizarMes(mesSelecionado: mesSelecionadoFinal);
-      loadFaturamentoMesSelecionadoFN();
+      loadFaturamentoMesSelecionadoFN(mesSelecionadoFinal);
       loadTotaldespesas();
+      _profissionais =
+          Provider.of<Getsdeinformacoes>(context, listen: false).profList;
+      isLoading = false;
     });
   }
 
@@ -105,7 +130,64 @@ class _InternoIndicadoresScreenV2State
   double faturamentoAnteriorAoMesSelecionado = 0;
   double diferencaFaturamento = 0;
   double porcentagemFaturamento = 0;
-  Future<void> loadFaturamentoMesSelecionadoFN() async {
+  String mesAnteriorDoSelecionado = "";
+  String mesSelecionadoFinal = "";
+  double ticketMesAtual = 0.0;
+  double ticketMesAnterior = 0.0;
+  double porcentagemTicketfinal = 0.0;
+  Future<void> loadFaturamentoMesSelecionadoFN(
+      String mesSelecionadoNome) async {
+    final List<String> meses = [
+      "janeiro",
+      "fevereiro",
+      "março",
+      "abril",
+      "maio",
+      "junho",
+      "julho",
+      "agosto",
+      "setembro",
+      "outubro",
+      "novembro",
+      "dezembro"
+    ];
+
+    DateTime agora = DateTime.now();
+    DateFormat formatter = DateFormat('MMMM', 'pt_BR');
+
+    // Pega o mês selecionado
+    DateTime mesSelecionadoDate = formatter.parse(mesSelecionadoNome, true);
+    int mesSelecionado = mesSelecionadoDate.month;
+    int anoSelecionado = agora.year;
+
+    // Ajusta o ano se o mês selecionado já passou este ano
+    if (mesSelecionado > agora.month) {
+      anoSelecionado = agora.year - 1;
+    }
+
+    // Definir o mês e ano para as variáveis globais
+    mesSelecionadoFinal = mesSelecionadoNome;
+    anoMesSelecionado = anoSelecionado;
+
+    // Calcula o mês anterior
+    int mesAnterior = mesSelecionado - 1;
+    int anoMesAnterior = anoSelecionado;
+
+    // Se o mês anterior for 0, ajusta para dezembro do ano anterior
+    if (mesAnterior == 0) {
+      mesAnterior = 12;
+      anoMesAnterior -= 1;
+    }
+
+    // Ajusta o nome do mês anterior usando a lista de meses
+    mesAnteriorDoSelecionado = meses[mesAnterior - 1];
+    anoMesAnteriorAoselecionado = anoMesAnterior;
+
+    print("Mês selecionado: $mesSelecionadoFinal, Ano: $anoMesSelecionado");
+    print(
+        "Mês anterior: $mesAnteriorDoSelecionado, Ano: $anoMesAnteriorAoselecionado");
+
+    // Carregar os dados de faturamento
     double dbDataMesSelecionado =
         await Provider.of<Getsdeinformacoes>(context, listen: false)
             .getFaturamentoMensalGerenteMesSelecionado(
@@ -120,9 +202,11 @@ class _InternoIndicadoresScreenV2State
       mesAnterior: mesAnteriorDoSelecionado,
     );
 
+    // Atualizar o estado após carregar os dados
     setState(() {
       faturamentoMesSelecionado = dbDataMesSelecionado;
       faturamentoAnteriorAoMesSelecionado = dbDataMesAnterior!;
+
       calculoDeDiferencaEntreOsFaturamentos(); // Calcula somente após os dois valores serem carregados
       calcularPorcentagemDeDiferenca();
     });
@@ -205,7 +289,7 @@ class _InternoIndicadoresScreenV2State
         mesAnteriorDespesa = valorDespesaMesAnterior;
         valorfinalDespesa = MesSelecionadoDespesa + valorRecorrente;
         calculoDeDiferencaEntreAsDespesas();
-         calcularPorcentagemDeDiferencaDespesas();
+        calcularPorcentagemDeDiferencaDespesas();
       });
       print("MesSelecionadoDespesa:${MesSelecionadoDespesa}");
     } else {
@@ -240,10 +324,8 @@ class _InternoIndicadoresScreenV2State
       print('Porcentagem de diferença: 100% (crescimento total)');
     } else if (mesAnteriorDespesa != 0) {
       // Cálculo normal de porcentagem de diferença
-      double diferenca =
-          valorfinalDespesa - mesAnteriorDespesa;
-      double porcentagem =
-          (diferenca / mesAnteriorDespesa) * 100;
+      double diferenca = valorfinalDespesa - mesAnteriorDespesa;
+      double porcentagem = (diferenca / mesAnteriorDespesa) * 100;
 
       setState(() {
         porcentagemDespesa = porcentagem;
@@ -288,6 +370,7 @@ class _InternoIndicadoresScreenV2State
     ).then((String? mesSelecionado) {
       if (mesSelecionado != null) {
         setState(() {
+          _profissionais = [];
           mesSelecionadoFinal = mesSelecionado;
           reloadTodososCalculos();
         });
@@ -338,7 +421,7 @@ class _InternoIndicadoresScreenV2State
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Indicadores gerais",
+                              "Seus Indicadores Gerais",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                     color: Colors.black,
@@ -350,9 +433,10 @@ class _InternoIndicadoresScreenV2State
                               height: 5,
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.55,
+                              width: MediaQuery.of(context).size.width * 0.9,
                               child: Text(
                                 "Visão ampla e detalhada de seus indicadores",
+                                textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                       color: Colors.black54,
@@ -362,6 +446,46 @@ class _InternoIndicadoresScreenV2State
                               ),
                             ),
                           ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: EdgeInsets.only(
+                      top: 15,
+                      bottom: 15,
+                    ),
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height * 0.55,
+                    child: GraficosPage(
+                      date: DateTime.now(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15, right: 15, top: 5, bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Selecione o mês:",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
                         GestureDetector(
                           onTapDown: (TapDownDetails details) {
@@ -389,23 +513,6 @@ class _InternoIndicadoresScreenV2State
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20)),
-                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                    width: double.infinity,
-                    height: MediaQuery.of(context).size.height * 0.5,
-                    child: Text(
-                      "treste",
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
                   ),
                   Row(
                     children: [
@@ -777,6 +884,257 @@ class _InternoIndicadoresScreenV2State
                           }).toList(),
                         ),
                       ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                    child: Text(
+                      "Ticket Médio",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.calendar_today,
+                              size: 18,
+                              color: Colors.black,
+                            ),
+                            Text(
+                              " ${mesSelecionadoFinal.toUpperCase()} ",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: TicketMediocontainer(
+                            mesAnterior: mesAnteriorDoSelecionado,
+                            mes: mesSelecionadoFinal,
+                            percentageFinal: porcentagemTicketfinal,
+                            ticketMesAnterior: ticketMesAnterior,
+                            ticketMesAtual: ticketMesAtual,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                    child: Text(
+                      "Produtos mais vendidos",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    child: StreamBuilder(
+                      stream: Provider.of<CriarEEnviarprodutos>(context,
+                              listen: false)
+                          .ProdutosAvendaStream,
+                      builder: (ctx, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Dadosgeralapp().primaryColor,
+                            ),
+                          );
+                        }
+                        if (snapshot.data!.isEmpty) {
+                          return Center(
+                            child: Text(
+                              "Sem produtos criados ou vendidos",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          final List<Produtosavenda>? produtosLista =
+                              snapshot.data;
+                          produtosLista!.sort((a, b) =>
+                              b.quantiavendida.compareTo(a.quantiavendida));
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "Painel de vendas ",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "- soma total*",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.black38,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: produtosLista!.map((item) {
+                                  return ItensVendidos(
+                                    produtos: item,
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          );
+                        }
+                        return Container();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                    child: Text(
+                      "Serviços mais escolhidos",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: StreamBuilder(
+                      stream:
+                          Provider.of<Getsdeinformacoes>(context, listen: true)
+                              .getServiceList,
+                      builder: (ctx, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: Dadosgeralapp().primaryColor,
+                            ),
+                          );
+                        }
+                        if (snapshot.data!.isEmpty) {
+                          return Center(
+                            child: Text(
+                              "Sem Serviços",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        if (snapshot.hasData) {
+                          List<Servico> listaServico =
+                              snapshot.data as List<Servico>;
+                          listaServico.sort((a, b) =>
+                              b.quantiaEscolhida.compareTo(a.quantiaEscolhida));
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Frequência de Escolha ",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    "- Soma total*",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: TextStyle(
+                                        color: Colors.black38,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: listaServico.map((servico) {
+                                  return VisaoServicosEscolhidos(
+                                    servico: servico,
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          );
+                        }
+                        return Container();
+                      },
                     ),
                   ),
                   SizedBox(

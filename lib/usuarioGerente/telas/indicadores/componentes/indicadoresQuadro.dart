@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/InternoIndicadoresScreen.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
 
 class IndicadoresQuadroView extends StatefulWidget {
