@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:provider/provider.dart';
 
-class TicketMediocontainer extends StatelessWidget {
- 
-  final double percentageFinal;
-  final double ticketMesAtual;
-  final double ticketMesAnterior;
+class TicketMediocontainer extends StatefulWidget {
+  final double porcentagem;
+  final double diferencaMeses;
+  final double ticketValorMesSelecionado;
+  final double ticketValorMesAnterior;
   final String mes;
   final String mesAnterior;
   const TicketMediocontainer({
     super.key,
-    
-    required this.percentageFinal,
-    required this.ticketMesAnterior,
-    required this.ticketMesAtual,
+    required this.porcentagem,
+    required this.ticketValorMesSelecionado,
     required this.mes,
+    required this.ticketValorMesAnterior,
+    required this.diferencaMeses,
     required this.mesAnterior,
   });
 
   @override
+  State<TicketMediocontainer> createState() => _TicketMediocontainerState();
+}
+
+class _TicketMediocontainerState extends State<TicketMediocontainer> {
+
+
+  @override
   Widget build(BuildContext context) {
+ 
     return Container(
       // width: MediaQuery.of(context).size.width * 0.6,
       decoration: BoxDecoration(
@@ -63,7 +73,7 @@ class TicketMediocontainer extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        "Média de ${mes}",
+                        "Média de ${widget.mes}",
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                             color: Colors.black,
@@ -77,7 +87,7 @@ class TicketMediocontainer extends StatelessWidget {
                 ],
               ),
               Icon(
-                Icons.trending_up,
+               widget.porcentagem >= 0? Icons.trending_up : Icons.trending_down,
                 color: Dadosgeralapp().primaryColor,
                 size: 15,
               ),
@@ -90,7 +100,7 @@ class TicketMediocontainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "R\$${ticketMesAtual.toStringAsFixed(2).replaceAll('.', ',')}",
+                "R\$${widget.ticketValorMesSelecionado.toStringAsFixed(2).replaceAll('.', ',')}",
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
                     color: Colors.black,
@@ -99,6 +109,7 @@ class TicketMediocontainer extends StatelessWidget {
                   ),
                 ),
               ),
+              if(widget.porcentagem >=0)
               Container(
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
@@ -107,7 +118,26 @@ class TicketMediocontainer extends StatelessWidget {
                 ),
                 padding: EdgeInsets.all(10),
                 child: Text(
-                  "${percentageFinal.toStringAsFixed(0)}%",
+                  "+${widget.porcentagem.toStringAsFixed(0)}%",
+                  style: GoogleFonts.poppins(
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+              if(widget.porcentagem <0)
+              Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  "${widget.porcentagem.toStringAsFixed(0)}%",
                   style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                       color: Colors.white,
@@ -125,8 +155,20 @@ class TicketMediocontainer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              if(widget.diferencaMeses >=0)
               Text(
-                "+R\$500 ",
+                "+R\$${widget.diferencaMeses.toStringAsFixed(2).replaceAll('.', ',')} ",
+                style: GoogleFonts.poppins(
+                  textStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              if(widget.diferencaMeses <0)
+               Text(
+                "-R\$${widget.diferencaMeses.toStringAsFixed(2).replaceAll('.', ',').replaceAll('-', '')} ",
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
                     color: Colors.grey,
@@ -136,7 +178,7 @@ class TicketMediocontainer extends StatelessWidget {
                 ),
               ),
               Text(
-                "Comparado a ${mesAnterior}",
+                "Comparado a ${widget.mesAnterior}",
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
                     color: Colors.grey,

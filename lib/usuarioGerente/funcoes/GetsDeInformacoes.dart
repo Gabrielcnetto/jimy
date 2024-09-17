@@ -846,11 +846,29 @@ class Getsdeinformacoes with ChangeNotifier {
     return comissaoTotalMes;
   }
 
-  Future<double?> calculoTicketMedioMesSelecionado(
-      {required String mes,
-      required int ano,
-      required String idBarbearia}) async {
+  Future<double?> calculoTicketMedioMesSelecionado({
+    required String mes,
+    required int ano,
+  
+  }) async {
     try {
+      final userId = await authSettings.currentUser!.uid;
+    String idBarbearia = "";
+
+    try {
+      // Obtém o ID da barbearia
+      var userDoc = await database.collection("usuarios").doc(userId).get();
+      if (userDoc.exists) {
+        Map<String, dynamic>? data = userDoc.data();
+        idBarbearia = data?['idBarbearia'] ?? "";
+      } else {
+        print("Usuário não encontrado");
+        return null;
+      }
+    } catch (e) {
+      print("Erro ao pegar o id da barbearia: $e");
+      return null;
+    }
       print("iniciei o load do ticket");
       // Obtém o faturamento mensal
       final faturamentoDoc = await database
@@ -897,12 +915,32 @@ class Getsdeinformacoes with ChangeNotifier {
       return null;
     }
   }
+
   //
-  Future<double?> calculoTicketMedioMesAnteriorSelecionado(
-      {required String mes,
-      required int ano,
-      required String idBarbearia}) async {
+  Future<double?> calculoTicketMedioMesAnterior({
+    required String mes,
+    required int ano,
+  
+  }) async {
     try {
+      final userId = await authSettings.currentUser!.uid;
+    String idBarbearia = "";
+
+    try {
+      // Obtém o ID da barbearia
+      var userDoc = await database.collection("usuarios").doc(userId).get();
+      if (userDoc.exists) {
+        Map<String, dynamic>? data = userDoc.data();
+        idBarbearia = data?['idBarbearia'] ?? "";
+      } else {
+        print("Usuário não encontrado");
+        return null;
+      }
+    } catch (e) {
+      print("Erro ao pegar o id da barbearia: $e");
+      return null;
+    }
+      print("iniciei o load do ticket");
       // Obtém o faturamento mensal
       final faturamentoDoc = await database
           .collection("DadosConcretosBarbearias")

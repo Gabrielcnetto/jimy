@@ -14,11 +14,9 @@ class Agendarhorario with ChangeNotifier {
     required Corteclass corte,
     required double porcentagemProfissional,
   }) async {
-    print("#23preencher 2 espacos?: ${corte.preencher2horarios}");
 
     try {
-      print(
-          "Acessei a função com preencher2horarios: ${corte.preencher2horarios}");
+    
 
       // Obtendo o nome do profissional e o nome do mês
       final String nomeProfissional =
@@ -67,11 +65,11 @@ class Agendarhorario with ChangeNotifier {
 
       // Verificando se deve preencher 2 horários e se há horários extras disponíveis
       if (corte.preencher2horarios == true) {
-        print("#23preencher2horarios é verdadeiro");
+       
 
         // Verifica se há pelo menos 2 horários extras disponíveis
         if (corte.horariosExtras.length >= 2) {
-          print("#23Lista de horários extras tem mais de 2 itens");
+          
 
           // Publicando o primeiro horário extra
           final pubAgendaGeral1 = await database
@@ -161,12 +159,10 @@ class Agendarhorario with ChangeNotifier {
             "momentoDoAgendamento": corte.momentoDoAgendamento,
           });
         } else {
-          print(
-              "#23Erro: Não há horários extras suficientes para preencher 2 espaços.");
+       
         }
       } else {
-        print(
-            "#23preencher2horarios é falso, não vou preencher horários extras.");
+
       }
     } catch (e) {
       print("ao agendar, houve este erro: ${e}");

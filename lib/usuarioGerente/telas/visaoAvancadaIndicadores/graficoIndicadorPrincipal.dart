@@ -23,7 +23,7 @@ class _GraficosPageState extends State<GraficosPage> {
   bool isLoading = false;
 
   void mesSet() async {
-    print("#232: date:${widget.date}");
+
     setState(() {
       isLoading = true;
     });
@@ -33,7 +33,7 @@ class _GraficosPageState extends State<GraficosPage> {
     setState(() {
       isLoading = false;
     });
-    print("#232:${mesAtual}");
+    
   }
 
   final ScrollController _scrollController = ScrollController();

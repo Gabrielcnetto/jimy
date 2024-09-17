@@ -34,6 +34,63 @@ class _InternoIndicadoresScreenV2State
     LoadTotal();
   }
 
+  double ticketMesSelecionado = 0.0;
+  Future<void> getTotalTicket(
+      {required String mesSelecionado,
+      required int anoDoMesSelecionado}) async {
+    print("madasdasdsaeis:}");
+    double? dbMesSelecionado =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+            .calculoTicketMedioMesSelecionado(
+      ano: anoDoMesSelecionado,
+      mes: mesSelecionado,
+    );
+    setState(() {
+      ticketMesSelecionado = dbMesSelecionado!;
+    });
+  }
+
+  double ticketMesSelecionadoAnterior = 0.0;
+  Future<void> getTotalTicketAnterior(
+      {required String mesSelecionadoAnterior,
+      required int anoDoMesSelecionadoAnterior}) async {
+    print("madasdasdsaeis:}");
+    double? dbMesSelecionado =
+        await Provider.of<Getsdeinformacoes>(context, listen: false)
+            .calculoTicketMedioMesAnterior(
+      ano: anoDoMesSelecionadoAnterior,
+      mes: mesSelecionadoAnterior,
+    );
+    setState(() {
+      ticketMesSelecionadoAnterior = dbMesSelecionado!;
+    });
+  }
+
+  double valorDiferencaTickets = 0.0;
+  calcDiferencaTicket() {
+    setState(() {
+      valorDiferencaTickets =
+          ticketMesSelecionado - ticketMesSelecionadoAnterior;
+    });
+  }
+
+  double porcentagemfinalTicket = 0.0;
+  void calcularPorcentagemDeDiferencaTicket() {
+    if (ticketMesSelecionadoAnterior != 0) {
+      setState(() {
+        porcentagemfinalTicket =
+          ((ticketMesSelecionado - ticketMesSelecionadoAnterior) /
+                  ticketMesSelecionadoAnterior) *
+              100;
+      });
+    } else {
+      setState(() {
+        porcentagemfinalTicket =
+          0;
+      }); // Evita divisão por zero se o valor anterior for 0
+    }
+  }
+
   void LoadTotal() async {
     // Carrega os profissionais
 
@@ -183,9 +240,13 @@ class _InternoIndicadoresScreenV2State
     mesAnteriorDoSelecionado = meses[mesAnterior - 1];
     anoMesAnteriorAoselecionado = anoMesAnterior;
 
-    print("Mês selecionado: $mesSelecionadoFinal, Ano: $anoMesSelecionado");
-    print(
-        "Mês anterior: $mesAnteriorDoSelecionado, Ano: $anoMesAnteriorAoselecionado");
+    getTotalTicket(
+      anoDoMesSelecionado: anoSelecionado,
+      mesSelecionado: mesSelecionadoFinal,
+    );
+    getTotalTicketAnterior(
+        mesSelecionadoAnterior: mesAnteriorDoSelecionado,
+        anoDoMesSelecionadoAnterior: anoMesAnterior);
 
     // Carregar os dados de faturamento
     double dbDataMesSelecionado =
@@ -206,7 +267,8 @@ class _InternoIndicadoresScreenV2State
     setState(() {
       faturamentoMesSelecionado = dbDataMesSelecionado;
       faturamentoAnteriorAoMesSelecionado = dbDataMesAnterior!;
-
+      calcDiferencaTicket();
+      calcularPorcentagemDeDiferencaTicket();
       calculoDeDiferencaEntreOsFaturamentos(); // Calcula somente após os dois valores serem carregados
       calcularPorcentagemDeDiferenca();
     });
@@ -932,11 +994,13 @@ class _InternoIndicadoresScreenV2State
                         Padding(
                           padding: const EdgeInsets.only(top: 15),
                           child: TicketMediocontainer(
+                            porcentagem: porcentagemfinalTicket,
+                            diferencaMeses: valorDiferencaTickets,
+                            ticketValorMesAnterior:
+                                ticketMesSelecionadoAnterior,
+                            ticketValorMesSelecionado: ticketMesSelecionado,
                             mesAnterior: mesAnteriorDoSelecionado,
                             mes: mesSelecionadoFinal,
-                            percentageFinal: porcentagemTicketfinal,
-                            ticketMesAnterior: ticketMesAnterior,
-                            ticketMesAtual: ticketMesAtual,
                           ),
                         ),
                       ],
