@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/funcoes/CriarContaeLogar.dart';
+import 'package:jimy/rotas/AppRoutes.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:provider/provider.dart';
 
 class HeaderNomeMaisFoto extends StatefulWidget {
   const HeaderNomeMaisFoto({super.key});
@@ -57,55 +60,77 @@ class _HeaderNomeMaisFotoState extends State<HeaderNomeMaisFoto> {
       width: double.infinity,
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Image.network(
-                userImageURL ?? Dadosgeralapp().defaultAvatarImage,
-                fit: BoxFit.cover,
-              ),
-            ),
-            width: MediaQuery.of(context).size.width * 0.18,
-            height: MediaQuery.of(context).size.height * 0.1,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: Text(
-                  BarbeariaNome ?? "Carregando...",
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30),
+                  child: Image.network(
+                    userImageURL ?? Dadosgeralapp().defaultAvatarImage,
+                    fit: BoxFit.cover,
                   ),
                 ),
+                width: MediaQuery.of(context).size.width * 0.18,
+                height: MediaQuery.of(context).size.height * 0.1,
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: Text(
-                  userName ?? "Carregando...",
-                  textAlign: TextAlign.left,
-                  style: GoogleFonts.poppins(
-                    textStyle: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Text(
+                      BarbeariaNome ?? "Carregando...",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  Container(
+                    child: Text(
+                      userName ?? "Carregando...",
+                      textAlign: TextAlign.left,
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
-          )
+          ),
+          InkWell(
+            onTap: () {
+              Provider.of<CriarcontaelogarProvider>(context, listen: false)
+                  .deslogar();
+              Navigator.of(context).pushReplacementNamed(Approutes.VerificacaoDeLogado);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              padding: EdgeInsets.all(10),
+              child: Icon(
+                Icons.logout,
+                size: 18,
+                color: Colors.black,
+              ),
+            ),
+          ),
         ],
       ),
     );

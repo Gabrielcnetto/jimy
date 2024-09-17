@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:image/image.dart' as img;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,7 @@ import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart';
 
 class VisaoInternaProfissional extends StatefulWidget {
   final Barbeiros barber;
@@ -43,6 +45,8 @@ class _VisaoInternaProfissionalState extends State<VisaoInternaProfissional> {
 
   //
   XFile? image;
+  File? resizedImage;
+
   Future<void> getProfileImageBiblio() async {
     final picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(
@@ -50,9 +54,27 @@ class _VisaoInternaProfissionalState extends State<VisaoInternaProfissional> {
       maxHeight: 1080,
       maxWidth: 1080,
     );
-    setState(() {
-      image = pickedFile;
-    });
+
+    if (pickedFile != null) {
+      // Carrega a imagem como uma lista de bytes
+      final bytes = await pickedFile.readAsBytes();
+
+      // Decodifica a imagem usando a biblioteca `image`
+      img.Image? imageTemp = img.decodeImage(bytes);
+
+      // Redimensiona para um tamanho fixo, ex: 300x300
+      img.Image resized = img.copyResize(imageTemp!, width: 1080, height: 1080);
+
+      // Salva a imagem redimensionada em um arquivo temporário
+      final tempDir = await getTemporaryDirectory();
+      final resizedFile = File('${tempDir.path}/resized_image.jpg')
+        ..writeAsBytesSync(img.encodeJpg(resized));
+
+      setState(() {
+        image = pickedFile;
+        resizedImage = resizedFile;
+      });
+    }
   }
 
   String? loadIdBarbearia;
@@ -75,7 +97,7 @@ class _VisaoInternaProfissionalState extends State<VisaoInternaProfissional> {
         await Provider.of<Criarfuncionario>(context, listen: false)
             .alterarFotoDePerfilBarbeiro(
           idBarbearia: loadIdBarbearia!,
-          fotoNova: File(image!.path),
+          fotoNova: resizedImage!,
           idBarbeiro: widget.barber.id,
         );
         await Provider.of<Getsdeinformacoes>(context, listen: false)

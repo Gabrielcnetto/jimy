@@ -12,8 +12,10 @@ import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:jimy/usuarioGerente/telas/indicadores/componentes/grafico.dart';
 import 'package:jimy/usuarioGerente/telas/indicadores/componentes/ticketmedioTicket.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/ListaComTodosOsClientes.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/graficoIndicadorPrincipal.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoView.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/telaClientesMesSelecionado.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +34,25 @@ class _InternoIndicadoresScreenV2State
   void initState() {
     super.initState();
     LoadTotal();
+  }
+
+  int totalClientesMesSelecionado = 0;
+  Future<void> loadTotalclientes(
+      {required String mesSelecionado, required int Ano}) async {
+    int? valor = await Getsdeinformacoes().getTotalClientesMesSelecionado(
+        anoSelecionado: Ano, mesSelecionado: mesSelecionado);
+
+    setState(() {
+      totalClientesMesSelecionado = valor!;
+    });
+  }
+
+  int totalClientesTotalComOApp = 0;
+  Future<void> loadTotalclientesHistorico() async {
+    int? valor = await Getsdeinformacoes().getTotaldeClientesTotalComandas();
+    setState(() {
+      totalClientesTotalComOApp = valor!;
+    });
   }
 
   double ticketMesSelecionado = 0.0;
@@ -54,7 +75,7 @@ class _InternoIndicadoresScreenV2State
   Future<void> getTotalTicketAnterior(
       {required String mesSelecionadoAnterior,
       required int anoDoMesSelecionadoAnterior}) async {
-    print("madasdasdsaeis:}");
+   
     double? dbMesSelecionado =
         await Provider.of<Getsdeinformacoes>(context, listen: false)
             .calculoTicketMedioMesAnterior(
@@ -79,14 +100,13 @@ class _InternoIndicadoresScreenV2State
     if (ticketMesSelecionadoAnterior != 0) {
       setState(() {
         porcentagemfinalTicket =
-          ((ticketMesSelecionado - ticketMesSelecionadoAnterior) /
-                  ticketMesSelecionadoAnterior) *
-              100;
+            ((ticketMesSelecionado - ticketMesSelecionadoAnterior) /
+                    ticketMesSelecionadoAnterior) *
+                100;
       });
     } else {
       setState(() {
-        porcentagemfinalTicket =
-          0;
+        porcentagemfinalTicket = 0;
       }); // Evita divisão por zero se o valor anterior for 0
     }
   }
@@ -247,7 +267,11 @@ class _InternoIndicadoresScreenV2State
     getTotalTicketAnterior(
         mesSelecionadoAnterior: mesAnteriorDoSelecionado,
         anoDoMesSelecionadoAnterior: anoMesAnterior);
-
+    loadTotalclientes(
+      Ano: anoSelecionado,
+      mesSelecionado: mesSelecionadoFinal,
+    );
+    loadTotalclientesHistorico();
     // Carregar os dados de faturamento
     double dbDataMesSelecionado =
         await Provider.of<Getsdeinformacoes>(context, listen: false)
@@ -1199,6 +1223,282 @@ class _InternoIndicadoresScreenV2State
                         }
                         return Container();
                       },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 15),
+                    child: Text(
+                      "Clientes atendidos",
+                      style: GoogleFonts.poppins(
+                        textStyle: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.only(
+                        left: 15, right: 15, bottom: 10, top: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              Icons.groups,
+                              size: 18,
+                              color: Colors.black,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "Cadastros Feitos na ${Dadosgeralapp().nomeSistema}",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Clientes em ${mesSelecionadoFinal}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          "Serviços finalizados*",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${totalClientesMesSelecionado} Clientes",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (ctx) =>
+                                                TelaClientesMesSelecionado(
+                                              mesSelecionado:
+                                                  mesSelecionadoFinal,
+                                              AnoSelecionado: anoMesSelecionado,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Dadosgeralapp().primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Ver clientes",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 10),
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Icon(
+                                                Icons.arrow_right_alt,
+                                                color: Colors.white,
+                                                size: 15,
+                                              ),
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: Colors.white12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 15),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Total de clientes no sistema",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          "Todos os seus clientes",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${totalClientesTotalComOApp} Cadastros",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (ctx) =>
+                                                    TodosOsClientesLista()));
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Dadosgeralapp().primaryColor,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Acessar lista",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 10),
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Icon(
+                                                Icons.arrow_right_alt,
+                                                color: Colors.white,
+                                                size: 15,
+                                              ),
+                                              padding: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                color: Colors.white12,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 5, horizontal: 15),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(

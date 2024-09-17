@@ -55,6 +55,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
   int? diaSelecionadoSegundo;
   String? mesSelecionadoSegundo;
   int? anoAtual;
+  List<Barbeiros> _barbeiro = [];
   void loadingTotal() async {
     try {
       setState(() {
@@ -63,6 +64,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       setDaysAndMonths();
       await Provider.of<Getsdeinformacoes>(context, listen: false)
           .getListaProfissionais();
+     
       ajusteIndexDoProfissionalPrimeiroLoad();
       await primeiroGetNomeProfissionalDefault();
       await attViewSchedule(
@@ -74,7 +76,11 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       setState(() {
         isloading = false;
       });
-    } catch (e) {}
+    } catch (e) {
+        setState(() {
+        isloading = false;
+      });
+    }
   }
 
   String profSelecionado = "";
@@ -428,8 +434,8 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                 ),
                               );
                             }
-                            if (snapshot.data!.isEmpty ||
-                                snapshot.data == null) {
+                            if (snapshot.data!.isEmpty) {
+                              print("estamos sem horarios agendados");
                               return LinhaTempoProfissionalSelecionado();
                             }
                             final List<Corteclass>? cortes = snapshot.data;

@@ -724,7 +724,7 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.12,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
@@ -747,7 +747,7 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
                                 color: Colors.black38,
-                                fontSize: 12,
+                                fontSize: 10,
                               ),
                             ),
                           ),
@@ -757,13 +757,13 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                               borderRadius: BorderRadius.circular(15),
                             ),
                             padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                                horizontal: 10, vertical: 5),
                             child: Text(
                               "R\$${valorComandaTotal.toStringAsFixed(2).replaceAll('.', ',')}",
                               style: GoogleFonts.poppins(
                                 textStyle: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 12,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),
@@ -834,7 +834,7 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                                     Icon(
                                       Icons.receipt_long,
                                       color: Dadosgeralapp().tertiaryColor,
-                                      size: 25,
+                                      size: 18,
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -843,7 +843,7 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                                       "Comanda",
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 8,
                                           color: Dadosgeralapp().tertiaryColor,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -878,7 +878,7 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                                     Icon(
                                       Icons.cleaning_services,
                                       color: Dadosgeralapp().tertiaryColor,
-                                      size: 25,
+                                      size: 18,
                                     ),
                                     SizedBox(
                                       height: 5,
@@ -887,7 +887,7 @@ class _AbrirApenasComandaState extends State<AbrirApenasComanda> {
                                       "Limpar Comanda",
                                       style: GoogleFonts.poppins(
                                         textStyle: TextStyle(
-                                          fontSize: 10,
+                                          fontSize: 8,
                                           color: Dadosgeralapp().tertiaryColor,
                                           fontWeight: FontWeight.w700,
                                         ),

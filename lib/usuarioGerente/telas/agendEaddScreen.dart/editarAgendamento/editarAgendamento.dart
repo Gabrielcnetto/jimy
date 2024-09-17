@@ -764,7 +764,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                       },
                       child: Icon(
                         Icons.arrow_back_ios,
-                        size: 25,
+                        size: 18,
                         color: Dadosgeralapp().primaryColor,
                       ),
                     ),
@@ -802,7 +802,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.2,
+                height: MediaQuery.of(context).size.height * 0.12,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
@@ -825,7 +825,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: Colors.black38,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                           ),
                         ),
@@ -835,7 +835,7 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                              horizontal: 15, vertical: 5),
                           child: Text(
                             "R\$${valorComandaTotal.toStringAsFixed(2).replaceAll('.', ',')}",
                             style: GoogleFonts.poppins(
@@ -849,182 +849,183 @@ class _EditarAgendamentoState extends State<EditarAgendamento> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        //bloco da comanda - inicio
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (ctx) => ComandaScreen(
-                                    produtosLista: _produtosAdicionados,
-                                    servicoLista: _servicosadicionados,
-                                    valorProdutoFinal: valorProdutosTotal,
-                                    valorServicoFinal: valorServicosTotal,
-                                    valorTotaldaComanda: valorComandaTotal,
-                                    corte: widget.corte,
+                 
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Row(
+                        children: [
+                          //bloco da comanda - inicio
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (ctx) => ComandaScreen(
+                                      produtosLista: _produtosAdicionados,
+                                      servicoLista: _servicosadicionados,
+                                      valorProdutoFinal: valorProdutosTotal,
+                                      valorServicoFinal: valorServicosTotal,
+                                      valorTotaldaComanda: valorComandaTotal,
+                                      corte: widget.corte,
+                                    ),
                                   ),
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.receipt_long,
+                                      color: Dadosgeralapp().tertiaryColor,
+                                      size: 18,
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Comanda",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          fontSize: 8,
+                                          color: Dadosgeralapp().tertiaryColor,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              );
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.receipt_long,
-                                    color: Dadosgeralapp().tertiaryColor,
-                                    size: 25,
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Comanda",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        fontSize: 10,
-                                        color: Dadosgeralapp().tertiaryColor,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  )
-                                ],
                               ),
                             ),
                           ),
-                        ),
-                        //bloco da comanda - fim
-                        //bloco do whatsapp - inicio
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.feedback,
-                                    color: Dadosgeralapp().tertiaryColor,
-                                    size: 25,
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Lembrete",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        fontSize: 10,
-                                        color: Dadosgeralapp().tertiaryColor,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                          //bloco da comanda - fim
+                          //bloco do whatsapp - inicio
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {},
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.feedback,
+                                      color: Dadosgeralapp().tertiaryColor,
+                                      size: 18,
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Lembrete",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          fontSize: 8,
+                                          color: Dadosgeralapp().tertiaryColor,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        //bloco do whatsap - fim
-                        //bloco do cancelar - inicio
-                        Expanded(
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return AlertDialog(
-                                      backgroundColor: Colors.white,
-                                      title: Text(
-                                        "Cancelar Agendamento?",
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                            color: Dadosgeralapp().primaryColor,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      content: Text(
-                                        "Ao confirmar você retira este agendamento da agenda geral, e as comissões do barbeiro responsável referente a este serviço",
-                                        style: GoogleFonts.poppins(
-                                          textStyle: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text(
-                                            "Cancelar",
-                                            style: GoogleFonts.openSans(
-                                              textStyle: TextStyle(
-                                                color: Colors.grey.shade500,
-                                                fontSize: 14,
-                                              ),
+                          //bloco do whatsap - fim
+                          //bloco do cancelar - inicio
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) {
+                                      return AlertDialog(
+                                        backgroundColor: Colors.white,
+                                        title: Text(
+                                          "Cancelar Agendamento?",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Dadosgeralapp().primaryColor,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                         ),
-                                        TextButton(
-                                          onPressed: confirmCancelamento,
-                                          child: Text(
-                                            "Confirmar",
-                                            style: GoogleFonts.openSans(
-                                              textStyle: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: Dadosgeralapp()
-                                                    .primaryColor,
-                                                fontSize: 15,
-                                              ),
+                                        content: Text(
+                                          "Ao confirmar você retira este agendamento da agenda geral, e as comissões do barbeiro responsável referente a este serviço",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    );
-                                  });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.delete,
-                                    color: Dadosgeralapp().tertiaryColor,
-                                    size: 25,
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                    "Cancelar",
-                                    style: GoogleFonts.poppins(
-                                      textStyle: TextStyle(
-                                        fontSize: 10,
-                                        color: Dadosgeralapp().tertiaryColor,
-                                        fontWeight: FontWeight.w700,
-                                      ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              "Cancelar",
+                                              style: GoogleFonts.openSans(
+                                                textStyle: TextStyle(
+                                                  color: Colors.grey.shade500,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TextButton(
+                                            onPressed: confirmCancelamento,
+                                            child: Text(
+                                              "Confirmar",
+                                              style: GoogleFonts.openSans(
+                                                textStyle: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Dadosgeralapp()
+                                                      .primaryColor,
+                                                  fontSize: 15,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.delete,
+                                      color: Dadosgeralapp().tertiaryColor,
+                                      size: 18,
                                     ),
-                                  )
-                                ],
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Cancelar",
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          fontSize: 8,
+                                          color: Dadosgeralapp().tertiaryColor,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        //bloco do cancelar - fim
-                      ],
+                          //bloco do cancelar - fim
+                        ],
+                      ),
                     ),
                   ],
                 ),

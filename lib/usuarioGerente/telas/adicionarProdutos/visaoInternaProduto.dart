@@ -11,6 +11,8 @@ import 'package:jimy/usuarioGerente/classes/produto.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 
 class VisaoInternaDoProdutoCriado extends StatefulWidget {
   final Produtosavenda produto;
@@ -66,9 +68,11 @@ class _VisaoInternaDoProdutoCriadoState
   final DescricaoDoProdutoControler = TextEditingController();
   final precoProdutoControler = TextEditingController();
   final estoqueDisponivel = TextEditingController();
-  XFile? image;
 
   //GET IMAGEM DO PERFIL - FINAL(CAMERA)
+  XFile? image;
+  File? resizedImage;
+
   Future<void> getNewImage() async {
     final picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(
@@ -76,10 +80,27 @@ class _VisaoInternaDoProdutoCriadoState
       maxHeight: 1080,
       maxWidth: 1080,
     );
-    setState(() {
-      image = pickedFile;
-    });
-    //await setNewimageOnDB(); funcao pra enviar ao db, aguardar depois e adicionar
+
+    if (pickedFile != null) {
+      // Carrega a imagem como uma lista de bytes
+      final bytes = await pickedFile.readAsBytes();
+
+      // Decodifica a imagem usando a biblioteca `image`
+      img.Image? imageTemp = img.decodeImage(bytes);
+
+      // Redimensiona para um tamanho fixo, ex: 300x300
+      img.Image resized = img.copyResize(imageTemp!, width: 1080, height: 1080);
+
+      // Salva a imagem redimensionada em um arquivo temporário
+      final tempDir = await getTemporaryDirectory();
+      final resizedFile = File('${tempDir.path}/resized_image.jpg')
+        ..writeAsBytesSync(img.encodeJpg(resized));
+
+      setState(() {
+        image = pickedFile;
+        resizedImage = resizedFile;
+      });
+    }
   }
 
   String? loadIdBarbearia;
@@ -218,10 +239,11 @@ class _VisaoInternaDoProdutoCriadoState
       showDialog(
           context: context,
           builder: (ctx) {
-            Future.delayed(Duration(seconds: 3), ()async {
+            Future.delayed(Duration(seconds: 3), () async {
               Navigator.of(context).pop();
-               Navigator.of(context).pop();
-              Navigator.of(context).pushReplacementNamed(Approutes.VerificacaoDeLogado);
+              Navigator.of(context).pop();
+              Navigator.of(context)
+                  .pushReplacementNamed(Approutes.VerificacaoDeLogado);
             });
             return AlertDialog(
               backgroundColor: Colors.white,
@@ -299,10 +321,9 @@ class _VisaoInternaDoProdutoCriadoState
                 "Confirmar",
                 style: GoogleFonts.poppins(
                   textStyle: TextStyle(
-                    color: Dadosgeralapp().primaryColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16
-                  ),
+                      color: Dadosgeralapp().primaryColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16),
                 ),
               ),
             ),

@@ -8,6 +8,7 @@ import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
 import 'package:jimy/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
+import 'package:jimy/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioGerenteHome extends StatefulWidget {
@@ -42,7 +43,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
         'tela': Container(),
       },
       {
-        'tela': Container(),
+        'tela': VisaoGeralMinhaPagina(),
       },
     ];
   }

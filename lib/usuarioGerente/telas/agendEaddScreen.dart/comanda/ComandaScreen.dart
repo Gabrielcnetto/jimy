@@ -238,7 +238,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  "${widget.corte.clienteNome}",
+                                  "${widget.corte.clienteNome.replaceAll('CmddCriada', '')}",
                                   style: GoogleFonts.poppins(
                                     textStyle: TextStyle(
                                       color: Colors.black,

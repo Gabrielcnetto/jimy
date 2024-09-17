@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
@@ -41,6 +43,8 @@ class _AdicionarProfissionalState extends State<AdicionarProfissional> {
   bool versenha = true;
 
   XFile? image;
+  File? resizedImage;
+
   Future<void> getProfileImageBiblio() async {
     final picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(
@@ -48,9 +52,27 @@ class _AdicionarProfissionalState extends State<AdicionarProfissional> {
       maxHeight: 1080,
       maxWidth: 1080,
     );
-    setState(() {
-      image = pickedFile;
-    });
+
+    if (pickedFile != null) {
+      // Carrega a imagem como uma lista de bytes
+      final bytes = await pickedFile.readAsBytes();
+
+      // Decodifica a imagem usando a biblioteca `image`
+      img.Image? imageTemp = img.decodeImage(bytes);
+
+      // Redimensiona para um tamanho fixo, ex: 300x300
+      img.Image resized = img.copyResize(imageTemp!, width: 1080, height: 1080);
+
+      // Salva a imagem redimensionada em um arquivo temporário
+      final tempDir = await getTemporaryDirectory();
+      final resizedFile = File('${tempDir.path}/resized_image.jpg')
+        ..writeAsBytesSync(img.encodeJpg(resized));
+
+      setState(() {
+        image = pickedFile;
+        resizedImage = resizedFile;
+      });
+    }
   }
 
   String? loadIdBarbearia;
@@ -83,7 +105,7 @@ class _AdicionarProfissionalState extends State<AdicionarProfissional> {
               senhaGerente: loadSenha!,
               IddaBarbearia: loadIdBarbearia!,
               email: emailControler.text,
-              fotoUpload: File(image!.path),
+              fotoUpload: resizedImage!,
               porcentagemPorCortes:
                   double.parse(porcentagemPorCortesControler.text),
               porcentagemporProdutos:

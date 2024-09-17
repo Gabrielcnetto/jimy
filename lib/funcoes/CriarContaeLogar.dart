@@ -158,6 +158,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
           await database.collection("Barbearias").doc(idBarbearia).set({
         //identificar e encontrar a barbearia
         "diaFechado": "",
+        "wallpaperPagina": "",
         "horarioSegunda": horariosMap,
         "horarioTerca": horariosMap,
         "horarioQuarta": horariosMap,

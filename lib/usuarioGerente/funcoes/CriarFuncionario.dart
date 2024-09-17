@@ -178,9 +178,7 @@ class Criarfuncionario with ChangeNotifier {
       });
 
       // Opcional: Exclui a foto do barbeiro do Firebase Storage, se necessário
-      Reference ref =
-          await FirebaseStorage.instance.ref().child("userProfilePhotos/$idBarbeiro");
-      await ref.delete();
+     
     } catch (e) {
       print("Erro ao deletar o barbeiro: $e");
       throw e;

@@ -13,33 +13,6 @@ class VisaoGeralMeusProdutosScreen extends StatefulWidget {
 
 class _VisaoGeralMeusProdutosScreenState
     extends State<VisaoGeralMeusProdutosScreen> {
-  bool todosOsProdutos = true;
-  bool produtosVendidos = false;
-
-  void ativarProdutosVendidos() {
-    if (produtosVendidos == true) {
-      return;
-    }
-    if (produtosVendidos == false) {
-      setState(() {
-        produtosVendidos = true;
-        todosOsProdutos = false;
-      });
-    }
-  }
-
-  void ativarTodosOsProdutos() {
-    if (todosOsProdutos == true) {
-      return;
-    }
-    if (todosOsProdutos == false) {
-      setState(() {
-        todosOsProdutos = true;
-        produtosVendidos = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +24,9 @@ class _VisaoGeralMeusProdutosScreenState
               color: Colors.white,
             ),
             width: double.infinity,
-            padding: EdgeInsets.only(left: 15, right: 15, top: 40),
+            padding: EdgeInsets.only(left: 15, right: 15, top: 15),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
@@ -69,7 +43,7 @@ class _VisaoGeralMeusProdutosScreenState
                       ),
                     ),
                     Text(
-                      'Produtos e comandas',
+                      'Produtos cadastrados',
                       style: GoogleFonts.poppins(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w600,
@@ -81,83 +55,10 @@ class _VisaoGeralMeusProdutosScreenState
                     Container() // Placeholder for alignment
                   ],
                 ),
-                SizedBox(height: 10),
+              
                 // Row das opções
                 SizedBox(
                   height: 15,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: ativarTodosOsProdutos,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text(
-                                "Todos os Produtos",
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 1),
-                          Container(
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: todosOsProdutos
-                                  ? Colors.orangeAccent
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: ativarProdutosVendidos,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 5),
-                              child: Text(
-                                "Comandas Finalizadas",
-                                style: GoogleFonts.openSans(
-                                  textStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.black,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 1),
-                          Container(
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: produtosVendidos
-                                  ? Colors.orangeAccent
-                                  : Colors.transparent,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -165,12 +66,10 @@ class _VisaoGeralMeusProdutosScreenState
           //parte de ver as informações
           Expanded(
             child: SingleChildScrollView(
-              child: todosOsProdutos
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: VisaoDeTodosOsProdutos(),
-                    )
-                  : Container(), // Placeholder for other content
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: VisaoDeTodosOsProdutos(),
+              ), // Placeholder for other content
             ),
           ),
         ],

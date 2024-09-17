@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:jimy/usuarioGerente/classes/comanda.dart';
 import 'package:jimy/usuarioGerente/classes/horarios.dart';
+import 'package:jimy/usuarioGerente/classes/produto.dart';
 import 'package:jimy/usuarioGerente/classes/servico.dart';
 
 class Getsdeinformacoes with ChangeNotifier {
@@ -849,26 +851,25 @@ class Getsdeinformacoes with ChangeNotifier {
   Future<double?> calculoTicketMedioMesSelecionado({
     required String mes,
     required int ano,
-  
   }) async {
     try {
       final userId = await authSettings.currentUser!.uid;
-    String idBarbearia = "";
+      String idBarbearia = "";
 
-    try {
-      // Obtém o ID da barbearia
-      var userDoc = await database.collection("usuarios").doc(userId).get();
-      if (userDoc.exists) {
-        Map<String, dynamic>? data = userDoc.data();
-        idBarbearia = data?['idBarbearia'] ?? "";
-      } else {
-        print("Usuário não encontrado");
+      try {
+        // Obtém o ID da barbearia
+        var userDoc = await database.collection("usuarios").doc(userId).get();
+        if (userDoc.exists) {
+          Map<String, dynamic>? data = userDoc.data();
+          idBarbearia = data?['idBarbearia'] ?? "";
+        } else {
+          print("Usuário não encontrado");
+          return null;
+        }
+      } catch (e) {
+        print("Erro ao pegar o id da barbearia: $e");
         return null;
       }
-    } catch (e) {
-      print("Erro ao pegar o id da barbearia: $e");
-      return null;
-    }
       print("iniciei o load do ticket");
       // Obtém o faturamento mensal
       final faturamentoDoc = await database
@@ -920,26 +921,25 @@ class Getsdeinformacoes with ChangeNotifier {
   Future<double?> calculoTicketMedioMesAnterior({
     required String mes,
     required int ano,
-  
   }) async {
     try {
       final userId = await authSettings.currentUser!.uid;
-    String idBarbearia = "";
+      String idBarbearia = "";
 
-    try {
-      // Obtém o ID da barbearia
-      var userDoc = await database.collection("usuarios").doc(userId).get();
-      if (userDoc.exists) {
-        Map<String, dynamic>? data = userDoc.data();
-        idBarbearia = data?['idBarbearia'] ?? "";
-      } else {
-        print("Usuário não encontrado");
+      try {
+        // Obtém o ID da barbearia
+        var userDoc = await database.collection("usuarios").doc(userId).get();
+        if (userDoc.exists) {
+          Map<String, dynamic>? data = userDoc.data();
+          idBarbearia = data?['idBarbearia'] ?? "";
+        } else {
+          print("Usuário não encontrado");
+          return null;
+        }
+      } catch (e) {
+        print("Erro ao pegar o id da barbearia: $e");
         return null;
       }
-    } catch (e) {
-      print("Erro ao pegar o id da barbearia: $e");
-      return null;
-    }
       print("iniciei o load do ticket");
       // Obtém o faturamento mensal
       final faturamentoDoc = await database
@@ -985,5 +985,160 @@ class Getsdeinformacoes with ChangeNotifier {
       print("Erro ao calcular o ticket médio: $e");
       return null;
     }
+  }
+
+  Future<int?> getTotalClientesMesSelecionado(
+      {required String mesSelecionado, required int anoSelecionado}) async {
+    try {
+      final userId = authSettings.currentUser!.uid;
+
+      // Obtém o idBarbearia do usuário
+      final userDoc = await database.collection("usuarios").doc(userId).get();
+      if (!userDoc.exists) {
+        print("Usuário não encontrado");
+        return null;
+      }
+      final idBarbearia =
+          (userDoc.data() as Map<String, dynamic>)['idBarbearia'];
+
+      if (idBarbearia == null) {
+        print("idBarbearia não encontrado");
+        return null;
+      }
+
+      // Obtém o mês atual
+
+      // Conta o número de comandas
+      final comandasSnapshot = await database
+          .collection("comandas")
+          .doc(idBarbearia)
+          .collection("${mesSelecionado.toLowerCase()}.${anoSelecionado}")
+          .get();
+
+      final tamanhoDaLista = comandasSnapshot.docs.length;
+
+      if (tamanhoDaLista == 0) {
+        print("Não há comandas para calcular o ticket médio");
+        return null;
+      }
+
+      // Calcula o ticket médio
+
+      return tamanhoDaLista;
+    } catch (e) {
+      print("Erro ao calcular o ticket médio: $e");
+      return null;
+    }
+  }
+
+  Future<int?> getTotaldeClientesTotalComandas() async {
+    try {
+      final userId = authSettings.currentUser!.uid;
+
+      // Obtém o idBarbearia do usuário
+      final userDoc = await database.collection("usuarios").doc(userId).get();
+      if (!userDoc.exists) {
+        print("Usuário não encontrado");
+        return null;
+      }
+      final idBarbearia =
+          (userDoc.data() as Map<String, dynamic>)['idBarbearia'];
+
+      if (idBarbearia == null) {
+        print("idBarbearia não encontrado");
+        return null;
+      }
+
+      // Obtém o mês atual
+
+      // Conta o número de comandas
+      final comandasSnapshot = await database
+          .collection("TodasAscomandas")
+          .doc(idBarbearia)
+          .collection("lista")
+          .get();
+
+      final tamanhoDaLista = comandasSnapshot.docs.length;
+
+      if (tamanhoDaLista == 0) {
+        print("Não há comandas para calcular o ticket médio");
+        return null;
+      }
+
+      // Calcula o ticket médio
+
+      return tamanhoDaLista;
+    } catch (e) {
+      print("Erro ao calcular o ticket médio: $e");
+      return null;
+    }
+  }
+
+  List<Comanda> _comandaList = [];
+  List<Comanda> get comandaList => [..._comandaList];
+
+  final StreamController<List<Comanda>> _comandaListStream =
+      StreamController<List<Comanda>>.broadcast();
+
+  Stream<List<Comanda>> get comandaListStream => _comandaListStream.stream;
+
+  Future<void> loadComandasMesSelecionado({
+    required String mesSelecionado,
+    required int year,
+  }) async {
+    print("tela do manager, 7 dias corte funcao executada");
+
+    try {
+      final String uidUser = await authSettings.currentUser!.uid;
+      String? userIdbarbearia;
+
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          userIdbarbearia = data['idBarbearia'];
+        } else {}
+        return userIdbarbearia;
+      });
+
+      QuerySnapshot querySnapshot = await database
+          .collection("comandas")
+          .doc(userIdbarbearia)
+          .collection("${mesSelecionado.toLowerCase()}.${year}")
+          .get();
+
+      _comandaList = querySnapshot.docs.map((doc) {
+        Map<String, dynamic>? data = doc.data() as Map<String, dynamic>?;
+
+        return Comanda(
+            dataFinalizacao: (data?["dataFinalizacao"] is Timestamp)
+                ? (data?["dataFinalizacao"] as Timestamp?)?.toDate() ??
+                    DateTime.now()
+                : DateTime.tryParse(data?["dataFinalizacao"] ?? "") ??
+                    DateTime.now(),
+            id: data?[""] ?? "",
+            idBarbearia: data?["idBarbearia"] ?? "",
+            idBarbeiroQueCriou: data?["idBarbeiroQueCriou"] ?? "",
+            nomeCliente: data?["nomeCliente"] ?? "Sem nome...",
+            produtosVendidos: (data?["produtosVendidos"] as List<dynamic>?)
+                    ?.map((item) {
+                  // Converta o item para o tipo de dado esperado (ex: Produto)
+                  return Produtosavenda.fromMap(item as Map<String, dynamic>);
+                }).toList() ??
+                [],
+            servicosFeitos:
+                (data?["servicosFeitos"] as List<dynamic>?)?.map((item) {
+                      // Converta o item para o tipo de dado esperado (ex: Servico)
+                      return Servico.fromMap(item as Map<String, dynamic>);
+                    }).toList() ??
+                    [],
+            valorTotalComanda: data?["valorTotalComanda"] ?? 0.0);
+      }).toList();
+      _comandaListStream.add(_comandaList);
+    } catch (e) {
+      print("ao carregar a lista do manager dia, deu isto: ${e}");
+    }
+    print("o tamanho da lista é manager ${_comandaList.length}");
+    notifyListeners();
   }
 }
