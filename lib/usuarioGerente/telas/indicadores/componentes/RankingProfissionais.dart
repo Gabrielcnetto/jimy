@@ -72,8 +72,9 @@ class _RankingProfissionaisHomeGerenteState
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).push(
-                         DialogRoute(context: context, builder: (ctx)=>VisaoTodosOsProfissionais()));
+                      Navigator.of(context).push(
+                           DialogRoute(context: context, builder: (ctx)=>VisaoTodosOsProfissionais())
+                          );
                       },
                       child: Text(
                         "Ver todos",
@@ -130,10 +131,8 @@ class _RankingProfissionaisHomeGerenteState
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => VisaoTodosOsProfissionais(),
-                            ),
+                         Navigator.of(context).push(
+                           DialogRoute(context: context, builder: (ctx)=>VisaoTodosOsProfissionais())
                           );
                         },
                         child: Text(
@@ -278,10 +277,8 @@ class _RankingProfissionaisHomeGerenteState
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => VisaoTodosOsProfissionais(),
-                            ),
+                         Navigator.of(context).push(
+                           DialogRoute(context: context, builder: (ctx)=>VisaoTodosOsProfissionais())
                           );
                         },
                         child: Text(

@@ -34,8 +34,8 @@ class ProfItemDaLista extends StatelessWidget {
               style: GoogleFonts.poppins(
                 textStyle: TextStyle(
                   color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

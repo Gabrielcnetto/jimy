@@ -19,6 +19,15 @@ class Horarios {
       'quantidadeHorarios': quantidadeHorarios,
     };
   }
+
+  // Método para criar uma instância de Horarios a partir de um Map<String, dynamic>
+  factory Horarios.fromMap(Map<String, dynamic> map) {
+    return Horarios(
+      horario: map['horario'] ?? '',
+      id: map['id'] ?? '',
+      quantidadeHorarios: map['quantidadeHorarios'] ?? 0,
+    );
+  }
 }
 final List<Horarios> listaHorariosBase = [
   Horarios(

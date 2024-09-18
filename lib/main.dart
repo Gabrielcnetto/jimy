@@ -9,6 +9,7 @@ import 'package:jimy/rotas/AppRoutes.dart';
 import 'package:jimy/rotas/verificadorDeLogin.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:jimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
@@ -61,6 +62,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (_) => DespesasFunctions(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Editprofilebarberpage(),
         ),
       ],
       child: MaterialApp(

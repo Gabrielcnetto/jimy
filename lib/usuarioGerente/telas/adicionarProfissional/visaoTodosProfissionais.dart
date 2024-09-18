@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
+import 'package:jimy/rotas/AppRoutes.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
@@ -62,7 +63,7 @@ String? loadIdBarbearia;
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed(Approutes.VerificacaoDeLogado);
                     },
                     child: Icon(
                       Icons.arrow_back_ios,

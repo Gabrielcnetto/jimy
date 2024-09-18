@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:jimy/usuarioGerente/classes/horarios.dart';
+import 'package:jimy/usuarioGerente/classes/pagamentos.dart';
+import 'package:jimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart';
 import 'package:jimy/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart';
@@ -23,6 +26,21 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
     super.initState();
     Provider.of<Getsdeinformacoes>(context, listen: false)
         .getListaProfissionais();
+    Provider.of<Getsdeinformacoes>(context, listen: false)
+        .loadHorariosSegunda();
+    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosTerca();
+    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosQuarta();
+    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosQuinta();
+    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosSexta();
+    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosSabado();
+    Provider.of<Getsdeinformacoes>(context, listen: false)
+        .loadHorariosDomingo();
+    loaduserNomeBarbearua();
+    loaduseBarberDescription();
+    getFormasPagamentoComoObjetos();
+    loaduseBarberStreetAndNumberAndBairro();
+    loaduseBarberCity();
+    loaduseBarberCEP();
   }
 
   List<String> _images = [
@@ -30,6 +48,83 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
     "https://images.squarespace-cdn.com/content/v1/5fd787d32a8a4a2604b22b5d/a1a982a2-8886-4017-a735-3fde5aeab145/msbs-barbershop-perspective-22000.jpg",
     "https://images.squarespace-cdn.com/content/v1/5fd787d32a8a4a2604b22b5d/a1a982a2-8886-4017-a735-3fde5aeab145/msbs-barbershop-perspective-22000.jpg"
   ];
+
+  String? BarbeariaNome;
+  Future<void> loaduserNomeBarbearua() async {
+    String? nomeBarbearia = await Getsdeinformacoes().getNomeBarbearia();
+
+    setState(() {
+      BarbeariaNome = nomeBarbearia;
+    });
+  }
+
+  String? enderecoRuaemais;
+  Future<void> loaduseBarberStreetAndNumberAndBairro() async {
+    String? descData = await Getsdeinformacoes().getEnderecobarbearia();
+
+    setState(() {
+      if (descData != null) {
+        enderecoRuaemais = descData;
+      } else {}
+    });
+  }
+
+  String? cidadeBarbearia;
+  Future<void> loaduseBarberCity() async {
+    String? descData = await Getsdeinformacoes().getCidadebarbearia();
+
+    setState(() {
+      if (descData != null) {
+        cidadeBarbearia = descData;
+      }
+    });
+  }
+
+  String? cepBarbearia;
+  Future<void> loaduseBarberCEP() async {
+    String? descData = await Getsdeinformacoes().getCEPbarbearia();
+
+    setState(() {
+      if (descData != null) {
+        cepBarbearia = descData;
+      }
+    });
+  }
+
+  String descricaoBarbearia = "";
+  Future<void> loaduseBarberDescription() async {
+    String? descData = await Getsdeinformacoes().getDescricaoBarbearia();
+
+    setState(() {
+      if (descData != null) {
+        descricaoBarbearia = descData;
+      }
+    });
+  }
+
+  List<Pagamentos> listaInicialDB = [];
+  Future<void> getFormasPagamentoComoObjetos() async {
+    try {
+      // Obtém a lista de mapas da função getFormasPagamento()
+      List<Map<String, dynamic>> formasPagamentoMap =
+          await Editprofilebarberpage().getFormasPagamento();
+
+      // Converte a lista de mapas para uma lista de objetos Pagamentos
+      List<Pagamentos> formasPagamento =
+          formasPagamentoMap.map((map) => Pagamentos.fromMap(map)).toList();
+      print("estou aqui no convert");
+      print("${formasPagamento.toList()}");
+      setState(() {
+        listaInicialDB = formasPagamento;
+      });
+    } catch (e) {
+      setState(() {
+        listaInicialDB = [];
+      });
+      print("Erro ao converter formas de pagamento: $e");
+      throw e;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +240,7 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                             Container(
                               width: MediaQuery.of(context).size.width * 0.7,
                               child: Text(
-                                "Netto Barbershop",
+                                "${BarbeariaNome ?? "Carregando..."}",
                                 textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
@@ -334,7 +429,7 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 5),
                         child: Text(
-                          "Somos da Netto Barbershop, combinamos excelencia com comodidade. Preços acessíveis e perto você. Agende seu horário!",
+                          "${descricaoBarbearia ?? "Carregando..."}",
                           style: GoogleFonts.poppins(
                             textStyle:
                                 TextStyle(color: Colors.black38, fontSize: 12),
@@ -362,14 +457,607 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          "COLOCAR LISTA ROW AQUI",
-                          style: GoogleFonts.poppins(
-                            textStyle:
-                                TextStyle(color: Colors.black38, fontSize: 12),
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //segunda
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Segunda-Feira",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosSegunda,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosSegunda = snapshot.data!;
+                                        final horariosSegundaLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosSegunda.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosSegunda[0].horario} - ${horariosSegunda[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            //terca feira
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Terça-Feira",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosTerca,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosTerca = snapshot.data!;
+                                        final horariosTercaLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosTerca.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosTerca[0].horario} - ${horariosTerca[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            //quarta
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Quarta-Feira",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosQuarta,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosQuarta = snapshot.data!;
+                                        final horariosQuartaLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosQuarta.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosQuarta[0].horario} - ${horariosQuarta[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            //quinta
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Quinta-Feira",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosQuinta,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosQuinta = snapshot.data!;
+                                        final horariosQuintaLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosQuinta.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosQuinta[0].horario} - ${horariosQuinta[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            //sexta
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Sexta-Feira",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosSexta,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosSexta = snapshot.data!;
+                                        final horariosSextaLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosSexta.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosSexta[0].horario} - ${horariosSexta[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            //sabado
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Sábado",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosSabado,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosSabado = snapshot.data!;
+                                        final horariosSabadoLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosSabado.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosSabado[0].horario} - ${horariosSabado[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            //domingo
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Domingo",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.black38, fontSize: 12),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: StreamBuilder<List<Horarios>>(
+                                    stream: Provider.of<Getsdeinformacoes>(
+                                            context,
+                                            listen: false)
+                                        .getHorariosSabado,
+                                    builder: (ctx, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: Dadosgeralapp().primaryColor,
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar dados',
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      if (snapshot.hasData) {
+                                        final horariosDomingo = snapshot.data!;
+                                        final horariosDomingoLengh =
+                                            snapshot.data!.length;
+                                        int intUltimoHorario =
+                                            snapshot.data!.length - 1;
+                                        if (horariosDomingo.isEmpty) {
+                                          return Text(
+                                            "Fechado",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        // Aqui você pode retornar um widget baseado nos dados carregados
+                                        return Text(
+                                          "${horariosDomingo[0].horario} - ${horariosDomingo[intUltimoHorario].horario}",
+                                          style: GoogleFonts.poppins(
+                                            textStyle: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                      // Caso contrário, retorna um widget padrão
+                                      return Container();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                color: Dadosgeralapp().primaryColor,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 15),
+                              child: Text(
+                                "Alterar horários",
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              )),
+                        ],
+                      )
                     ],
                   ),
                   SizedBox(
@@ -391,12 +1079,242 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          "COLOCAR EDITAVEL AQUI COM OS CARTOES E ICONES",
-                          style: GoogleFonts.poppins(
-                            textStyle:
-                                TextStyle(color: Colors.black38, fontSize: 12),
-                          ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Na Barbearia:",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                  color: Colors.grey.shade600,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: listaInicialDB.map((item) {
+                                    return Container(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.network(
+                                        item.photoIcon,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (ctx) {
+                                        return Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 15),
+                                          width: double.infinity,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.6,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    Radius.elliptical(20, 20),
+                                                topRight:
+                                                    Radius.elliptical(20, 20)),
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: Container(
+                                                          decoration: BoxDecoration(
+                                                              color: Colors.grey
+                                                                  .shade400,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          15)),
+                                                          height: 5,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width *
+                                                              0.15),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      "Formas de pagamento",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Pagamento na barbearia",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle: TextStyle(
+                                                          color: Colors
+                                                              .grey.shade600,
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 15),
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.35,
+                                                    child: GridView.builder(
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                                        childAspectRatio: 5,
+                                                        crossAxisCount:
+                                                            2, // Número de colunas
+                                                        crossAxisSpacing:
+                                                            10.0, // Espaçamento horizontal entre colunas
+                                                        mainAxisSpacing:
+                                                            10.0, // Espaçamento vertical entre linhas
+                                                      ),
+                                                      itemCount:
+                                                          listaInicialDB.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        final pagamento =
+                                                            listaInicialDB[
+                                                                index];
+                                                        return Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                width: 1,
+                                                                color: Colors
+                                                                    .grey
+                                                                    .shade100),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  vertical: 5,
+                                                                  horizontal:
+                                                                      15),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                width: 20,
+                                                                height: 20,
+                                                                child: Image
+                                                                    .network(
+                                                                  pagamento
+                                                                      .photoIcon,
+                                                                  fit: BoxFit
+                                                                      .cover,
+                                                                ),
+                                                              ),
+                                                              Container(
+                                                                child: Text(
+                                                                  pagamento
+                                                                      .name,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          10,
+                                                                      color: Colors
+                                                                          .black45,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w300,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ]),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 15,
+                                      color: Colors.grey.shade600,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 2, horizontal: 5),
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade100,
+                                        borderRadius: BorderRadius.circular(8)),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     ],
@@ -420,12 +1338,31 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                       Container(
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          "COLOCAR TEXTO + MAPA APPLE E GOOGLE ABAIXO",
-                          style: GoogleFonts.poppins(
-                            textStyle:
-                                TextStyle(color: Colors.black38, fontSize: 12),
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${enderecoRuaemais ?? "Sem endereço"}",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Colors.black38, fontSize: 12),
+                              ),
+                            ),
+                            Text(
+                              "${cidadeBarbearia ?? "Sem Cidade"}",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Colors.black38, fontSize: 12),
+                              ),
+                            ),
+                            Text(
+                              "CEP: ${cepBarbearia ?? "Sem CEP"}",
+                              style: GoogleFonts.poppins(
+                                textStyle: TextStyle(
+                                    color: Colors.black38, fontSize: 12),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],

@@ -1186,7 +1186,7 @@ class Getsdeinformacoes with ChangeNotifier {
     notifyListeners();
   }
 
-   Future<String?> getCEPbarbearia() async {
+  Future<String?> getCEPbarbearia() async {
     try {
       final String uidUser = authSettings.currentUser!.uid;
       String? idBarberaria;
@@ -1227,6 +1227,528 @@ class Getsdeinformacoes with ChangeNotifier {
     } catch (e) {
       print("ao pegar a descricaoDaBarbeariaDeuIsto: $e");
       return null; // Retorna null em caso de erro
+    }
+  }
+
+  Future<String?> getCidadebarbearia() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        return null; // Se o idBarbearia não foi encontrado, retorne null
+      }
+
+      String? cidade;
+
+      // Pega a descrição da barbearia
+      await database
+          .collection("Barbearias")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
+        if (event.exists) {
+          print("encontamos algo");
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          cidade = data['cidade'];
+          print("encontamos algo: $cidade");
+        } else {
+          print("isso nao existe");
+        }
+      });
+
+      return cidade;
+    } catch (e) {
+      print("ao pegar a cidade: $e");
+      return null; // Retorna null em caso de erro
+    }
+  }
+
+  Future<String?> getEnderecobarbearia() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        return null; // Se o idBarbearia não foi encontrado, retorne null
+      }
+
+      String? NomeRuaBairroeNumbero;
+
+      // Pega a descrição da barbearia
+      await database
+          .collection("Barbearias")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
+        if (event.exists) {
+          print("encontamos algo");
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          NomeRuaBairroeNumbero = data['NomeRuaBairroeNumbero'];
+          print("encontamos algo: $NomeRuaBairroeNumbero");
+        } else {
+          print("isso nao existe");
+        }
+      });
+
+      return NomeRuaBairroeNumbero;
+    } catch (e) {
+      print("ao pegar a NomeRuaBairroeNumbero: $e");
+      return null; // Retorna null em caso de erro
+    }
+  }
+final StreamController<List<Horarios>> _horariosSegundaStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosSegunda => _horariosSegundaStream.stream;
+  List<Horarios> _horariosSegunda = [];
+  
+  List<Horarios> get horariosSegunda => _horariosSegunda;
+
+  Future<void> loadHorariosSegunda() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioSegunda'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosSegunda = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosSegundaStream.add(_horariosSegunda);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
+    }
+  }
+  //terca feira
+  final StreamController<List<Horarios>> _horariosTercaStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosTerca => _horariosTercaStream.stream;
+  List<Horarios> _horariosTerca = [];
+  
+  List<Horarios> get horariosTerca => _horariosTerca;
+
+  Future<void> loadHorariosTerca() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioTerca'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosTerca = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosTercaStream.add(_horariosTerca);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
+    }
+  }
+
+  //quarta
+  final StreamController<List<Horarios>> _horariosQuartaStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosQuarta => _horariosQuartaStream.stream;
+  List<Horarios> _horariosQuarta = [];
+  
+  List<Horarios> get horariosQuarta => _horariosQuarta;
+
+  Future<void> loadHorariosQuarta() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioQuarta'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosQuarta = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosQuartaStream.add(_horariosQuarta);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
+    }
+  }
+  //quinta
+  final StreamController<List<Horarios>> _horariosQuintaStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosQuinta => _horariosQuintaStream.stream;
+  List<Horarios> _horariosQuinta = [];
+  
+  List<Horarios> get horariosQuinta => _horariosQuinta;
+
+  Future<void> loadHorariosQuinta() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioQuinta'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosQuinta = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosQuintaStream.add(_horariosQuinta);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
+    }
+  }
+  //sexta
+  final StreamController<List<Horarios>> _horariosSextaStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosSexta => _horariosSextaStream.stream;
+  List<Horarios> _horariosSexta = [];
+  
+  List<Horarios> get horariosSexta => _horariosSexta;
+
+  Future<void> loadHorariosSexta() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioSexta'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosSexta = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosSextaStream.add(_horariosSexta);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
+    }
+  }
+  //sabado
+  final StreamController<List<Horarios>> _horariosSabadoStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosSabado => _horariosSabadoStream.stream;
+  List<Horarios> _horariosSabado = [];
+  
+  List<Horarios> get horariosSabado => _horariosSabado;
+
+  Future<void> loadHorariosSabado() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioSabado'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosSabado = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosSabadoStream.add(_horariosSabado);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
+    }
+  }
+  //domingo
+  final StreamController<List<Horarios>> _horariosDomingoStream =
+      StreamController<List<Horarios>>.broadcast();
+
+  Stream<List<Horarios>> get getHorariosDomingo => _horariosDomingoStream.stream;
+  List<Horarios> _horariosDomingo = [];
+  
+  List<Horarios> get horariosDomingo => _horariosDomingo;
+
+  Future<void> loadHorariosDomingo() async {
+    print("entrei na funcao");
+    try {
+      print("acessamos aqui no load segunda");
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        print('ID da barbearia não encontrado!');
+        return; // Saia do método se o ID não for encontrado
+      }
+
+      // Obtendo a referência ao Firestore
+      final firestore = FirebaseFirestore.instance;
+
+      // Acessando o documento desejado
+      final docRef = firestore.collection('Barbearias').doc(idBarberaria);
+
+      // Obtendo o documento
+      final docSnapshot = await docRef.get();
+
+      if (docSnapshot.exists) {
+        // Obtendo os dados do documento
+        final data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Obtendo o array de horariossegunda
+        final horariosList = data['horarioSabado'] as List<dynamic>;
+
+        // Convertendo o array para uma lista de Horarios
+        _horariosDomingo = horariosList.map((item) {
+          return Horarios.fromMap(item as Map<String, dynamic>);
+        }).toList();
+
+        // Atualizando o stream com os dados carregados
+        _horariosDomingoStream.add(_horariosDomingo);
+      } else {
+        // Documento não encontrado
+        print('Documento não encontrado!');
+      }
+    } catch (e) {
+      // Tratamento de erros
+      print('Erro ao carregar horários: $e');
     }
   }
 }
