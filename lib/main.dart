@@ -11,6 +11,7 @@ import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
 import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
 import 'package:jimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/funcoes/ajusteHorarios.dart';
 import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
 import 'package:jimy/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
@@ -66,6 +67,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => Editprofilebarberpage(),
         ),
+        ChangeNotifierProvider(create: (_)=>Ajustehorarios(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

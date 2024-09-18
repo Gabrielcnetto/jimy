@@ -59,12 +59,14 @@ class _EditarODiaDoAgendamentoState extends State<EditarODiaDoAgendamento> {
         for (var horario in listaCort) {
           Horariopreenchidos.add(
             Horarios(
+              isActive: true,
               quantidadeHorarios: 1,
               horario: horario.horario,
               id: horario.id,
             ),
           );
           _horariosPreenchidosParaEvitarDupNoCreate.add(Horarios(
+            isActive: true,
               horario: horario.horario, id: horario.id, quantidadeHorarios: 1));
         }
 

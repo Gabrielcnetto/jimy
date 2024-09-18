@@ -85,13 +85,17 @@ class _AgendarHorarioScreenState extends State<AgendarHorarioScreen> {
         for (var horario in listaCort) {
           Horariopreenchidos.add(
             Horarios(
+              isActive: true,
               quantidadeHorarios: 1,
               horario: horario.horario,
               id: horario.id,
             ),
           );
           _horariosPreenchidosParaEvitarDupNoCreate.add(Horarios(
-              horario: horario.horario, id: horario.id, quantidadeHorarios: 1));
+              isActive: true,
+              horario: horario.horario,
+              id: horario.id,
+              quantidadeHorarios: 1));
         }
         print(
             "o tamanho da lista de preenchidos é ${Horariopreenchidos.length}");

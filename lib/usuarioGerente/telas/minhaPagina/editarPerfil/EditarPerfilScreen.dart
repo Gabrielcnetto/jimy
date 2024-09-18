@@ -144,11 +144,22 @@ class _EditarPerfilScreenState extends State<EditarPerfilScreen> {
           .attNomeBarbearia(
         NovoNome: nomeBarbeariaControler.text,
       );
-       await Provider.of<Editprofilebarberpage>(context, listen: false)
+      await Provider.of<Editprofilebarberpage>(context, listen: false)
           .attDescricaoBarbearia(
         novaDescricao: descricaoBarbeariaControler.text,
       );
-
+      await Provider.of<Editprofilebarberpage>(context, listen: false)
+          .attBairroRuaENumeroBarbearia(
+        endereco: nomeRuaeNumeroControler.text,
+      );
+       await Provider.of<Editprofilebarberpage>(context, listen: false)
+          .attCEP(
+        CEP: cepControler.text.replaceAll('-', '').replaceAll(' ', ''),
+      );
+        await Provider.of<Editprofilebarberpage>(context, listen: false)
+          .attCidade(
+        Cidade: cidadeControler.text,
+      );
       setState(() {
         isLoading = false;
       });

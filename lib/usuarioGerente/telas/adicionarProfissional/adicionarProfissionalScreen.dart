@@ -472,7 +472,7 @@ class _AdicionarProfissionalState extends State<AdicionarProfissional> {
                                   FilteringTextInputFormatter
                                       .digitsOnly, // Permite apenas dígitos
                                 ],
-                                maxLength: 2,
+                                maxLength: 3,
                                 textAlign: TextAlign
                                     .center, // Alinha o texto no centro horizontalmente
                                 decoration: InputDecoration(
@@ -526,7 +526,7 @@ class _AdicionarProfissionalState extends State<AdicionarProfissional> {
                                   FilteringTextInputFormatter
                                       .digitsOnly, // Permite apenas dígitos
                                 ],
-                                maxLength: 2,
+                                maxLength: 3,
                                 textAlign: TextAlign
                                     .center, // Alinha o texto no centro horizontalmente
                                 decoration: InputDecoration(

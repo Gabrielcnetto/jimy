@@ -128,4 +128,76 @@ class Editprofilebarberpage with ChangeNotifier {
       throw e;
     }
   }
+  Future<void> attBairroRuaENumeroBarbearia({required String endereco}) async {
+    print("here");
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+      print("entrei aqui");
+      final pubnewName =
+          await database.collection("Barbearias").doc(idBarberaria).update({
+        "NomeRuaBairroeNumbero": endereco,
+      });
+   
+    } catch (e) {
+      print("erro ao atualizar o nome:$e");
+      throw e;
+    }
+  }
+  Future<void> attCEP({required String CEP}) async {
+    print("here");
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+      print("entrei aqui");
+      final pubnewName =
+          await database.collection("Barbearias").doc(idBarberaria).update({
+        "cep": CEP,
+      });
+   
+    } catch (e) {
+      print("erro ao atualizar o nome:$e");
+      throw e;
+    }
+  }
+  Future<void> attCidade({required String Cidade}) async {
+    print("here");
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+      print("entrei aqui");
+      final pubnewName =
+          await database.collection("Barbearias").doc(idBarberaria).update({
+        "cidade": Cidade,
+      });
+   
+    } catch (e) {
+      print("erro ao atualizar o nome:$e");
+      throw e;
+    }
+  }
 }

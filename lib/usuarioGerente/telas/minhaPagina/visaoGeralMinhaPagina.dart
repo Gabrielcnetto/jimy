@@ -6,6 +6,7 @@ import 'package:jimy/usuarioGerente/classes/horarios.dart';
 import 'package:jimy/usuarioGerente/classes/pagamentos.dart';
 import 'package:jimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:jimy/usuarioGerente/telas/EditarHorarios/EditarHorariosPrincipalScreen.dart';
 import 'package:jimy/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart';
 import 'package:jimy/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart';
 import 'package:provider/provider.dart';
@@ -26,12 +27,8 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
     super.initState();
     Provider.of<Getsdeinformacoes>(context, listen: false)
         .getListaProfissionais();
-    Provider.of<Getsdeinformacoes>(context, listen: false)
-        .loadHorariosSegunda();
-    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosTerca();
-    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosQuarta();
-    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosQuinta();
-    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosSexta();
+    Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosSemana();
+
     Provider.of<Getsdeinformacoes>(context, listen: false).loadHorariosSabado();
     Provider.of<Getsdeinformacoes>(context, listen: false)
         .loadHorariosDomingo();
@@ -472,74 +469,92 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                   ),
                                 ),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: StreamBuilder<List<Horarios>>(
-                                    stream: Provider.of<Getsdeinformacoes>(
-                                            context,
-                                            listen: false)
-                                        .getHorariosSegunda,
-                                    builder: (ctx, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            color: Dadosgeralapp().primaryColor,
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text(
-                                            'Erro ao carregar dados',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                    alignment: Alignment.center,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: StreamBuilder<List<Horarios>>(
+                                        stream: Provider.of<Getsdeinformacoes>(
+                                                context,
+                                                listen: false)
+                                            .getHorariosSemana,
+                                        builder: (ctx, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: Dadosgeralapp()
+                                                    .primaryColor,
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasData) {
-                                        final horariosSegunda = snapshot.data!;
-                                        final horariosSegundaLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosSegunda.isEmpty) {
-                                          return Text(
-                                            "Fechado",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                            );
+                                          }
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                              child: Text(
+                                                'Erro ao carregar dados',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
-                                        return Text(
-                                          "${horariosSegunda[0].horario} - ${horariosSegunda[intUltimoHorario].horario}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      // Caso contrário, retorna um widget padrão
-                                      return Container();
-                                    },
-                                  ),
-                                )
+                                            );
+                                          }
+                                          if (snapshot.hasData) {
+                                            final horariosSegunda =
+                                                snapshot.data!;
+
+                                            // Filtrando os horários ativos
+                                            final horariosAtivos =
+                                                horariosSegunda
+                                                    .where(
+                                                        (item) => item.isActive)
+                                                    .toList();
+
+                                            final horariosAtivosLength =
+                                                horariosAtivos.length;
+
+                                            // Verificar se a lista de horários ativos está vazia
+                                            if (horariosAtivos.isEmpty) {
+                                              return Text(
+                                                "Fechado",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            // Acessando o primeiro e o último horário da lista filtrada
+                                            final primeiroHorario =
+                                                horariosAtivos[0].horario;
+                                            final ultimoHorario =
+                                                horariosAtivos[
+                                                        horariosAtivosLength -
+                                                            1]
+                                                    .horario;
+
+                                            return Text(
+                                              "$primeiroHorario - $ultimoHorario",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+// Caso contrário, retorna um widget padrão
+                                          return Container();
+                                        }))
                               ],
                             ),
                             //terca feira
@@ -554,74 +569,92 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                   ),
                                 ),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: StreamBuilder<List<Horarios>>(
-                                    stream: Provider.of<Getsdeinformacoes>(
-                                            context,
-                                            listen: false)
-                                        .getHorariosTerca,
-                                    builder: (ctx, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            color: Dadosgeralapp().primaryColor,
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text(
-                                            'Erro ao carregar dados',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                    alignment: Alignment.center,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: StreamBuilder<List<Horarios>>(
+                                        stream: Provider.of<Getsdeinformacoes>(
+                                                context,
+                                                listen: false)
+                                            .getHorariosSemana,
+                                        builder: (ctx, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: Dadosgeralapp()
+                                                    .primaryColor,
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasData) {
-                                        final horariosTerca = snapshot.data!;
-                                        final horariosTercaLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosTerca.isEmpty) {
-                                          return Text(
-                                            "Fechado",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                            );
+                                          }
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                              child: Text(
+                                                'Erro ao carregar dados',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
-                                        return Text(
-                                          "${horariosTerca[0].horario} - ${horariosTerca[intUltimoHorario].horario}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      // Caso contrário, retorna um widget padrão
-                                      return Container();
-                                    },
-                                  ),
-                                )
+                                            );
+                                          }
+                                          if (snapshot.hasData) {
+                                            final horariosSegunda =
+                                                snapshot.data!;
+
+                                            // Filtrando os horários ativos
+                                            final horariosAtivos =
+                                                horariosSegunda
+                                                    .where(
+                                                        (item) => item.isActive)
+                                                    .toList();
+
+                                            final horariosAtivosLength =
+                                                horariosAtivos.length;
+
+                                            // Verificar se a lista de horários ativos está vazia
+                                            if (horariosAtivos.isEmpty) {
+                                              return Text(
+                                                "Fechado",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            // Acessando o primeiro e o último horário da lista filtrada
+                                            final primeiroHorario =
+                                                horariosAtivos[0].horario;
+                                            final ultimoHorario =
+                                                horariosAtivos[
+                                                        horariosAtivosLength -
+                                                            1]
+                                                    .horario;
+
+                                            return Text(
+                                              "$primeiroHorario - $ultimoHorario",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+// Caso contrário, retorna um widget padrão
+                                          return Container();
+                                        }))
                               ],
                             ),
                             //quarta
@@ -636,74 +669,92 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                   ),
                                 ),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: StreamBuilder<List<Horarios>>(
-                                    stream: Provider.of<Getsdeinformacoes>(
-                                            context,
-                                            listen: false)
-                                        .getHorariosQuarta,
-                                    builder: (ctx, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            color: Dadosgeralapp().primaryColor,
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text(
-                                            'Erro ao carregar dados',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                    alignment: Alignment.center,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: StreamBuilder<List<Horarios>>(
+                                        stream: Provider.of<Getsdeinformacoes>(
+                                                context,
+                                                listen: false)
+                                            .getHorariosSemana,
+                                        builder: (ctx, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: Dadosgeralapp()
+                                                    .primaryColor,
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasData) {
-                                        final horariosQuarta = snapshot.data!;
-                                        final horariosQuartaLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosQuarta.isEmpty) {
-                                          return Text(
-                                            "Fechado",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                            );
+                                          }
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                              child: Text(
+                                                'Erro ao carregar dados',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
-                                        return Text(
-                                          "${horariosQuarta[0].horario} - ${horariosQuarta[intUltimoHorario].horario}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      // Caso contrário, retorna um widget padrão
-                                      return Container();
-                                    },
-                                  ),
-                                )
+                                            );
+                                          }
+                                          if (snapshot.hasData) {
+                                            final horariosSegunda =
+                                                snapshot.data!;
+
+                                            // Filtrando os horários ativos
+                                            final horariosAtivos =
+                                                horariosSegunda
+                                                    .where(
+                                                        (item) => item.isActive)
+                                                    .toList();
+
+                                            final horariosAtivosLength =
+                                                horariosAtivos.length;
+
+                                            // Verificar se a lista de horários ativos está vazia
+                                            if (horariosAtivos.isEmpty) {
+                                              return Text(
+                                                "Fechado",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            // Acessando o primeiro e o último horário da lista filtrada
+                                            final primeiroHorario =
+                                                horariosAtivos[0].horario;
+                                            final ultimoHorario =
+                                                horariosAtivos[
+                                                        horariosAtivosLength -
+                                                            1]
+                                                    .horario;
+
+                                            return Text(
+                                              "$primeiroHorario - $ultimoHorario",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+// Caso contrário, retorna um widget padrão
+                                          return Container();
+                                        }))
                               ],
                             ),
                             //quinta
@@ -718,74 +769,92 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                   ),
                                 ),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: StreamBuilder<List<Horarios>>(
-                                    stream: Provider.of<Getsdeinformacoes>(
-                                            context,
-                                            listen: false)
-                                        .getHorariosQuinta,
-                                    builder: (ctx, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            color: Dadosgeralapp().primaryColor,
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text(
-                                            'Erro ao carregar dados',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                    alignment: Alignment.center,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: StreamBuilder<List<Horarios>>(
+                                        stream: Provider.of<Getsdeinformacoes>(
+                                                context,
+                                                listen: false)
+                                            .getHorariosSemana,
+                                        builder: (ctx, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: Dadosgeralapp()
+                                                    .primaryColor,
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasData) {
-                                        final horariosQuinta = snapshot.data!;
-                                        final horariosQuintaLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosQuinta.isEmpty) {
-                                          return Text(
-                                            "Fechado",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                            );
+                                          }
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                              child: Text(
+                                                'Erro ao carregar dados',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
-                                        return Text(
-                                          "${horariosQuinta[0].horario} - ${horariosQuinta[intUltimoHorario].horario}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      // Caso contrário, retorna um widget padrão
-                                      return Container();
-                                    },
-                                  ),
-                                )
+                                            );
+                                          }
+                                          if (snapshot.hasData) {
+                                            final horariosSegunda =
+                                                snapshot.data!;
+
+                                            // Filtrando os horários ativos
+                                            final horariosAtivos =
+                                                horariosSegunda
+                                                    .where(
+                                                        (item) => item.isActive)
+                                                    .toList();
+
+                                            final horariosAtivosLength =
+                                                horariosAtivos.length;
+
+                                            // Verificar se a lista de horários ativos está vazia
+                                            if (horariosAtivos.isEmpty) {
+                                              return Text(
+                                                "Fechado",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            // Acessando o primeiro e o último horário da lista filtrada
+                                            final primeiroHorario =
+                                                horariosAtivos[0].horario;
+                                            final ultimoHorario =
+                                                horariosAtivos[
+                                                        horariosAtivosLength -
+                                                            1]
+                                                    .horario;
+
+                                            return Text(
+                                              "$primeiroHorario - $ultimoHorario",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+// Caso contrário, retorna um widget padrão
+                                          return Container();
+                                        }))
                               ],
                             ),
                             //sexta
@@ -800,74 +869,92 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                   ),
                                 ),
                                 Container(
-                                  alignment: Alignment.center,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
-                                  child: StreamBuilder<List<Horarios>>(
-                                    stream: Provider.of<Getsdeinformacoes>(
-                                            context,
-                                            listen: false)
-                                        .getHorariosSexta,
-                                    builder: (ctx, snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            color: Dadosgeralapp().primaryColor,
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasError) {
-                                        return Center(
-                                          child: Text(
-                                            'Erro ao carregar dados',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                    alignment: Alignment.center,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.05,
+                                    child: StreamBuilder<List<Horarios>>(
+                                        stream: Provider.of<Getsdeinformacoes>(
+                                                context,
+                                                listen: false)
+                                            .getHorariosSemana,
+                                        builder: (ctx, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                color: Dadosgeralapp()
+                                                    .primaryColor,
                                               ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      if (snapshot.hasData) {
-                                        final horariosSexta = snapshot.data!;
-                                        final horariosSextaLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosSexta.isEmpty) {
-                                          return Text(
-                                            "Fechado",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 12,
+                                            );
+                                          }
+                                          if (snapshot.hasError) {
+                                            return Center(
+                                              child: Text(
+                                                'Erro ao carregar dados',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
-                                        return Text(
-                                          "${horariosSexta[0].horario} - ${horariosSexta[intUltimoHorario].horario}",
-                                          style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      // Caso contrário, retorna um widget padrão
-                                      return Container();
-                                    },
-                                  ),
-                                )
+                                            );
+                                          }
+                                          if (snapshot.hasData) {
+                                            final horariosSegunda =
+                                                snapshot.data!;
+
+                                            // Filtrando os horários ativos
+                                            final horariosAtivos =
+                                                horariosSegunda
+                                                    .where(
+                                                        (item) => item.isActive)
+                                                    .toList();
+
+                                            final horariosAtivosLength =
+                                                horariosAtivos.length;
+
+                                            // Verificar se a lista de horários ativos está vazia
+                                            if (horariosAtivos.isEmpty) {
+                                              return Text(
+                                                "Fechado",
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+
+                                            // Acessando o primeiro e o último horário da lista filtrada
+                                            final primeiroHorario =
+                                                horariosAtivos[0].horario;
+                                            final ultimoHorario =
+                                                horariosAtivos[
+                                                        horariosAtivosLength -
+                                                            1]
+                                                    .horario;
+
+                                            return Text(
+                                              "$primeiroHorario - $ultimoHorario",
+                                              style: GoogleFonts.poppins(
+                                                textStyle: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            );
+                                          }
+
+// Caso contrário, retorna um widget padrão
+                                          return Container();
+                                        }))
                               ],
                             ),
                             //sabado
@@ -917,11 +1004,17 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                       }
                                       if (snapshot.hasData) {
                                         final horariosSabado = snapshot.data!;
-                                        final horariosSabadoLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosSabado.isEmpty) {
+
+                                        // Filtrando os horários ativos
+                                        final horariosAtivos = horariosSabado
+                                            .where((item) => item.isActive)
+                                            .toList();
+
+                                        final horariosAtivosLength =
+                                            horariosAtivos.length;
+
+                                        // Verifica se a lista filtrada está vazia
+                                        if (horariosAtivos.isEmpty) {
                                           return Text(
                                             "Fechado",
                                             style: GoogleFonts.poppins(
@@ -933,9 +1026,16 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                             ),
                                           );
                                         }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
+
+                                        // Acessando o primeiro e o último horário da lista filtrada
+                                        final primeiroHorario =
+                                            horariosAtivos[0].horario;
+                                        final ultimoHorario = horariosAtivos[
+                                                horariosAtivosLength - 1]
+                                            .horario;
+
                                         return Text(
-                                          "${horariosSabado[0].horario} - ${horariosSabado[intUltimoHorario].horario}",
+                                          "$primeiroHorario - $ultimoHorario",
                                           style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
                                               color: Colors.black,
@@ -973,7 +1073,7 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                     stream: Provider.of<Getsdeinformacoes>(
                                             context,
                                             listen: false)
-                                        .getHorariosSabado,
+                                        .getHorariosDomingo,
                                     builder: (ctx, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
@@ -999,11 +1099,17 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                       }
                                       if (snapshot.hasData) {
                                         final horariosDomingo = snapshot.data!;
-                                        final horariosDomingoLengh =
-                                            snapshot.data!.length;
-                                        int intUltimoHorario =
-                                            snapshot.data!.length - 1;
-                                        if (horariosDomingo.isEmpty) {
+
+                                        // Filtrando os horários ativos
+                                        final horariosAtivos = horariosDomingo
+                                            .where((item) => item.isActive)
+                                            .toList();
+
+                                        final horariosAtivosLength =
+                                            horariosAtivos.length;
+
+                                        // Verifica se a lista filtrada está vazia
+                                        if (horariosAtivos.isEmpty) {
                                           return Text(
                                             "Fechado",
                                             style: GoogleFonts.poppins(
@@ -1015,9 +1121,16 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                             ),
                                           );
                                         }
-                                        // Aqui você pode retornar um widget baseado nos dados carregados
+
+                                        // Acessando o primeiro e o último horário da lista filtrada
+                                        final primeiroHorario =
+                                            horariosAtivos[0].horario;
+                                        final ultimoHorario = horariosAtivos[
+                                                horariosAtivosLength - 1]
+                                            .horario;
+
                                         return Text(
-                                          "${horariosDomingo[0].horario} - ${horariosDomingo[intUltimoHorario].horario}",
+                                          "$primeiroHorario - $ultimoHorario",
                                           style: GoogleFonts.poppins(
                                             textStyle: TextStyle(
                                               color: Colors.black,
@@ -1033,29 +1146,36 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                                   ),
                                 )
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Container(
-                              decoration: BoxDecoration(
-                                color: Dadosgeralapp().primaryColor,
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 15),
-                              child: Text(
-                                "Alterar horários",
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w400),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      EditarHorariosPrincipalEscreen()));
+                            },
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  color: Dadosgeralapp().primaryColor,
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                              )),
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 5, horizontal: 15),
+                                child: Text(
+                                  "Alterar horários",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                )),
+                          ),
                         ],
                       )
                     ],

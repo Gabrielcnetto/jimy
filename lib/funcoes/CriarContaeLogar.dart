@@ -151,7 +151,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
       });
       final List<Map<String, dynamic>> horariosMap =
           listaHorariosBase.map((horario) => horario.toMap()).toList();
-            final List<Map<String, dynamic>> horariosMapSabado =
+      final List<Map<String, dynamic>> horariosMapSabado =
           listaHorariosBaseSabado.map((horario) => horario.toMap()).toList();
       //criando perfil barbearia
       final barbeariaPub =
@@ -162,13 +162,9 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "descricaoBarbearia": "",
         "FormasPagamento": [],
         "wallpaperPagina": "",
-        "horarioSegunda": horariosMap,
-        "horarioTerca": horariosMap,
-        "horarioQuarta": horariosMap,
-        "horarioQuinta": horariosMap,
-        "horarioSexta": horariosMap,
+        "horarioSemana": horariosMap,
         "horarioSabado": horariosMapSabado,
-        "horarioDomingo": [],
+        "horarioDomingo": horariosMapSabado,
         "gerente": userName,
         "profissionais": [],
         "servicos": [],

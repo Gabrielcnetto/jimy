@@ -340,6 +340,7 @@ class Agendarhorario with ChangeNotifier {
 
       List<Horarios> horarios = querySnapshot.docs.map((doc) {
         return Horarios(
+          isActive: true,
           quantidadeHorarios: 1,
           horario: doc.id,
           id: "",
