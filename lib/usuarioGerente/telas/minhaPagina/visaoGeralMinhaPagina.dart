@@ -4,6 +4,7 @@ import 'package:jimy/DadosGeralApp.dart';
 import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
 import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:jimy/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart';
+import 'package:jimy/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart';
 import 'package:provider/provider.dart';
 
 class VisaoGeralMinhaPagina extends StatefulWidget {
@@ -208,21 +209,27 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Dadosgeralapp().primaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                      child: Text(
-                        "Editar perfil",
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (ctx) => EditarPerfilScreen()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Dadosgeralapp().primaryColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        alignment: Alignment.center,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        child: Text(
+                          "Editar perfil",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14),
+                          ),
                         ),
                       ),
                     ),

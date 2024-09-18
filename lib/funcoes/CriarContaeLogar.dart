@@ -158,6 +158,9 @@ class CriarcontaelogarProvider with ChangeNotifier {
           await database.collection("Barbearias").doc(idBarbearia).set({
         //identificar e encontrar a barbearia
         "diaFechado": "",
+        "avaliacaoGeral": 0.0,
+        "descricaoBarbearia": "",
+        "FormasPagamento": [],
         "wallpaperPagina": "",
         "horarioSegunda": horariosMap,
         "horarioTerca": horariosMap,
@@ -173,6 +176,8 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "idBarbearia": idBarbearia,
         "imagemPerfilBarbearia:": "${Dadosgeralapp().defaultAvatarImage}",
         "cidade": cidade,
+        "NomeRuaBairroeNumbero": "",
+        "cordenadaMapa": "",
         "cep": cep,
         //Vendas
         'totalVendas': 0.0,

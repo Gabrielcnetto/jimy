@@ -75,6 +75,50 @@ class Getsdeinformacoes with ChangeNotifier {
     return null;
   }
 
+  Future<String?> getDescricaoBarbearia() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        return null; // Se o idBarbearia não foi encontrado, retorne null
+      }
+
+      String? descricaoBarbearia;
+
+      // Pega a descrição da barbearia
+      await database
+          .collection("Barbearias")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
+        if (event.exists) {
+          print("encontamos algo");
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          descricaoBarbearia = data['descricaoBarbearia'];
+          print("encontamos algo: $descricaoBarbearia");
+        } else {
+          print("isso nao existe");
+        }
+      });
+
+      return descricaoBarbearia;
+    } catch (e) {
+      print("ao pegar a descricaoDaBarbeariaDeuIsto: $e");
+      return null; // Retorna null em caso de erro
+    }
+  }
+
   Future<String?> getNomeIdBarbearia() async {
     if (authSettings.currentUser != null) {
       final String uidUser = await authSettings.currentUser!.uid;
@@ -1140,5 +1184,49 @@ class Getsdeinformacoes with ChangeNotifier {
     }
     print("o tamanho da lista é manager ${_comandaList.length}");
     notifyListeners();
+  }
+
+   Future<String?> getCEPbarbearia() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+
+      print("toa qui");
+
+      if (idBarberaria == null) {
+        return null; // Se o idBarbearia não foi encontrado, retorne null
+      }
+
+      String? cep;
+
+      // Pega a descrição da barbearia
+      await database
+          .collection("Barbearias")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
+        if (event.exists) {
+          print("encontamos algo");
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          cep = data['cep'];
+          print("encontamos algo: $cep");
+        } else {
+          print("isso nao existe");
+        }
+      });
+
+      return cep;
+    } catch (e) {
+      print("ao pegar a descricaoDaBarbeariaDeuIsto: $e");
+      return null; // Retorna null em caso de erro
+    }
   }
 }
