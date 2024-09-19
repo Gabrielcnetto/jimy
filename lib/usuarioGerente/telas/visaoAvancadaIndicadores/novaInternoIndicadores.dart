@@ -18,6 +18,7 @@ import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoVi
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/telaClientesMesSelecionado.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart';
 import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
+import 'package:jimy/usuarioGerente/telas/visaoAvancadaIndicadores/visaoTodososServicos.dart';
 import 'package:provider/provider.dart';
 
 class InternoIndicadoresScreenV2 extends StatefulWidget {
@@ -75,7 +76,6 @@ class _InternoIndicadoresScreenV2State
   Future<void> getTotalTicketAnterior(
       {required String mesSelecionadoAnterior,
       required int anoDoMesSelecionadoAnterior}) async {
-   
     double? dbMesSelecionado =
         await Provider.of<Getsdeinformacoes>(context, listen: false)
             .calculoTicketMedioMesAnterior(
@@ -1133,14 +1133,35 @@ class _InternoIndicadoresScreenV2State
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 15),
-                    child: Text(
-                      "Serviços mais escolhidos",
-                      style: GoogleFonts.poppins(
-                        textStyle: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16),
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Serviços mais escolhidos",
+                          style: GoogleFonts.poppins(
+                            textStyle: TextStyle(
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (ctx) => TodosOsServicos()));
+                          },
+                          child: Text(
+                            "Ver todos",
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   Container(

@@ -2,12 +2,13 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jimy/usuarioGerente/classes/servico.dart';
 
 class Criarservicos with ChangeNotifier {
   final database = FirebaseFirestore.instance;
-
+  final authSettings = FirebaseAuth.instance;
   Future<void> addServico({
     required String serviceName,
     required double servicePrice,
@@ -30,6 +31,29 @@ class Criarservicos with ChangeNotifier {
     } catch (e) {
       print("erro ao adicionar serviço");
       throw e;
+    }
+  }
+
+  Future<void> removerServico({required Servico service}) async {
+    try {
+      final String uidUser = await authSettings.currentUser!.uid;
+      String? userIdbarbearia;
+
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          userIdbarbearia = data['idBarbearia'];
+        } else {}
+        return userIdbarbearia;
+      });
+
+      final removeservice =
+          database.collection("Barbearias").doc(userIdbarbearia).update({
+        "servicos": FieldValue.arrayRemove([service.toMap()]),
+      });
+    } catch (e) {
+      print("ao remover o serviço deu isso:$e");
     }
   }
 }

@@ -1512,4 +1512,98 @@ class Getsdeinformacoes with ChangeNotifier {
       print('Erro ao carregar horários sabado:  $e');
     }
   }
+
+  //
+  Future<int?> getAvaliacaoGeral() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      }
+
+      print("toa qui sabado");
+
+      int? avaliacaoGeral;
+
+      await database
+          .collection("Barbearias")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          avaliacaoGeral = data['avaliacaoGeral'].toInt();
+        } else {}
+        return int;
+      });
+      print("avaliacao final ficou:$avaliacaoGeral");
+      return avaliacaoGeral;
+    } catch (e) {
+      print("ao pegar a avaliacao final deu $e");
+    }
+  }
+
+  List<String> _bannerList = [];
+  List<String> get bannerList =>
+      [..._bannerList]; // Retorna uma cópia imutável da lista
+
+  final StreamController<List<String>> _bannersController =
+      StreamController<List<String>>.broadcast();
+  Stream<List<String>> get bannersStream => _bannersController.stream;
+
+  Future<void> loadBanners() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+
+      if (idBarberaria == null) {
+        _bannerList = []; // Limpa a lista se não encontrar a barbearia
+        _bannersController.sink.add(_bannerList); // Atualiza o stream
+        return;
+      }
+
+      List<String>? wallpaperPagina;
+
+      // Pega a descrição da barbearia
+      await database
+          .collection("Barbearias")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          wallpaperPagina = List<String>.from(data['wallpaperPagina'] ?? []);
+        }
+      });
+
+      if (wallpaperPagina != null) {
+        _bannerList = wallpaperPagina!; // Atualiza a lista local
+        _bannersController.sink
+            .add(_bannerList); // Emite a lista atualizada no stream
+      } else {
+        _bannerList = []; // Se não houver wallpapers, zera a lista
+        _bannersController.sink
+            .add(_bannerList); // Emite a lista vazia no stream
+      }
+    } catch (e) {
+      print("Erro ao carregar os banners: $e");
+      _bannerList = []; // Limpa a lista em caso de erro
+      _bannersController.sink
+          .add(_bannerList); // Atualiza o stream com a lista vazia
+    }
+  }
 }

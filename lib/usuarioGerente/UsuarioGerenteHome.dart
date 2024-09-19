@@ -33,9 +33,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
       {
         'tela': IndicadoresScreen(),
       },
-      {
-        'tela': Container(),
-      },
+  
       {
         'tela': AgendaEAddScreen(),
       },
@@ -72,10 +70,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
               Icons.home,
               size: 25,
             ),
-            const Icon(
-              Icons.play_circle,
-              size: 25,
-            ),
+           
             const Icon(
               Icons.calendar_today,
               size: 25,

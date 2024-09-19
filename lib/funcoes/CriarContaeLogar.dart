@@ -161,7 +161,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "avaliacaoGeral": 0.0,
         "descricaoBarbearia": "",
         "FormasPagamento": [],
-        "wallpaperPagina": "",
+        "wallpaperPagina": [],
         "horarioSemana": horariosMap,
         "horarioSabado": horariosMapSabado,
         "horarioDomingo": horariosMapSabado,
