@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/horarios.dart';
-import 'package:jimy/usuarioGerente/funcoes/ajusteHorarios.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/horarios.dart';
+import 'package:friotrim/usuarioGerente/funcoes/ajusteHorarios.dart';
 import 'package:provider/provider.dart';
 
 class IconeHorarioSabado extends StatefulWidget {

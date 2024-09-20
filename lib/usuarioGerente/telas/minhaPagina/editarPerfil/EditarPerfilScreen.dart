@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/pagamentos.dart';
-import 'package:jimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/pagamentos.dart';
+import 'package:friotrim/usuarioGerente/funcoes/EditProfileBarberPage.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class EditarPerfilScreen extends StatefulWidget {

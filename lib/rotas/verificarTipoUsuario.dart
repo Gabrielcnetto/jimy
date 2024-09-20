@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
-import 'package:jimy/funcoes/CriarContaeLogar.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
-import 'package:jimy/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
-import 'package:jimy/usuarioGerente/UsuarioGerenteHome.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioNormal/UsuarioNormalHome.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:friotrim/funcoes/CriarContaeLogar.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
+import 'package:friotrim/usuarioGerente/UsuarioGerenteHome.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioNormal/UsuarioNormalHome.dart';
 import 'package:provider/provider.dart';
 
 class VerificartipoDeUsuario extends StatefulWidget {

@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/Despesa.dart';
-import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/componentes/dentroDoComponenteJaPago.dart';
-import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/dentroDaDespesaPendente.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/Despesa.dart';
+import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/componentes/dentroDoComponenteJaPago.dart';
+import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/dentroDaDespesaPendente.dart';
 
 class itemVisualPagoListaGeralDespesa extends StatefulWidget {
   final Despesa despesa;

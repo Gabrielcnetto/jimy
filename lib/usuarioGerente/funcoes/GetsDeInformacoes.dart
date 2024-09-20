@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
-import 'package:jimy/usuarioGerente/classes/comanda.dart';
-import 'package:jimy/usuarioGerente/classes/horarios.dart';
-import 'package:jimy/usuarioGerente/classes/produto.dart';
-import 'package:jimy/usuarioGerente/classes/servico.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/classes/comanda.dart';
+import 'package:friotrim/usuarioGerente/classes/horarios.dart';
+import 'package:friotrim/usuarioGerente/classes/produto.dart';
+import 'package:friotrim/usuarioGerente/classes/servico.dart';
 
 class Getsdeinformacoes with ChangeNotifier {
   final authSettings = FirebaseAuth.instance;
@@ -1605,5 +1605,32 @@ class Getsdeinformacoes with ChangeNotifier {
       _bannersController.sink
           .add(_bannerList); // Atualiza o stream com a lista vazia
     }
+  }
+
+  Future<int?> getPontosMinimosClientes() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      await database.collection("usuarios").doc(uidUser).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+          idBarberaria = data['idBarbearia'];
+        }
+      });
+
+      int? minimoPontos;
+
+      await database.collection("PontuacoesConfiguradas").doc(idBarberaria).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          minimoPontos = data['Pontos'] ?? 0;
+        } else {}
+        return minimoPontos;
+      });
+      return minimoPontos;
+    } catch (e) {}
   }
 }

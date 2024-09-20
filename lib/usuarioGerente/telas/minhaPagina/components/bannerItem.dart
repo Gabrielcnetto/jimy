@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jimy/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart';
+import 'package:friotrim/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart';
 
 class BannerItem extends StatefulWidget {
   List<String> images;
@@ -40,7 +40,7 @@ class _BannerItemState extends State<BannerItem> {
                 itemBuilder: (context, index) {
                   return Image.network(
                     widget.images[index],
-                    fit: BoxFit.cover,
+                      fit: BoxFit.fill,
                   );
                 },
               ),
@@ -61,14 +61,7 @@ class _BannerItemState extends State<BannerItem> {
                   SizedBox(
                     width: 15,
                   ),
-                  Icon(
-                    Icons.ios_share,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
+                  
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(

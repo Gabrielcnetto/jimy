@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/jimy.iml" filepath="$PROJECT_DIR$/jimy.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/jimy_android.iml" filepath="$PROJECT_DIR$/android/jimy_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/friotrim.iml" filepath="$PROJECT_DIR$/friotrim.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/friotrim_android.iml" filepath="$PROJECT_DIR$/android/friotrim_android.iml" />
     </modules>
   </component>
 </project>

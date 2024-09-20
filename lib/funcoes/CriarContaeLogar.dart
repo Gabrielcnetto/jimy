@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/horarios.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/horarios.dart';
 
 class CriarcontaelogarProvider with ChangeNotifier {
   //bibliotecas - packages
@@ -36,7 +36,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
         "urlPerfilImage": "${Dadosgeralapp().defaultAvatarImage}",
-        "Dimypoints": 0,
+        "FioTrimpoints": 0,
         "userName": userName,
         "email": email,
         "senha": password,
@@ -178,6 +178,10 @@ class CriarcontaelogarProvider with ChangeNotifier {
         //Vendas
         'totalVendas': 0.0,
       });
+      final setPadraoPoints =
+          await database.collection("PontuacoesConfiguradas").doc(idBarbearia).set({
+            "Pontos": 4500
+          });
       notifyListeners();
     } catch (e) {
       print("erro:$e");

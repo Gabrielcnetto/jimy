@@ -48,36 +48,36 @@ final pagListPrincipal = [
     id: "D1",
     name: "Dinheiro",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/cardIcons%2FmoneyIcon.png?alt=media&token=eb399854-ac50-4ffb-ad53-9929fb901cbc",
+        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FmoneyIcon.png?alt=media&token=74967870-137f-45f5-a867-8fe9075dc5ef",
   ),
   Pagamentos(
     id: "M1",
     name: "Mastercard Crédito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/cardIcons%2FMastercardicon.png?alt=media&token=d7601d82-e6bf-4247-931b-09c00930ddf6",
+        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2Fmastercardicon.png?alt=media&token=b7f59d64-cfa4-4c0f-affa-47d64187413b",
   ),
   Pagamentos(
     id: "M2",
     name: "Mastercard Débito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/cardIcons%2FMastercardicon.png?alt=media&token=d7601d82-e6bf-4247-931b-09c00930ddf6",
+        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2Fmastercardicon.png?alt=media&token=b7f59d64-cfa4-4c0f-affa-47d64187413b",
   ),
   Pagamentos(
     id: "V1",
     name: "Visa Crédito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/cardIcons%2FVisaIcon.png?alt=media&token=ae31c680-dedc-4a2f-a9a3-ce425e1e938d",
+        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FvisaIcon.png?alt=media&token=3f4c8456-868a-44f4-8de4-8c2e2af0ea47",
   ),
   Pagamentos(
     id: "V2",
     name: "Visa Débito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/cardIcons%2FVisaIcon.png?alt=media&token=ae31c680-dedc-4a2f-a9a3-ce425e1e938d",
+        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FvisaIcon.png?alt=media&token=3f4c8456-868a-44f4-8de4-8c2e2af0ea47",
   ),
   Pagamentos(
     id: "P0",
     name: "PIX",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/cardIcons%2Fpixicon.png?alt=media&token=c5249951-55bc-4338-8ebf-ad89f0da8045",
+        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FpixIcon.png?alt=media&token=b94f99b9-a233-4cdc-a638-cf50eefadfd9",
   ),
 ];

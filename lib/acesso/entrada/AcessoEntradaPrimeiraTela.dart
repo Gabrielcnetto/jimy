@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart';
-import 'package:jimy/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart';
-import 'package:jimy/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart';
-import 'package:jimy/acesso/recuperarSenha/recuperarSenhaScreen.dart';
-import 'package:jimy/funcoes/CriarContaeLogar.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart';
+import 'package:friotrim/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart';
+import 'package:friotrim/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart';
+import 'package:friotrim/acesso/recuperarSenha/recuperarSenhaScreen.dart';
+import 'package:friotrim/funcoes/CriarContaeLogar.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
 
 class AcessoEntrada extends StatefulWidget {

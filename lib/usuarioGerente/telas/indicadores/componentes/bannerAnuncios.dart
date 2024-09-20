@@ -37,7 +37,7 @@ class _BannerAnunciosPerfilGerenteState
               tag: 'image-1',
               child: CachedNetworkImage(
                 imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/bannersTest%2Fbanner%201%20app%20(1).png?alt=media&token=4ba14c2a-459b-47a0-8767-4a556d8daf6b",
+                    "https://firebasestorage.googleapis.com/v0/b/friotrimappoficial.appspot.com/o/bannersTest%2Fbanner%201%20app%20(1).png?alt=media&token=4ba14c2a-459b-47a0-8767-4a556d8daf6b",
                 fit: BoxFit.cover,
                 fadeInDuration: Duration.zero,
               ),
@@ -46,7 +46,7 @@ class _BannerAnunciosPerfilGerenteState
               tag: 'image-1',
               child: CachedNetworkImage(
                 imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/bannersTest%2Fbanner%202.png?alt=media&token=8a06b03c-b7f9-48dc-afc9-b6091bd6d2a7",
+                    "https://firebasestorage.googleapis.com/v0/b/friotrimappoficial.appspot.com/o/bannersTest%2Fbanner%202.png?alt=media&token=8a06b03c-b7f9-48dc-afc9-b6091bd6d2a7",
                 fit: BoxFit.cover,
                 fadeInDuration: Duration.zero,
               ),
@@ -55,7 +55,7 @@ class _BannerAnunciosPerfilGerenteState
               tag: 'image-1',
               child: CachedNetworkImage(
                 imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/jimyappoficial.appspot.com/o/bannersTest%2Fbanner%203.png?alt=media&token=220fbdc4-63bc-4810-844a-8d1aca23ced1",
+                    "https://firebasestorage.googleapis.com/v0/b/friotrimappoficial.appspot.com/o/bannersTest%2Fbanner%203.png?alt=media&token=220fbdc4-63bc-4810-844a-8d1aca23ced1",
                 fit: BoxFit.cover,
                 fadeInDuration: Duration.zero,
               ),

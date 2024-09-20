@@ -1,14 +1,14 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/funcoes/CriarContaeLogar.dart';
-import 'package:jimy/rotas/confirmacaoAgendamento.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
-import 'package:jimy/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/funcoes/CriarContaeLogar.dart';
+import 'package:friotrim/rotas/confirmacaoAgendamento.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
+import 'package:friotrim/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioGerenteHome extends StatefulWidget {

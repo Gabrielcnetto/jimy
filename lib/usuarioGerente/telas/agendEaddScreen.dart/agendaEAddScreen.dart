@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
-import 'package:jimy/usuarioGerente/classes/horarios.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/telas/abrirApenasComanda/abrirApenasComanda.dart';
-import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart';
-import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart';
-import 'package:jimy/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart';
-import 'package:jimy/usuarioGerente/telas/cadastrarDespesa/CadastrarDespesa.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/classes/horarios.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioGerente/telas/abrirApenasComanda/abrirApenasComanda.dart';
+import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart';
+import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart';
+import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/botaoDeConfiguracaoAgenda.dart';
+import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart';
+import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/CadastrarDespesa.dart';
 import 'package:provider/provider.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -64,7 +65,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
       setDaysAndMonths();
       await Provider.of<Getsdeinformacoes>(context, listen: false)
           .getListaProfissionais();
-     
+
       ajusteIndexDoProfissionalPrimeiroLoad();
       await primeiroGetNomeProfissionalDefault();
       await attViewSchedule(
@@ -77,7 +78,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
         isloading = false;
       });
     } catch (e) {
-        setState(() {
+      setState(() {
         isloading = false;
       });
     }
@@ -178,15 +179,21 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                               ),
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            padding: EdgeInsets.all(10),
-                            child: Icon(
-                              Icons.settings,
-                              size: 20,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (ctx) => BotaoDeConfiguracap()));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              padding: EdgeInsets.all(10),
+                              child: Icon(
+                                Icons.settings,
+                                size: 20,
+                              ),
                             ),
                           )
                         ],
@@ -722,7 +729,6 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
         ),
         floatingActionButton: FloatingActionBubble(
           items: <Bubble>[
-             
             Bubble(
               icon: Icons.receipt_long,
               iconColor: Dadosgeralapp().primaryColor,

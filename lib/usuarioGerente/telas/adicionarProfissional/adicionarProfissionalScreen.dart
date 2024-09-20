@@ -10,10 +10,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class AdicionarProfissional extends StatefulWidget {

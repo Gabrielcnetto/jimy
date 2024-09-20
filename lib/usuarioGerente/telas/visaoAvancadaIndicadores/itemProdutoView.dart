@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/usuarioGerente/classes/produto.dart';
+import 'package:friotrim/usuarioGerente/classes/produto.dart';
 
 class ItensVendidos extends StatelessWidget {
   final Produtosavenda produtos;

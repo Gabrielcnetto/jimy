@@ -7,7 +7,7 @@ flutter pub get --no-example
 
 ## exception
 
-PathExistsException: PathExistsException: Cannot create link, path = '/Users/gabrielnetto/Documents/jimy app/jimy/windows/flutter/ephemeral/.plugin_symlinks/firebase_core' (OS Error: File exists, errno = 17)
+PathExistsException: PathExistsException: Cannot create link, path = '/Users/gabrielnetto/Documents/friotrim app/friotrim/windows/flutter/ephemeral/.plugin_symlinks/firebase_core' (OS Error: File exists, errno = 17)
 
 ```
 #0      _Link.throwIfError (dart:io/link.dart:339:7)

@@ -1,5 +1,5 @@
-import 'package:jimy/usuarioGerente/classes/produto.dart';
-import 'package:jimy/usuarioGerente/classes/servico.dart';
+import 'package:friotrim/usuarioGerente/classes/produto.dart';
+import 'package:friotrim/usuarioGerente/classes/servico.dart';
 
 class Comanda {
   // Strings

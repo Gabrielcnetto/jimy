@@ -50,26 +50,27 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyBbtBz4OdG62bV1vbugOF0-6koeGBvpCBU',
     appId: '1:894532107300:web:aaf292a1c78518208eacb1',
     messagingSenderId: '894532107300',
-    projectId: 'jimyappoficial',
-    authDomain: 'jimyappoficial.firebaseapp.com',
-    storageBucket: 'jimyappoficial.appspot.com',
+    projectId: 'friotrimappoficial',
+    authDomain: 'friotrimappoficial.firebaseapp.com',
+    storageBucket: 'friotrimappoficial.appspot.com',
     measurementId: 'G-9RN8TZG6B3',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAZyfJb9U00t9f4lawbQyGDs1eBx_N53bY',
-    appId: '1:894532107300:android:ad87b9beb489ce648eacb1',
-    messagingSenderId: '894532107300',
-    projectId: 'jimyappoficial',
-    storageBucket: 'jimyappoficial.appspot.com',
+    apiKey: 'AIzaSyDP_LKydm8aS4ld0Pq6ioFl6an0DAU4RaQ',
+    appId: '1:1024433973403:android:bef1dbea002660d9b3fe3e',
+    messagingSenderId: '1024433973403',
+    projectId: 'fiotrim',
+    storageBucket: 'fiotrim.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA0oYbKxiFUh0Onsl5WTaCb1TwNbqFwqlo',
-    appId: '1:894532107300:ios:763c6c0c37733ef98eacb1',
-    messagingSenderId: '894532107300',
-    projectId: 'jimyappoficial',
-    storageBucket: 'jimyappoficial.appspot.com',
-    iosBundleId: 'com.jimyapp.oficial',
+    apiKey: 'AIzaSyA2uZOtIouUpEop6VVRy3X2kBeRLkPDenk',
+    appId: '1:1024433973403:ios:78262981fdd8e90fb3fe3e',
+    messagingSenderId: '1024433973403',
+    projectId: 'fiotrim',
+    storageBucket: 'fiotrim.appspot.com',
+    iosBundleId: 'com.fiotrim.oficial',
   );
+
 }

@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/funcoes/agendarHorario.dart';
-import 'package:jimy/rotas/confirmacaoAgendamento.dart';
-import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
-import 'package:jimy/usuarioGerente/classes/horarios.dart';
-import 'package:jimy/usuarioGerente/classes/servico.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/funcoes/agendarHorario.dart';
+import 'package:friotrim/rotas/confirmacaoAgendamento.dart';
+import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/classes/horarios.dart';
+import 'package:friotrim/usuarioGerente/classes/servico.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class AgendarHorarioScreen extends StatefulWidget {

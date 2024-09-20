@@ -3,14 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
-import 'package:jimy/usuarioGerente/classes/CorteClass.dart';
-import 'package:jimy/usuarioGerente/classes/comanda.dart';
-import 'package:jimy/usuarioGerente/classes/produto.dart';
-import 'package:jimy/usuarioGerente/classes/servico.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:friotrim/usuarioGerente/classes/comanda.dart';
+import 'package:friotrim/usuarioGerente/classes/produto.dart';
+import 'package:friotrim/usuarioGerente/classes/servico.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
 import 'package:provider/provider.dart';
 
 class ComandaScreen extends StatefulWidget {

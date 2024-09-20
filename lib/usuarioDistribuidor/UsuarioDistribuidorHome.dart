@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jimy/funcoes/CriarContaeLogar.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/funcoes/CriarContaeLogar.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioGerenteDistribuidor extends StatelessWidget {

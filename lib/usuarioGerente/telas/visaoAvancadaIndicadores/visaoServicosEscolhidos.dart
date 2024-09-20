@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/usuarioGerente/classes/servico.dart';
+import 'package:friotrim/usuarioGerente/classes/servico.dart';
 
 class VisaoServicosEscolhidos extends StatelessWidget {
   final Servico servico;

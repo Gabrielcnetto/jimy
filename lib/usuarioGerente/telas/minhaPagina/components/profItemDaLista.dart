@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
 
 class ProfItemDaLista extends StatelessWidget {
   final Barbeiros barber;
@@ -17,13 +17,13 @@ class ProfItemDaLista extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: MediaQuery.of(context).size.width * 0.4,
-            height: MediaQuery.of(context).size.height * 0.25,
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.22,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 barber.urlImageFoto,
-                fit: BoxFit.cover,
+                 fit: BoxFit.fill,
               ),
             ),
           ),

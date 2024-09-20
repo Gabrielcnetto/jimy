@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/usuarioGerente/classes/produto.dart';
+import 'package:friotrim/usuarioGerente/classes/produto.dart';
 
 class ProdutoAdicionadoNaComanda extends StatelessWidget {
   final Produtosavenda produto;

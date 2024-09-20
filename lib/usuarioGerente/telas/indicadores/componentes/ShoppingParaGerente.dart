@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
+import 'package:friotrim/DadosGeralApp.dart';
 
 class ShoppingParaGerente extends StatelessWidget {
   const ShoppingParaGerente({super.key});

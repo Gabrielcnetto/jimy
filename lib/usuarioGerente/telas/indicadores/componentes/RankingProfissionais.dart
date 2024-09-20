@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/telas/adicionarProfissional/visaoTodosProfissionais.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioGerente/telas/adicionarProfissional/visaoTodosProfissionais.dart';
 import 'package:provider/provider.dart';
 
 class RankingProfissionaisHomeGerente extends StatefulWidget {

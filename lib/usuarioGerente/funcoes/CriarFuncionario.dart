@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
 
 class Criarfuncionario with ChangeNotifier {
   final database = FirebaseFirestore.instance;
@@ -76,7 +76,7 @@ class Criarfuncionario with ChangeNotifier {
         'userIdDatabase': userIdCreate,
         "urlPerfilImage":
             imageProfileImage ?? Dadosgeralapp().defaultAvatarImage,
-        "Dimypoints": 0,
+        "FioTrimpoints": 0,
         "userName": userName,
         "email": email,
         "senha": senha,

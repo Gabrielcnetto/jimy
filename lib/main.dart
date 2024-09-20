@@ -1,20 +1,21 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:jimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
-import 'package:jimy/firebase_options.dart';
-import 'package:jimy/funcoes/CriarContaeLogar.dart';
-import 'package:jimy/funcoes/agendarHorario.dart';
-import 'package:jimy/rotas/AppRoutes.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarServicos.dart';
-import 'package:jimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/funcoes/ajusteHorarios.dart';
-import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
-import 'package:jimy/usuarioGerente/funcoes/despesas.dart';
-import 'package:jimy/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
+import 'package:friotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:friotrim/firebase_options.dart';
+import 'package:friotrim/funcoes/CriarContaeLogar.dart';
+import 'package:friotrim/funcoes/agendarHorario.dart';
+import 'package:friotrim/rotas/AppRoutes.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:friotrim/usuarioGerente/funcoes/EditProfileBarberPage.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioGerente/funcoes/ajusteHorarios.dart';
+import 'package:friotrim/usuarioGerente/funcoes/configurarPontos.dart';
+import 'package:friotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:friotrim/usuarioGerente/funcoes/despesas.dart';
+import 'package:friotrim/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -68,10 +69,11 @@ class _MyAppState extends State<MyApp> {
           create: (_) => Editprofilebarberpage(),
         ),
         ChangeNotifierProvider(create: (_)=>Ajustehorarios(),),
+        ChangeNotifierProvider(create: (_)=>Configurarpontos(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Jimy App',
+        title: 'friotrim App',
         routes: {
           Approutes.VerificacaoDeLogado: (ctx) => VerificacaoDeLogado(),
         },

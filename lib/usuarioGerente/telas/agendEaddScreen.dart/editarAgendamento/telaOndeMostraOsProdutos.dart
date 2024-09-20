@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/classes/produto.dart';
-import 'package:jimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/classes/produto.dart';
+import 'package:friotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:provider/provider.dart';
 
 class telaOndeMostraOsProdutos extends StatefulWidget {

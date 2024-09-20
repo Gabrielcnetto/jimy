@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:jimy/usuarioGerente/classes/barbeiros.dart';
-import 'package:jimy/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:jimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/componentes/bannerAnuncios.dart';
-import 'package:jimy/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart';
+import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/bannerAnuncios.dart';
+import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart';
 import 'package:provider/provider.dart';
 
 class IndicadoresScreen extends StatefulWidget {

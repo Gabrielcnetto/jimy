@@ -4,9 +4,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/funcoes/CriarContaeLogar.dart';
-import 'package:jimy/rotas/verificadorDeLogin.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/funcoes/CriarContaeLogar.dart';
+import 'package:friotrim/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
 
 class AcessoEntradaDistribuidorScreen extends StatefulWidget {

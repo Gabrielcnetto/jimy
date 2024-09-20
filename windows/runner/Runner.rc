@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "jimy" "\0"
+            VALUE "FileDescription", "friotrim" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "jimy" "\0"
+            VALUE "InternalName", "friotrim" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2024 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "jimy.exe" "\0"
-            VALUE "ProductName", "jimy" "\0"
+            VALUE "OriginalFilename", "friotrim.exe" "\0"
+            VALUE "ProductName", "friotrim" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

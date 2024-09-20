@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:jimy/usuarioGerente/classes/pagamentos.dart';
+import 'package:friotrim/usuarioGerente/classes/pagamentos.dart';
 
 class Editprofilebarberpage with ChangeNotifier {
   final database = FirebaseFirestore.instance;
@@ -257,6 +258,111 @@ class Editprofilebarberpage with ChangeNotifier {
       });
     } catch (e) {
       print("Ao excluir o banner, ocorreu isto: $e");
+      throw e;
+    }
+  }
+
+  Future<void> setFolga({required DateTime date}) async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      } else {
+        throw Exception("Usuário não encontrado.");
+      }
+
+      if (idBarberaria == null) {
+        throw Exception("ID da barbearia não encontrado.");
+      }
+
+      //pub folga
+      final pubFolga = await database
+          .collection("FolgasBarbearias")
+          .doc(idBarberaria)
+          .collection("lista")
+          .doc(date.toIso8601String())
+          .set({
+        "DiaDeFolga": date,
+      });
+    } catch (e) {
+      print("Ao enviar a data de folga deu isto:$e");
+      throw e;
+    }
+  }
+
+  final StreamController<List<DateTime>> _folgasStreamController =
+      StreamController<List<DateTime>>.broadcast();
+
+  Stream<List<DateTime>> get folgasStream => _folgasStreamController.stream;
+  List<DateTime> _folgas = [];
+
+  List<DateTime> get folgas => [..._folgas];
+
+  Future<void> loadFolgas() async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      } else {
+        throw Exception("Usuário não encontrado.");
+      }
+
+      if (idBarberaria == null) {
+        throw Exception("ID da barbearia não encontrado.");
+      }
+      final QuerySnapshot snapshot = await database
+          .collection("FolgasBarbearias")
+          .doc(idBarberaria)
+          .collection("lista")
+          .get();
+
+      List<DateTime> folgas = snapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return (data['DiaDeFolga'] as Timestamp).toDate();
+      }).toList();
+
+      _folgas = folgas;
+      _folgasStreamController.add(_folgas);
+    } catch (e) {
+      print("Erro ao carregar as folgas: $e");
+      _folgasStreamController.addError(e);
+    }
+  }
+
+  Future<void> removefolga({required DateTime dateDelete}) async {
+    try {
+      final String uidUser = authSettings.currentUser!.uid;
+      String? idBarberaria;
+
+      // Pega o ID da barbearia
+      final userDoc = await database.collection("usuarios").doc(uidUser).get();
+      if (userDoc.exists) {
+        Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        idBarberaria = data['idBarbearia'];
+      } else {
+        throw Exception("Usuário não encontrado.");
+      }
+
+      if (idBarberaria == null) {
+        throw Exception("ID da barbearia não encontrado.");
+      }
+      //remover
+      final deteleFolga = await database
+          .collection("FolgasBarbearias")
+          .doc(idBarberaria)
+          .collection("lista").doc(dateDelete.toIso8601String()).delete();
+    } catch (e) {
+      print("Ao remover a folga ocorreu isso:$e");
       throw e;
     }
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:jimy/DadosGeralApp.dart';
-import 'package:jimy/usuarioGerente/telas/adicionarProdutos/VisaoGeralProdutos.dart';
-import 'package:jimy/usuarioGerente/telas/adicionarProfissional/adicionarProfissionalScreen.dart';
-import 'package:jimy/usuarioGerente/telas/adicionarServicos/adicionarServicosScreen.dart';
+import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioGerente/telas/adicionarProdutos/VisaoGeralProdutos.dart';
+import 'package:friotrim/usuarioGerente/telas/adicionarProfissional/adicionarProfissionalScreen.dart';
+import 'package:friotrim/usuarioGerente/telas/adicionarServicos/adicionarServicosScreen.dart';
 
 class ConfiguracoeswidgetsSet extends StatelessWidget {
   const ConfiguracoeswidgetsSet({super.key});
