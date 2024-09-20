@@ -268,10 +268,8 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                           topRight: Radius.elliptical(90, 90),
                                         ),
                                         color: selectedIndex == index
-                                            ? Dadosgeralapp()
-                                                .tertiaryColor // Cor do item selecionado
-                                            : Dadosgeralapp()
-                                                .primaryColor, // Cor padrão dos outros itens
+                                            ? Dadosgeralapp().primaryColor// Cor do item selecionado
+                                            : Colors.grey.shade200, // Cor padrão dos outros itens
                                       ),
                                       child: Column(
                                         mainAxisAlignment:
@@ -281,7 +279,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
                                             "$day",
                                             style: GoogleFonts.poppins(
                                               textStyle: TextStyle(
-                                                color: Colors.white,
+                                                color: selectedIndex == index ? Colors.white :Color.fromRGBO(54, 54, 54, 1),
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 14,
                                               ),
@@ -731,7 +729,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
           items: <Bubble>[
             Bubble(
               icon: Icons.receipt_long,
-              iconColor: Dadosgeralapp().primaryColor,
+              iconColor: Colors.black,
               title: "Abrir comanda",
               titleStyle: GoogleFonts.poppins(
                 textStyle: const TextStyle(
@@ -749,7 +747,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
             ),
             Bubble(
               icon: Icons.add_box,
-              iconColor: Dadosgeralapp().primaryColor,
+            iconColor: Colors.black,
               title: "Agendar horário",
               titleStyle: GoogleFonts.poppins(
                 textStyle: const TextStyle(
@@ -767,7 +765,7 @@ class _AgendaEAddScreenState extends State<AgendaEAddScreen>
             ),
             Bubble(
               icon: Icons.shopping_cart_checkout,
-              iconColor: Dadosgeralapp().primaryColor,
+            iconColor: Colors.black,
               title: "Cadastrar despesa",
               titleStyle: GoogleFonts.poppins(
                 textStyle: const TextStyle(

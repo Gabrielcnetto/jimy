@@ -24,7 +24,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Dadosgeralapp().colorBlackparaFundo,
+                  color: Color.fromRGBO(54  , 54, 54 , 1),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,7 +105,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Dadosgeralapp().secondaryColor,
+                color: Color.fromRGBO(54  , 54, 54 , 1),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,7 +186,7 @@ class ConfiguracoeswidgetsSet extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Dadosgeralapp().primaryColor,
+                  color: Color.fromRGBO(54  , 54, 54 , 1),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

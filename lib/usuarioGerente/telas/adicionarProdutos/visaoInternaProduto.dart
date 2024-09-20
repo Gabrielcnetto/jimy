@@ -542,7 +542,7 @@ class _VisaoInternaDoProdutoCriadoState
                                           children: [
                                             Container(
                                               decoration: BoxDecoration(
-                                                color: Colors.orange,
+                                                color: Dadosgeralapp().primaryColor,
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
@@ -550,6 +550,7 @@ class _VisaoInternaDoProdutoCriadoState
                                               child: Icon(
                                                 Icons.storefront,
                                                 size: 15,
+                                                color: Colors.white,
                                               ),
                                             ),
                                             SizedBox(
@@ -906,7 +907,7 @@ class _VisaoInternaDoProdutoCriadoState
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.orange.shade600,
+                                color: Dadosgeralapp().primaryColor,
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               alignment: Alignment.center,

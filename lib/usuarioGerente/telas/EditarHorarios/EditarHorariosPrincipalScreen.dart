@@ -108,7 +108,7 @@ class _EditarHorariosPrincipalEscreenState
                             "Seg-Sex",
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
-                                color: Colors.black,
+                                color: horariosSemana == true ? Colors.white : Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),
@@ -136,7 +136,7 @@ class _EditarHorariosPrincipalEscreenState
                             "Sábado",
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
-                                color: Colors.black,
+                                color: horariosSabado == true ? Colors.white : Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),
@@ -164,7 +164,7 @@ class _EditarHorariosPrincipalEscreenState
                             "Domingo",
                             style: GoogleFonts.poppins(
                               textStyle: TextStyle(
-                                color: Colors.black,
+                                color: horariosDomingo == true ? Colors.white:Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 12,
                               ),

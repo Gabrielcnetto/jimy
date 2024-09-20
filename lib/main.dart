@@ -72,6 +72,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_)=>Configurarpontos(),),
       ],
       child: MaterialApp(
+        
         debugShowCheckedModeBanner: false,
         title: 'friotrim App',
         routes: {

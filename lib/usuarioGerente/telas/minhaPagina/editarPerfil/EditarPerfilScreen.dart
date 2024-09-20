@@ -377,8 +377,7 @@ class _EditarPerfilScreenState extends State<EditarPerfilScreen> {
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                   color: isSelected
-                                                      ? Colors
-                                                          .orangeAccent.shade400
+                                                      ? Dadosgeralapp().tertiaryColor
                                                       : Colors.grey.shade50,
                                                 ),
                                                 padding: EdgeInsets.symmetric(

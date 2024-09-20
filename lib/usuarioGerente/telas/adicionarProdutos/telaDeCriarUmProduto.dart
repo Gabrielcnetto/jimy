@@ -548,7 +548,7 @@ class _CadastrodeProdutosMeuCatalogoState
                                                 borderRadius:
                                                     BorderRadius.circular(8),
                                                 color: isSelected
-                                                    ? Colors.orangeAccent.shade400
+                                                    ? Dadosgeralapp().primaryColor
                                                     : Colors.grey.shade400,
                                               ),
                                               padding: EdgeInsets.symmetric(
@@ -656,7 +656,7 @@ class _CadastrodeProdutosMeuCatalogoState
                             },
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.orange.shade600,
+                                color: Dadosgeralapp().primaryColor,
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               alignment: Alignment.center,

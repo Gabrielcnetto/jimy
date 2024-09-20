@@ -12,57 +12,76 @@ class BannerAnunciosPerfilGerente extends StatefulWidget {
 
 class _BannerAnunciosPerfilGerenteState
     extends State<BannerAnunciosPerfilGerente> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+  List<String> _banners = [
+    "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/bannerFixo%2FbannersHomeBarbeiros%2Fbanner02.png?alt=media&token=4a78540e-ebc6-4189-ae26-8efe60126f86",
+    "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/bannerFixo%2FbannersHomeBarbeiros%2Fbanner01.png?alt=media&token=9a2a614f-75e7-40e9-87c2-9e7d7a8fb101",
+  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width,
-          maxHeight: 250,
-        ),
-        child: CarouselView(
-          
-          itemSnapping: true,
-          itemExtent: 300,
-          children: [
-            Hero(
-              transitionOnUserGestures: true,
-              tag: 'image-1',
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/friotrimappoficial.appspot.com/o/bannersTest%2Fbanner%201%20app%20(1).png?alt=media&token=4ba14c2a-459b-47a0-8767-4a556d8daf6b",
-                fit: BoxFit.cover,
-                fadeInDuration: Duration.zero,
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              // Imagens no PageView
+              Positioned(
+                left: 0,
+                right: 0,
+                top: 0,
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: _banners.length,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          _banners[index],
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
-            ),
-            Hero(
-              tag: 'image-1',
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/friotrimappoficial.appspot.com/o/bannersTest%2Fbanner%202.png?alt=media&token=8a06b03c-b7f9-48dc-afc9-b6091bd6d2a7",
-                fit: BoxFit.cover,
-                fadeInDuration: Duration.zero,
+
+              // Indicador de bolinhas (dots)
+              Positioned(
+                bottom: 15, // Ajuste a posição vertical
+                left: 0,
+                right: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(_banners.length, (index) {
+                    return AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      width: _currentPage == index ? 12.0 : 8.0,
+                      height: _currentPage == index ? 12.0 : 8.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentPage == index
+                            ? Colors.white
+                            : Colors.grey.shade500.withOpacity(0.4),
+                      ),
+                    );
+                  }),
+                ),
               ),
-            ),
-            Hero(
-              tag: 'image-1',
-              child: CachedNetworkImage(
-                imageUrl:
-                    "https://firebasestorage.googleapis.com/v0/b/friotrimappoficial.appspot.com/o/bannersTest%2Fbanner%203.png?alt=media&token=220fbdc4-63bc-4810-844a-8d1aca23ced1",
-                fit: BoxFit.cover,
-                fadeInDuration: Duration.zero,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        ));
   }
 }

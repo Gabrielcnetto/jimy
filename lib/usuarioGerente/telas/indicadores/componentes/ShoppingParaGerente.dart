@@ -41,7 +41,7 @@ class ShoppingParaGerente extends StatelessWidget {
           Container(
             height: 200,
             width: double.infinity,
-            color: Colors.orangeAccent,
+            color: Dadosgeralapp().primaryColor,
           )
         ],
       ),
