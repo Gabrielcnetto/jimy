@@ -2,6 +2,7 @@ class ProdutoShopping {
   final String id;
   final bool usado;
   final String nome;
+  final String marca;
   final List<String> categorias;
   final String descricao;
   final int estoque;
@@ -18,6 +19,7 @@ class ProdutoShopping {
   bool exibirParaBarbeiros;
   bool exibirParaClientes;
   ProdutoShopping({
+    required this.marca,
     required this.usado,
     required this.palavrasChaves,
     required this.exibirParaBarbeiros,
@@ -43,6 +45,7 @@ class ProdutoShopping {
     return {
       'usado': usado,
       'id': id,
+      'marca':marca,
       'palavrasChaves': palavrasChaves,
       'nome': nome,
       'categorias': categorias,
@@ -65,6 +68,7 @@ class ProdutoShopping {
   // Método para criar um objeto ProdutoShopping a partir de um mapa
   factory ProdutoShopping.fromMap(Map<String, dynamic> map) {
     return ProdutoShopping(
+      marca: map['marca'] ?? '',
       usado: map['usado'] ?? false,
       palavrasChaves: List<String>.from(map['palavrasChaves'] ?? []),
       exibirParaBarbeiros: map['exibirParaBarbeiros'] ?? false,

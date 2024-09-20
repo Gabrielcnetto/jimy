@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:friotrim/DadosGeralApp.dart';
+import 'package:friotrim/usuarioDistribuidor/telas/criarProduto/parte1.dart';
+import 'package:friotrim/usuarioDistribuidor/telas/criarProduto/parte2.dart';
+import 'package:friotrim/usuarioDistribuidor/telas/criarProduto/parte3.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TelaDeCriarOProdutoDistribuidor extends StatefulWidget {
@@ -12,8 +17,65 @@ class TelaDeCriarOProdutoDistribuidor extends StatefulWidget {
 
 class _TelaDeCriarOProdutoDistribuidorState
     extends State<TelaDeCriarOProdutoDistribuidor> {
-  bool venderparaGerentes = false;
-  bool venderParaClientes = false;
+  bool parte1ok = true;
+  bool parte2ok = false;
+  bool parte3ok = false;
+  List<String> CategoriasSelecionadas = [];
+  String marcaSelecionada = "";
+  String nomeProduto = "";
+  bool isUsado = false;
+  List<File> listFiles = [];
+  void parte2OkFN(bool parte2ok) {
+    setState(() {
+      parte2ok = parte2ok;
+      parte1ok = false;
+    });
+  }
+
+  void isUsadoFunction(bool isUsadoBool) {
+    setState(() {
+      isUsado = isUsadoBool;
+    });
+  }
+  void setParte3(bool parte3){}
+
+  void parte1bool(
+    bool bool,
+  ) {
+    setState(() {
+      parte1ok = bool;
+      parte2ok = true;
+    });
+  }
+
+  void parte1Categorias(
+    List<String> list,
+  ) {
+    setState(() {
+      CategoriasSelecionadas = list;
+    });
+  }
+
+  void parte1Marca(
+    String marca,
+  ) {
+    setState(() {
+      marcaSelecionada = marca;
+    });
+  }
+
+  void parte1NomeProduto(
+    String nomeProduto,
+  ) {
+    setState(() {
+      nomeProduto = nomeProduto;
+    });
+  } 
+  void getFilesPasso3(List<File>files){
+    setState(() {
+      listFiles = files;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,231 +118,20 @@ class _TelaDeCriarOProdutoDistribuidorState
                       )
                     ],
                   ),
-                  //bool de para quem
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Container(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Informações Gerais:",
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Color.fromRGBO(54, 54, 54, 1),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        venderparaGerentes =
-                                            !venderparaGerentes;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 10),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            venderparaGerentes == true
-                                                ? Colors.grey.shade50
-                                                : Colors.transparent,
-                                            venderparaGerentes == true
-                                                ? Colors.grey.shade100
-                                                    .withOpacity(0.6)
-                                                : Colors.transparent,
-                                            venderparaGerentes == true
-                                                ? Colors.grey.shade100
-                                                : Colors.transparent,
-                                          ],
-                                        ),
-                                        border: Border.all(
-                                          width: 2,
-                                          color: venderparaGerentes == true
-                                              ? Colors.black
-                                              : Colors.grey.shade100,
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Icon(
-                                                venderparaGerentes == true
-                                                    ? Icons.check_circle
-                                                    : Icons
-                                                        .radio_button_unchecked,
-                                                size: 15,
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            "Para barbeiros",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            "Este item será exibido para os profissionais.",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black38,
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        venderParaClientes =
-                                            !venderParaClientes;
-                                      });
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 10),
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            venderParaClientes == true
-                                                ? Colors.grey.shade50
-                                                : Colors.transparent,
-                                            venderParaClientes == true
-                                                ? Colors.grey.shade100
-                                                    .withOpacity(0.6)
-                                                : Colors.transparent,
-                                            venderParaClientes == true
-                                                ? Colors.grey.shade100
-                                                : Colors.transparent,
-                                          ],
-                                        ),
-                                        border: Border.all(
-                                          width: 2,
-                                          color: venderParaClientes == true
-                                              ? Colors.black
-                                              : Colors.grey.shade100,
-                                        ),
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      alignment: Alignment.center,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Icon(
-                                                venderParaClientes == true
-                                                    ? Icons.check_circle
-                                                    : Icons
-                                                        .radio_button_unchecked,
-                                                size: 15,
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            "Clientes B2C",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            "Exibido para os Clientes das barbearias.",
-                                            style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
-                                                color: Colors.black38,
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                  //parte 1
+                  if (parte1ok == true)
+                    Parte1Informacoes(
+                      parte1ok: parte1bool,
+                      categorias: parte1Categorias,
+                      marcaProduto: parte1Marca,
+                      nomeProduto: parte1NomeProduto,
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nome do Produto",
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                width: 2,
-                                color: Colors.grey.shade200,
-                              ),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                            ),
-                            padding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 15),
-                          ),
-                        ],
-                      ),
+                  if (parte2ok == true)
+                    Parte2(
+                      parte2ok: parte2OkFN,
+                      isUsado: isUsadoFunction,
                     ),
-                  ),
+                  if (parte3ok == true) Parte3(files: getFilesPasso3,),
                 ],
               ),
             ),
