@@ -17,6 +17,7 @@ import 'package:fiotrim/usuarioGerente/funcoes/configurarPontos.dart';
 import 'package:fiotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:fiotrim/usuarioGerente/funcoes/despesas.dart';
 import 'package:fiotrim/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -27,6 +28,10 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const MyApp());
 }
 
@@ -69,12 +74,17 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => Editprofilebarberpage(),
         ),
-        ChangeNotifierProvider(create: (_)=>Ajustehorarios(),),
-        ChangeNotifierProvider(create: (_)=>Configurarpontos(),),
-        ChangeNotifierProvider(create: (_)=>Produtosfunctions(),),
+        ChangeNotifierProvider(
+          create: (_) => Ajustehorarios(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Configurarpontos(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Produtosfunctions(),
+        ),
       ],
       child: MaterialApp(
-        
         debugShowCheckedModeBanner: false,
         title: 'fiotrim App',
         routes: {
