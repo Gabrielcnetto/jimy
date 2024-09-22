@@ -6,6 +6,7 @@ class ProdutoShopping {
   final List<String> categorias;
   final String descricao;
   final int estoque;
+  final String idDistribuidora;
   List<String> urlImagensParaExibir;
   final double precoAntigo;
   final int quantiavendida;
@@ -18,12 +19,17 @@ class ProdutoShopping {
   List<String>palavrasChaves;
   bool exibirParaBarbeiros;
   bool exibirParaClientes;
+  final String urlImageDistribuidora;
+  final String nomeDistribuidora;
   ProdutoShopping({
     required this.marca,
     required this.usado,
+    required this.nomeDistribuidora,
+    required this.idDistribuidora,
     required this.palavrasChaves,
     required this.exibirParaBarbeiros,
     required this.exibirParaClientes,
+    required this.urlImageDistribuidora,
     required this.categorias,
     required this.ativoParaExibir,
     required this.descricao,
@@ -43,8 +49,11 @@ class ProdutoShopping {
   // Converte o objeto ProdutoShopping em um mapa
   Map<String, dynamic> toMap() {
     return {
+      'idDistribuidora': idDistribuidora,
       'usado': usado,
+      'urlImageDistribuidora':urlImageDistribuidora,
       'id': id,
+      'nomeDistribuidora': nomeDistribuidora,
       'marca':marca,
       'palavrasChaves': palavrasChaves,
       'nome': nome,
@@ -68,6 +77,9 @@ class ProdutoShopping {
   // Método para criar um objeto ProdutoShopping a partir de um mapa
   factory ProdutoShopping.fromMap(Map<String, dynamic> map) {
     return ProdutoShopping(
+      urlImageDistribuidora: map['urlImageDistribuidora'] ?? "",
+      nomeDistribuidora: map['nomeDistribuidora'] ?? "",
+      idDistribuidora: map['idDistribuidora']?? '',
       marca: map['marca'] ?? '',
       usado: map['usado'] ?? false,
       palavrasChaves: List<String>.from(map['palavrasChaves'] ?? []),

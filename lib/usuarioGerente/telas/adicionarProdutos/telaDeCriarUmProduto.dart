@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/rotas/AppRoutes.dart';
-import 'package:friotrim/usuarioGerente/classes/produto.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/rotas/AppRoutes.dart';
+import 'package:fiotrim/usuarioGerente/classes/produto.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
 import 'package:provider/provider.dart';
 
 class CadastrodeProdutosMeuCatalogo extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:friotrim/usuarioGerente/classes/produto.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/usuarioGerente/classes/produto.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
 
 class Comanda {
   // Strings

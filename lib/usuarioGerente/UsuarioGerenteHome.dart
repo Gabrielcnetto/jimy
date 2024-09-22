@@ -1,20 +1,23 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/funcoes/CriarContaeLogar.dart';
-import 'package:friotrim/rotas/confirmacaoAgendamento.dart';
-import 'package:friotrim/rotas/verificadorDeLogin.dart';
-import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
-import 'package:friotrim/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
+import 'package:fiotrim/rotas/confirmacaoAgendamento.dart';
+import 'package:fiotrim/rotas/verificadorDeLogin.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
+import 'package:fiotrim/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioGerenteHome extends StatefulWidget {
+  final int indexTela;
   const UsuarioGerenteHome({
     super.key,
+    required this.indexTela,
   });
 
   @override
@@ -29,7 +32,7 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    startIndex();
     _screensSelect = [
       {
         'tela': IndicadoresScreen(),
@@ -38,12 +41,19 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
         'tela': AgendaEAddScreen(),
       },
       {
-        'tela': Container(),
+        'tela': InternoIndicadoresScreenV2(),
       },
       {
         'tela': VisaoGeralMinhaPagina(),
       },
     ];
+  }
+
+  void startIndex() {
+    setState(() {
+      screen = widget.indexTela;
+      currentIndex = widget.indexTela;
+    });
   }
 
   int currentIndex = 0; // Índice do item atual
@@ -70,7 +80,6 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
           textStyle: TextStyle(
               color: Colors.black, fontWeight: FontWeight.w500, fontSize: 11),
         ),
-        
         unselectedItemColor: Colors.black38,
         unselectedLabelStyle: GoogleFonts.poppins(
           textStyle: TextStyle(
@@ -94,9 +103,9 @@ class _UsuarioGerenteHomeState extends State<UsuarioGerenteHome> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.shopping_bag,
+              Icons.analytics,
             ),
-            label: "Shopping",
+            label: "Análise",
           ),
           BottomNavigationBarItem(
             icon: Icon(

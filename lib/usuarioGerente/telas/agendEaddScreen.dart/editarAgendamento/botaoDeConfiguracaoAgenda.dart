@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/configurarFolga.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaTrocaDepontos.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/configurarFolga.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaTrocaDepontos.dart';
 
 class BotaoDeConfiguracap extends StatelessWidget {
   const BotaoDeConfiguracap({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/funcoes/CriarContaeLogar.dart';
-import 'package:friotrim/rotas/AppRoutes.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
+import 'package:fiotrim/rotas/AppRoutes.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class HeaderNomeMaisFoto extends StatefulWidget {

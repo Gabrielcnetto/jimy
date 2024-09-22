@@ -1,5 +1,129 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0d997d65-4fc4-430a-9a9c-6fe787b006f9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flutter_01.log" beforeDir="false" afterPath="$PROJECT_DIR$/flutter_01.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/acesso/entrada/AcessoEntradaPrimeiraTela.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/acesso/entrada/AcessoEntradaPrimeiraTela.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/acesso/recuperarSenha/recuperarSenhaScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/acesso/recuperarSenha/recuperarSenhaScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/firebase_options.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/firebase_options.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/funcoes/CriarContaeLogar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/funcoes/CriarContaeLogar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/funcoes/agendarHorario.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/funcoes/agendarHorario.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/rotas/confirmacaoAgendamento.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rotas/confirmacaoAgendamento.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/rotas/verificadorDeLogin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rotas/verificadorDeLogin.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/rotas/verificarTipoUsuario.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/rotas/verificarTipoUsuario.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/UsuarioDistribuidorHome.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioDistribuidor/UsuarioDistribuidorHome.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/classes/ProdutoShopping.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioDistribuidor/classes/ProdutoShopping.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/criarProduto/parte1.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/criarProduto/parte2.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/criarProduto/parte3.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/criarProduto/telaDeCriarProduto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/criarProduto/telaDeCriarProduto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/produtosAdicionados/componentes/listaEBotaoVenderAgora.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/produtosAdicionados/componentes/listaEBotaoVenderAgora.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/produtosAdicionados/telaProdutosAdicionados.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioDistribuidor/telas/produtosAdicionados/telaProdutosAdicionados.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/UsuarioGerenteHome.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/UsuarioGerenteHome.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/classes/comanda.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/classes/comanda.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/CriarFuncionario.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/CriarFuncionario.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/CriarServicos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/CriarServicos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/EditProfileBarberPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/EditProfileBarberPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/GetsDeInformacoes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/GetsDeInformacoes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/ajusteHorarios.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/ajusteHorarios.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/criar_e_enviarProdutos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/criar_e_enviarProdutos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/despesas.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/despesas.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/finalizareCarregarComandas.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/funcoes/finalizareCarregarComandas.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/EditarHorariosPrincipalScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/EditarHorariosPrincipalScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/DomingoHorarios.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/DomingoHorarios.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/IconeHorario.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/IconeHorario.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioDomingo.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioDomingo.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioSabado.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioSabado.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/SabadoHorarios.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/SabadoHorarios.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/Semana.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/EditarHorarios/telas/Semana.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/abrirApenasComanda/abrirApenasComanda.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/abrirApenasComanda/abrirApenasComanda.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/VisaoGeralProdutos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/VisaoGeralProdutos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/produtoItem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/produtoItem.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/telaDeCriarUmProduto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/telaDeCriarUmProduto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/viisaodetodososprodutos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/viisaodetodososprodutos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/visaoInternaProduto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProdutos/visaoInternaProduto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProfissional/adicionarProfissionalScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProfissional/adicionarProfissionalScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProfissional/visaoTodosProfissionais.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProfissional/visaoTodosProfissionais.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProfissional/visaointernaProfissionalEdit.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarProfissional/visaointernaProfissionalEdit.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarServicos/adicionarServicosScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/adicionarServicos/adicionarServicosScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/components/AgendarHorariosScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/components/agendaCarregadaHorarios.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/ProdutoAdicionadoNaAgenda.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/ProdutoAdicionadoNaAgenda.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/botaoDeConfiguracaoAgenda.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/botaoDeConfiguracaoAgenda.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/configurarFolga.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/configurarFolga.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/editarAgendamento.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/iconeFolgas.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/iconeFolgas.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsProdutos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsProdutos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsServicos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsServicos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaTrocaDepontos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaTrocaDepontos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/CadastrarDespesa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/CadastrarDespesa.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/dentroDoComponenteJaPago.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/dentroDoComponenteJaPago.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/itemPagoViewDespesa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/itemPagoViewDespesa.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/itemVisualDespesa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/itemVisualDespesa.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoCompletoDeSaídas.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoCompletoDeSaídas.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoSaidasEsteMes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoSaidasEsteMes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/dentroDaDespesaPendente.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/dentroDaDespesaPendente.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/primeiraVisaoCadastro.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/cadastrarDespesa/primeiraVisaoCadastro.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/grafico.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/grafico.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/ticketmedioTicket.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/indicadores/componentes/ticketmedioTicket.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/components/bannerItem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/components/bannerItem.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/editarWallpapers/bannerItem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/editarWallpapers/bannerItem.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/ListaComTodosOsClientes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/ListaComTodosOsClientes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/graficoIndicadorPrincipal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/graficoIndicadorPrincipal.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/itemComandaMesSelecionado.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/itemComandaMesSelecionado.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoView.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoView.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/itemViewServico.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/itemViewServico.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/telaClientesMesSelecionado.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/telaClientesMesSelecionado.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/visaoTodososServicos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioGerente/telas/visaoAvancadaIndicadores/visaoTodososServicos.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/usuarioNormal/UsuarioNormalHome.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/usuarioNormal/UsuarioNormalHome.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/linux/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/linux/my_application.cc" beforeDir="false" afterPath="$PROJECT_DIR$/linux/my_application.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/macos/Runner/Configs/AppInfo.xcconfig" beforeDir="false" afterPath="$PROJECT_DIR$/macos/Runner/Configs/AppInfo.xcconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/widget_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/widget_test.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/windows/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/runner/Runner.rc" beforeDir="false" afterPath="$PROJECT_DIR$/windows/runner/Runner.rc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/windows/runner/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/windows/runner/main.cpp" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
@@ -13,24 +137,58 @@
       </file>
     </leaf>
   </component>
-  <component name="ToolWindowManager">
-    <editor active="true" />
-    <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-    </layout>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2mPSHRsw2CZUCZWJjC091v1t53v" />
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-    </navigator>
+    <navigator currentView="ProjectPane" proportions="" version="1" />
     <panes>
       <pane id="ProjectPane">
         <option name="show-excluded-files" value="false" />
       </pane>
     </panes>
   </component>
-  <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="dart.analysis.tool.window.force.activate" value="true" />
-    <property name="show.migrate.to.gradle.popup" value="false" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/gabrielnetto/Documents/jimy app/jimy",
+    "show.migrate.to.gradle.popup": "false"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d997d65-4fc4-430a-9a9c-6fe787b006f9" name="Changes" comment="" />
+      <created>1726976634957</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726976634957</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+    </layout>
   </component>
 </project>

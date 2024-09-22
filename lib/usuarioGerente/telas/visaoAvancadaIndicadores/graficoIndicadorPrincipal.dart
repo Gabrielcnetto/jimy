@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/grafico.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/fundoPontilhado.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/grafico.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/fundoPontilhado.dart';
 import 'package:provider/provider.dart';
 
 class GraficosPage extends StatefulWidget {

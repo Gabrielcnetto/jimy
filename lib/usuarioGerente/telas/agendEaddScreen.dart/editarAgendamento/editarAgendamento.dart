@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/funcoes/agendarHorario.dart';
-import 'package:friotrim/rotas/verificadorDeLogin.dart';
-import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:friotrim/usuarioGerente/classes/produto.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/ProdutoAdicionadoNaAgenda.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsProdutos.dart';
-import 'package:friotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsServicos.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/funcoes/agendarHorario.dart';
+import 'package:fiotrim/rotas/verificadorDeLogin.dart';
+import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:fiotrim/usuarioGerente/classes/produto.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/comanda/ComandaScreen.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/ProdutoAdicionadoNaAgenda.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/screenDeSelecionarOdia.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsProdutos.dart';
+import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/editarAgendamento/telaOndeMostraOsServicos.dart';
 import 'package:provider/provider.dart';
 
 class EditarAgendamento extends StatefulWidget {

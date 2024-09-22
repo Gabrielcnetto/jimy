@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/telas/adicionarProdutos/viisaodetodososprodutos.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/telas/adicionarProdutos/viisaodetodososprodutos.dart';
 
 class VisaoGeralMeusProdutosScreen extends StatefulWidget {
   const VisaoGeralMeusProdutosScreen({super.key});

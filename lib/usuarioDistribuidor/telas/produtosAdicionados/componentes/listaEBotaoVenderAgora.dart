@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioDistribuidor/telas/criarProduto/telaDeCriarProduto.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioDistribuidor/telas/criarProduto/telaDeCriarProduto.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ListEBotaoVenderAgora extends StatelessWidget {
@@ -9,7 +9,6 @@ class ListEBotaoVenderAgora extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:friotrim/usuarioGerente/classes/comanda.dart';
-import 'package:friotrim/usuarioGerente/classes/horarios.dart';
-import 'package:friotrim/usuarioGerente/classes/produto.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:fiotrim/usuarioGerente/classes/comanda.dart';
+import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
+import 'package:fiotrim/usuarioGerente/classes/produto.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
 
 class Getsdeinformacoes with ChangeNotifier {
   final authSettings = FirebaseAuth.instance;
@@ -1622,7 +1622,11 @@ class Getsdeinformacoes with ChangeNotifier {
 
       int? minimoPontos;
 
-      await database.collection("PontuacoesConfiguradas").doc(idBarberaria).get().then((event) {
+      await database
+          .collection("PontuacoesConfiguradas")
+          .doc(idBarberaria)
+          .get()
+          .then((event) {
         if (event.exists) {
           Map<String, dynamic> data = event.data() as Map<String, dynamic>;
 
@@ -1632,5 +1636,141 @@ class Getsdeinformacoes with ChangeNotifier {
       });
       return minimoPontos;
     } catch (e) {}
+  }
+
+  Future<double?> getComissaoDoBarbeiroVisaoFuncionario() async {
+    try {
+      final userId = authSettings.currentUser!.uid;
+
+      // Obtém o idBarbearia do usuário
+      String idBarbearia = "";
+      String idBarbeiroGetForDbFinal = "";
+      try {
+        final userDoc = await database.collection("usuarios").doc(userId).get();
+        if (userDoc.exists) {
+          Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+          idBarbearia = data['idBarbearia'] ??
+              ""; // Adicione o valor padrão se necessário
+        } else {
+          print("Usuário não encontrado");
+          return null;
+        }
+      } catch (e) {
+        print("Erro ao pegar o id da barbearia: $e");
+        return null;
+      }
+      try {
+        final userDoc = await database.collection("usuarios").doc(userId).get();
+        if (userDoc.exists) {
+          Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+          idBarbeiroGetForDbFinal = data['idBarbeiroGetForDb'] ??
+              ""; // Adicione o valor padrão se necessário
+        } else {
+          print("Usuário não encontrado");
+          return null;
+        }
+      } catch (e) {
+        print("Erro ao pegar o id da barbearia: $e");
+        return null;
+      }
+
+      DateTime momento = DateTime.now();
+      String monthName = DateFormat('MMMM', 'pt_BR').format(momento);
+
+      // Obtém o faturamento mensal
+      double? comissaoMesAtual;
+      try {
+        final faturamentoDoc = await database
+            .collection("DadosConcretosBarbearias")
+            .doc(idBarbearia)
+            .collection("comissaoMensalBarbeiros")
+            .doc(idBarbeiroGetForDbFinal)
+            .collection("${monthName}.${momento.year}")
+            .doc("dados")
+            .get();
+        if (faturamentoDoc.exists) {
+          Map<String, dynamic> data =
+              faturamentoDoc.data() as Map<String, dynamic>;
+          var valor = data["valor"];
+
+          if (valor is int) {
+            comissaoMesAtual = valor.toDouble();
+          } else if (valor is double) {
+            comissaoMesAtual = valor;
+          } else {
+            print("Tipo de valor inesperado: $valor");
+            return null;
+          }
+        } else {
+          print("Faturamento mensal não encontrado");
+          return null;
+        }
+      } catch (e) {
+        print("Erro ao pegar o faturamento: $e");
+        return null;
+      }
+
+      return comissaoMesAtual;
+    } catch (e) {
+      print("Erro geral: $e");
+      return null;
+    }
+  }
+
+  Future<int?> getQuantiaClientesMesFuncionario() async {
+    if (authSettings.currentUser != null) {
+      final String uidUser = authSettings.currentUser!.uid;
+      int? totalClients;
+      double? meuIdDeBarbeiro;
+      String? idBarbearia;
+
+      // Obter informações do barbeiro e da barbearia em uma única chamada
+      final userSnapshot =
+          await database.collection("usuarios").doc(uidUser).get();
+      if (userSnapshot.exists) {
+        Map<String, dynamic> data = userSnapshot.data() as Map<String, dynamic>;
+
+        // Converter para double, se possível
+        meuIdDeBarbeiro =
+            double.tryParse(data['idBarbeiroGetForDb'].toString());
+        idBarbearia = data['idBarbearia'];
+      }
+
+      // Verificar se os valores foram obtidos corretamente
+      if (meuIdDeBarbeiro == null || idBarbearia == null) {
+        print("Erro ao obter idBarbearia ou meuIdDeBarbeiro");
+        return null;
+      }
+
+      // Definir o caminho correto e formatar o nome do mês
+      DateTime momento = DateTime.now();
+      String monthName =
+          DateFormat('MMMM', 'pt_BR').format(momento).toLowerCase();
+      String year = momento.year.toString();
+
+      print(
+          "Lendo isso: DadosConcretosBarbearias/$idBarbearia/QuantiaBarbeiroCorou/$monthName.$year/${meuIdDeBarbeiro.toString()}/valor");
+
+      // Acessar o documento no Firestore corretamente
+      final quantiaSnapshot = await database
+          .collection("DadosConcretosBarbearias")
+          .doc(idBarbearia)
+          .collection("QuantiaBarbeiroCorou")
+          .doc("$monthName.$year")
+          .collection(meuIdDeBarbeiro.toString())
+          .doc("valor")
+          .get();
+
+      // Verificar se o documento existe e capturar o valor
+      if (quantiaSnapshot.exists) {
+        Map<String, dynamic> data =
+            quantiaSnapshot.data() as Map<String, dynamic>;
+        totalClients = data['valor'] as int?;
+      }
+
+      return totalClients;
+    }
+
+    return null;
   }
 }

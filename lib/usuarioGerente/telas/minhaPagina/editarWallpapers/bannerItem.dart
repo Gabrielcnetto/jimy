@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/funcoes/EditProfileBarberPage.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/EditProfileBarberPage.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class BannerItemView extends StatefulWidget {

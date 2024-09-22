@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fiotrim/usuarioGerente/UsuarioGerenteHome.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
 
 class IndicadoresQuadroView extends StatefulWidget {
   const IndicadoresQuadroView({super.key});
@@ -87,7 +88,7 @@ class _IndicadoresQuadroViewState extends State<IndicadoresQuadroView> {
               Navigator.of(context).push(
                 DialogRoute(
                   context: context,
-                  builder: (ctx) => InternoIndicadoresScreenV2(),
+                  builder: (ctx) => UsuarioGerenteHome(indexTela: 2,),
                 ),
               );
             },

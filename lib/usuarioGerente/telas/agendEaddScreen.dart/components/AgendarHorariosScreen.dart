@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/funcoes/agendarHorario.dart';
-import 'package:friotrim/rotas/confirmacaoAgendamento.dart';
-import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:friotrim/usuarioGerente/classes/horarios.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/funcoes/agendarHorario.dart';
+import 'package:fiotrim/rotas/confirmacaoAgendamento.dart';
+import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class AgendarHorarioScreen extends StatefulWidget {

@@ -49,7 +49,7 @@ class _BannerAnunciosPerfilGerenteState
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
                           _banners[index],
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                         ),
                       );
                     },

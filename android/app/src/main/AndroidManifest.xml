@@ -8,7 +8,7 @@
     <!-- Para Android 11 e superior -->
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <application
-        android:label="friotrim"
+        android:label="fiotrim"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

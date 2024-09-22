@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:friotrim/funcoes/CriarContaeLogar.dart';
-import 'package:friotrim/rotas/verificadorDeLogin.dart';
+import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
+import 'package:fiotrim/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
 
 class UsuarioNormalHome extends StatelessWidget {

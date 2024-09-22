@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:friotrim/usuarioGerente/classes/comanda.dart';
+import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:fiotrim/usuarioGerente/classes/comanda.dart';
 
 class Finalizarecarregarcomandas with ChangeNotifier {
   final database = FirebaseFirestore.instance;
@@ -96,7 +96,28 @@ class Finalizarecarregarcomandas with ChangeNotifier {
           print("erro ao mudar o ja cortou :$e");
           throw e;
         }
+      //enviando total do profissional para +1 no mes para dizer a quantia que ele cortou no mês - INIT
+      final docRef = database
+          .collection("DadosConcretosBarbearias")
+          .doc(idBarbearia)
+          .collection("QuantiaBarbeiroCorou").doc("${corte.MesSelecionado}.${corte.anoSelecionado}").collection("${corte.profissionalId}").doc("valor");
 
+// Tente buscar o documento para verificar se ele já existe
+      final snapshot = await docRef.get();
+
+      if (!snapshot.exists) {
+        // Se o documento não existir, crie-o com o valor inicial
+        await docRef.set({
+          'valor': 1, // Valor inicial se o documento não existir
+        });
+      } else {
+        // Se o documento já existir, incremente o valor
+        await docRef.set({
+          'valor': FieldValue.increment(1),
+        }, SetOptions(merge: true));
+      }
+
+      //enviando total do profissional para +1 no mes para dizer a quantia que ele cortou no mês - FIM
       //PARTE 2
       //agora atualizando a porcentagem de cortes e ganhos da barbearia(faturamento)e comissoes(profissionais)
       try {

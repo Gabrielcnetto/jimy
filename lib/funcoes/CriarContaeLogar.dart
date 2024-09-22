@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/classes/horarios.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
 
 class CriarcontaelogarProvider with ChangeNotifier {
   //bibliotecas - packages
@@ -78,7 +78,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         "donoBarbearia": false,
         "funcionarioBarbearia": false,
         "distribuidor": true,
-
+        "idDistribuidora": idDistribuidora,
         //atributos para usuario utilizar e visualizar e localizar o distribuidor
         'PhoneNumber': numeroContato,
         'userIdDatabase': userIdCreate,
@@ -254,7 +254,26 @@ class CriarcontaelogarProvider with ChangeNotifier {
 
     return isManager; // Retorna o valor de isManager, que pode ser null
   }
+ Future<bool?> getUserIsUsuarioFuncionario() async {
+    if (authConfigs.currentUser == null) {
+      return null; // Retorna imediatamente se o usuário não estiver autenticado
+    }
 
+    final String uidUser = authConfigs.currentUser!.uid;
+    bool? isManager;
+
+    await database.collection("usuarios").doc(uidUser).get().then((event) {
+      if (event.exists) {
+        Map<String, dynamic>? data = event.data(); // Use Map<String, dynamic>?
+
+        if (data != null && data.containsKey('funcionarioBarbearia')) {
+          isManager = data['funcionarioBarbearia'] ?? false;
+        }
+      }
+    });
+
+    return isManager; // Retorna o valor de isManager, que pode ser null
+  }
   //EFETUAR O LOGIN NO SISTEMA
   Future<void> userLogin(
       {required String email, required String password}) async {

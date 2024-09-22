@@ -1,14 +1,15 @@
+import 'package:fiotrim/usuarioFuncionario/funcionarioHome.dart';
 import 'package:flutter/material.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
-import 'package:friotrim/funcoes/CriarContaeLogar.dart';
-import 'package:friotrim/rotas/verificadorDeLogin.dart';
-import 'package:friotrim/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
-import 'package:friotrim/usuarioGerente/UsuarioGerenteHome.dart';
-import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:friotrim/usuarioGerente/funcoes/CriarServicos.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioNormal/UsuarioNormalHome.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
+import 'package:fiotrim/rotas/verificadorDeLogin.dart';
+import 'package:fiotrim/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
+import 'package:fiotrim/usuarioGerente/UsuarioGerenteHome.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioNormal/UsuarioNormalHome.dart';
 import 'package:provider/provider.dart';
 
 class VerificartipoDeUsuario extends StatefulWidget {
@@ -25,6 +26,7 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
     super.initState();
 
     loadUserIsManager();
+    loadUseruserFuncionario();
     loadUseruserNormal();
     loadUserdistribuidor();
   }
@@ -59,7 +61,15 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
       distribuidor = boldistribuidor!;
     });
   }
+  bool? userFuncionario;
+  Future<void> loadUseruserFuncionario() async {
+    bool? boluserFuncionario =
+        await CriarcontaelogarProvider().getUserIsUsuarioFuncionario();
 
+    setState(() {
+      userFuncionario = boluserFuncionario!;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // Verifica se as variáveis foram carregadas
@@ -90,10 +100,16 @@ class _VerificartipoDeUsuarioState extends State<VerificartipoDeUsuario> {
     if (userNormal == true) {
       return UsuarioNormalHome();
     } else if (isManager == true) {
-      return UsuarioGerenteHome();
+      return UsuarioGerenteHome(
+        indexTela: 0,
+      );
     } else if (distribuidor == true) {
       return UsuarioGerenteDistribuidor();
-    } else {
+    } 
+    else if(userFuncionario == true){
+      return UsuarioFuncionarioHome();
+    }
+    else {
       return AcessoEntrada(); // aqui colocar uma tela default
     }
   }

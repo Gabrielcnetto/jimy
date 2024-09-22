@@ -3,14 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/rotas/verificadorDeLogin.dart';
-import 'package:friotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:friotrim/usuarioGerente/classes/comanda.dart';
-import 'package:friotrim/usuarioGerente/classes/produto.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/rotas/verificadorDeLogin.dart';
+import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
+import 'package:fiotrim/usuarioGerente/classes/comanda.dart';
+import 'package:fiotrim/usuarioGerente/classes/produto.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
 import 'package:provider/provider.dart';
 
 class ComandaScreen extends StatefulWidget {
@@ -248,15 +248,7 @@ class _ComandaScreenState extends State<ComandaScreen> {
                                 ),
                               ],
                             ),
-                            Text(
-                              "+${widget.corte.pontosGanhos} pontos",
-                              style: GoogleFonts.poppins(
-                                textStyle: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ),
+                           
                           ],
                         ),
                       ),

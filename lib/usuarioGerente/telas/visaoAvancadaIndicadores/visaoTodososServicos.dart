@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/itemViewServico.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/itemViewServico.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
 import 'package:provider/provider.dart';
 
 class TodosOsServicos extends StatefulWidget {

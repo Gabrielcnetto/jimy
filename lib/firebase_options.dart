@@ -50,9 +50,9 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyBbtBz4OdG62bV1vbugOF0-6koeGBvpCBU',
     appId: '1:894532107300:web:aaf292a1c78518208eacb1',
     messagingSenderId: '894532107300',
-    projectId: 'friotrimappoficial',
-    authDomain: 'friotrimappoficial.firebaseapp.com',
-    storageBucket: 'friotrimappoficial.appspot.com',
+    projectId: 'fiotrimappoficial',
+    authDomain: 'fiotrimappoficial.firebaseapp.com',
+    storageBucket: 'fiotrimappoficial.appspot.com',
     measurementId: 'G-9RN8TZG6B3',
   );
 

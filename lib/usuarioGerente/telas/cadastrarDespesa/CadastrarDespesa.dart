@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/classes/Despesa.dart';
-import 'package:friotrim/usuarioGerente/funcoes/despesas.dart';
-import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/componentes/itemVisualDespesa.dart';
-import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoCompletoDeSa%C3%ADdas.dart';
-import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoSaidasEsteMes.dart';
-import 'package:friotrim/usuarioGerente/telas/cadastrarDespesa/primeiraVisaoCadastro.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/classes/Despesa.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/despesas.dart';
+import 'package:fiotrim/usuarioGerente/telas/cadastrarDespesa/componentes/itemVisualDespesa.dart';
+import 'package:fiotrim/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoCompletoDeSa%C3%ADdas.dart';
+import 'package:fiotrim/usuarioGerente/telas/cadastrarDespesa/componentes/listas/historicoSaidasEsteMes.dart';
+import 'package:fiotrim/usuarioGerente/telas/cadastrarDespesa/primeiraVisaoCadastro.dart';
 import 'package:provider/provider.dart';
 
 class cadastrarNovaDespesa extends StatefulWidget {

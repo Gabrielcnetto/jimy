@@ -4,21 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:friotrim/usuarioGerente/classes/produto.dart';
-import 'package:friotrim/usuarioGerente/classes/servico.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/grafico.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/ticketmedioTicket.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/ListaComTodosOsClientes.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/graficoIndicadorPrincipal.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoView.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/telaClientesMesSelecionado.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
-import 'package:friotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoTodososServicos.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:fiotrim/usuarioGerente/classes/produto.dart';
+import 'package:fiotrim/usuarioGerente/classes/servico.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/grafico.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/ticketmedioTicket.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/ListaComTodosOsClientes.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/graficoIndicadorPrincipal.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/itemProdutoView.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/telaClientesMesSelecionado.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoComissao.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoServicosEscolhidos.dart';
+import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/visaoTodososServicos.dart';
 import 'package:provider/provider.dart';
 
 class InternoIndicadoresScreenV2 extends StatefulWidget {
@@ -480,26 +480,6 @@ class _InternoIndicadoresScreenV2State
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 15, right: 15, top: 15),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: 25,
-                            color: Dadosgeralapp().primaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1467,51 +1447,43 @@ class _InternoIndicadoresScreenV2State
                                     SizedBox(
                                       height: 15,
                                     ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (ctx) =>
-                                                    TodosOsClientesLista()));
-                                      },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Dadosgeralapp().primaryColor,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              "Acessar lista",
-                                              style: GoogleFonts.poppins(
-                                                textStyle: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 10),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Icon(
-                                                Icons.arrow_right_alt,
-                                                color: Colors.white,
-                                                size: 15,
-                                              ),
-                                              padding: EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: Colors.white12,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        width: double.infinity,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 5, horizontal: 15),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Dadosgeralapp().primaryColor,
+                                        borderRadius:
+                                            BorderRadius.circular(8),
                                       ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Em breve*",
+                                            style: GoogleFonts.poppins(
+                                              textStyle: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 10),
+                                            ),
+                                          ),
+                                          Container(
+                                            child: Icon(
+                                              Icons.arrow_right_alt,
+                                              color: Colors.white,
+                                              size: 15,
+                                            ),
+                                            padding: EdgeInsets.all(5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: Colors.white12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 5, horizontal: 15),
                                     ),
                                   ],
                                 ),

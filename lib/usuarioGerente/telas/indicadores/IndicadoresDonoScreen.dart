@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:friotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:friotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/bannerAnuncios.dart';
-import 'package:friotrim/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart';
+import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/bannerAnuncios.dart';
+import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart';
 import 'package:provider/provider.dart';
 
 class IndicadoresScreen extends StatefulWidget {
@@ -53,10 +53,10 @@ class _IndicadoresScreenState extends State<IndicadoresScreen> {
                 padding: const EdgeInsets.only(left: 15,right: 15),
                 child: RankingProfissionaisHomeGerente(),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15,right: 15),
-                child: ShoppingParaGerente(),
-              ),
+             // Padding(
+             //   padding: const EdgeInsets.only(left: 15,right: 15),
+             //   child: ShoppingParaGerente(),
+             // ),
             ],
           ),
         ),

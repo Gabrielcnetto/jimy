@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart';
-import 'package:friotrim/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart';
-import 'package:friotrim/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart';
-import 'package:friotrim/acesso/recuperarSenha/recuperarSenhaScreen.dart';
-import 'package:friotrim/funcoes/CriarContaeLogar.dart';
-import 'package:friotrim/rotas/verificadorDeLogin.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/acesso/entrada/criacaoClienteNormal/CriarContaNormalScreen.dart';
+import 'package:fiotrim/acesso/entrada/criacaoDistribuidor/AcessoEntradaDistribuidor.dart';
+import 'package:fiotrim/acesso/entrada/criacaoDonoBarbearia/AcessoEntradaDonoBarbearia.dart';
+import 'package:fiotrim/acesso/recuperarSenha/recuperarSenhaScreen.dart';
+import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
+import 'package:fiotrim/rotas/verificadorDeLogin.dart';
 import 'package:provider/provider.dart';
 
 class AcessoEntrada extends StatefulWidget {
@@ -70,7 +70,7 @@ class _AcessoEntradaState extends State<AcessoEntrada> {
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     alignment: Alignment.center,
                     child: Text(
-                      "Dono de Barbearia",
+                      "Tenho uma Barbearia",
                       style: GoogleFonts.openSans(
                         textStyle: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -84,62 +84,62 @@ class _AcessoEntradaState extends State<AcessoEntrada> {
                 SizedBox(
                   height: 15,
                 ),
-                InkWell(
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => AcessoEntradaDistribuidorScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Dadosgeralapp().secondaryColor,
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Distribuidor",
-                      style: GoogleFonts.openSans(
-                          textStyle: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      )),
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () async {
+                //     Navigator.of(context).pop();
+                //    Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //         builder: (ctx) => AcessoEntradaDistribuidorScreen(),
+                //       ),
+                //     );
+                //   },
+                //   child: Container(
+                //    decoration: BoxDecoration(
+                //      borderRadius: BorderRadius.circular(5),
+                //      color: Dadosgeralapp().secondaryColor,
+                //    ),
+                //    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                //    alignment: Alignment.center,
+                //   child: Text(
+                //    "Distribuidor",
+                //     style: GoogleFonts.openSans(
+                //        textStyle: TextStyle(
+                //     fontWeight: FontWeight.w700,
+                //     color: Colors.white,
+                //   )),
+                //  ),
+                // ),
+                //  ),
                 //fim segundo options
-                SizedBox(
-                  height: 15,
-                ),
-                InkWell(
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => CriarContaNormalScreen(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Dadosgeralapp().tertiaryColor,
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Cliente",
-                      style: GoogleFonts.openSans(
-                          textStyle: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      )),
-                    ),
-                  ),
-                ),
+                //   //SizedBox(
+                //   height: 15,
+                //  ),
+                //  InkWell(
+                //   onTap: () async {
+                //     Navigator.of(context).pop();
+                //      Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //         builder: (ctx) => CriarContaNormalScreen(),
+                //      ),
+                //     );
+                //  },
+                //  child: Container(
+                //   decoration: BoxDecoration(
+                //      borderRadius: BorderRadius.circular(5),
+                //     color: Dadosgeralapp().tertiaryColor,
+                //  ),
+                //  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                //  alignment: Alignment.center,
+                //  child: Text(
+                //    "Cliente",
+                //   style: GoogleFonts.openSans(
+                //       textStyle: TextStyle(
+                //     fontWeight: FontWeight.w700,
+                //     color: Colors.white,
+                //   )),
+                // ),
+                // ),
+                // ),
               ],
             ),
           ),

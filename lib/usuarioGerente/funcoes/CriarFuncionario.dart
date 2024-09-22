@@ -5,8 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:friotrim/DadosGeralApp.dart';
-import 'package:friotrim/usuarioGerente/classes/barbeiros.dart';
+import 'package:fiotrim/DadosGeralApp.dart';
+import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
 
 class Criarfuncionario with ChangeNotifier {
   final database = FirebaseFirestore.instance;
@@ -34,7 +34,18 @@ class Criarfuncionario with ChangeNotifier {
         password: senha,
       );
       //Criando a conta do usuario para ele logar - Fim
+      //pegando nome barbearia
+      
+      String? nomeBarbeariaFinal;
 
+      await database.collection("Barbearias").doc(IddaBarbearia).get().then((event) {
+        if (event.exists) {
+          Map<String, dynamic> data = event.data() as Map<String, dynamic>;
+
+          nomeBarbeariaFinal = data['nomeBarbearia'];
+        }
+      });
+      //pegando nome barbearia
       String userIdCreate = userCredential.user!.uid;
       //enviando a foto de perfil ao db e retornando link - inicio
       Reference ref = FirebaseStorage.instance
@@ -47,13 +58,14 @@ class Criarfuncionario with ChangeNotifier {
       //enviando a foto de perfil ao db e retornando link - fim
 
       //criando o barbeiro que vai ser enviado ao db - inicio
+      final String idBarbeiroGetForDb = Random().nextDouble().toString();
       final Barbeiros barber = Barbeiros(
         ativoParaClientes: true,
         totalCortes: 0,
         avaliacaoFinal: 0.0,
         totalComissao: 0.0,
         emailAcesso: email,
-        id: Random().nextDouble().toString(),
+        id: idBarbeiroGetForDb,
         name: userName,
         porcentagemCortes: porcentagemPorCortes,
         porcentagemProdutos: porcentagemporProdutos,
@@ -69,8 +81,9 @@ class Criarfuncionario with ChangeNotifier {
         "idBarbearia": IddaBarbearia,
         "donoBarbearia": false,
         "funcionarioBarbearia": true,
+        "idBarbeiroGetForDb": idBarbeiroGetForDb,
         "distribuidor": false,
-
+        "nomeBarbearia": nomeBarbeariaFinal,
         //atributos para usuario utilizar e visualizar e localizar o perfil
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
@@ -78,6 +91,7 @@ class Criarfuncionario with ChangeNotifier {
             imageProfileImage ?? Dadosgeralapp().defaultAvatarImage,
         "FioTrimpoints": 0,
         "userName": userName,
+
         "email": email,
         "senha": senha,
         "cidade": "",
@@ -165,8 +179,8 @@ class Criarfuncionario with ChangeNotifier {
 
       // Passo 2: Encontre o barbeiro e a lista de profissionais
       List<dynamic> profissionais = await documentSnapshot.get('profissionais');
-      List<Map<String, dynamic>> updatedProfissionais =await
-          List.from(profissionais);
+      List<Map<String, dynamic>> updatedProfissionais =
+          await List.from(profissionais);
 
       // Filtra a lista para remover o barbeiro com o idBarbeiro
       updatedProfissionais
@@ -178,21 +192,21 @@ class Criarfuncionario with ChangeNotifier {
       });
 
       // Opcional: Exclui a foto do barbeiro do Firebase Storage, se necessário
-     
     } catch (e) {
       print("Erro ao deletar o barbeiro: $e");
       throw e;
     }
   }
+
   //
-   Future<void> alterarNomeProfissional({
+  Future<void> alterarNomeProfissional({
     required String idBarbearia,
     required String newName,
     required String idBarbeiro,
   }) async {
     try {
       // Referência e upload da nova foto
-   
+
       // Passo 1: Recupera o documento da barbearia
       DocumentSnapshot documentSnapshot =
           await database.collection('Barbearias').doc(idBarbearia).get();
@@ -233,7 +247,7 @@ class Criarfuncionario with ChangeNotifier {
   }) async {
     try {
       // Referência e upload da nova foto
-   
+
       // Passo 1: Recupera o documento da barbearia
       DocumentSnapshot documentSnapshot =
           await database.collection('Barbearias').doc(idBarbearia).get();
@@ -274,7 +288,7 @@ class Criarfuncionario with ChangeNotifier {
   }) async {
     try {
       // Referência e upload da nova foto
-   
+
       // Passo 1: Recupera o documento da barbearia
       DocumentSnapshot documentSnapshot =
           await database.collection('Barbearias').doc(idBarbearia).get();
@@ -314,7 +328,7 @@ class Criarfuncionario with ChangeNotifier {
   }) async {
     try {
       // Referência e upload da nova foto
-   
+
       // Passo 1: Recupera o documento da barbearia
       DocumentSnapshot documentSnapshot =
           await database.collection('Barbearias').doc(idBarbearia).get();
