@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
-import 'package:fiotrim/rotas/verificadorDeLogin.dart';
-import 'package:fiotrim/usuarioDistribuidor/telas/produtosAdicionados/telaProdutosAdicionados.dart';
+import 'package:Dimy/funcoes/CriarContaeLogar.dart';
+import 'package:Dimy/rotas/verificadorDeLogin.dart';
+import 'package:Dimy/usuarioDistribuidor/telas/produtosAdicionados/telaProdutosAdicionados.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

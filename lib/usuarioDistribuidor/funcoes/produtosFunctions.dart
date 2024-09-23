@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/usuarioDistribuidor/classes/ProdutoShopping.dart';
+import 'package:Dimy/usuarioDistribuidor/classes/ProdutoShopping.dart';
 
 class Produtosfunctions with ChangeNotifier {
   final database = FirebaseFirestore.instance;

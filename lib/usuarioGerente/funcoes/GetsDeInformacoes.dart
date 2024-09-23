@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:fiotrim/usuarioGerente/classes/comanda.dart';
-import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
-import 'package:fiotrim/usuarioGerente/classes/produto.dart';
-import 'package:fiotrim/usuarioGerente/classes/servico.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:Dimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:Dimy/usuarioGerente/classes/comanda.dart';
+import 'package:Dimy/usuarioGerente/classes/horarios.dart';
+import 'package:Dimy/usuarioGerente/classes/produto.dart';
+import 'package:Dimy/usuarioGerente/classes/servico.dart';
 
 class Getsdeinformacoes with ChangeNotifier {
   final authSettings = FirebaseAuth.instance;

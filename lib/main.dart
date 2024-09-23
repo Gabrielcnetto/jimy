@@ -1,22 +1,22 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
-import 'package:fiotrim/firebase_options.dart';
-import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
-import 'package:fiotrim/funcoes/agendarHorario.dart';
-import 'package:fiotrim/rotas/AppRoutes.dart';
-import 'package:fiotrim/rotas/verificadorDeLogin.dart';
-import 'package:fiotrim/usuarioDistribuidor/funcoes/produtosFunctions.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarServicos.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/EditProfileBarberPage.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/ajusteHorarios.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/configurarPontos.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/despesas.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
+import 'package:Dimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:Dimy/firebase_options.dart';
+import 'package:Dimy/funcoes/CriarContaeLogar.dart';
+import 'package:Dimy/funcoes/agendarHorario.dart';
+import 'package:Dimy/rotas/AppRoutes.dart';
+import 'package:Dimy/rotas/verificadorDeLogin.dart';
+import 'package:Dimy/usuarioDistribuidor/funcoes/produtosFunctions.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:Dimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/funcoes/ajusteHorarios.dart';
+import 'package:Dimy/usuarioGerente/funcoes/configurarPontos.dart';
+import 'package:Dimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:Dimy/usuarioGerente/funcoes/despesas.dart';
+import 'package:Dimy/usuarioGerente/funcoes/finalizareCarregarComandas.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -86,7 +86,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'fiotrim App',
+        title: 'Dimy App',
         routes: {
           Approutes.VerificacaoDeLogado: (ctx) => VerificacaoDeLogado(),
         },

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/rotas/AppRoutes.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/rotas/AppRoutes.dart';
 
 class ConfirmacaoAgendamento extends StatelessWidget {
   const ConfirmacaoAgendamento({super.key});

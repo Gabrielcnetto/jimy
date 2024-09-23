@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:fiotrim/usuarioGerente/classes/comanda.dart';
+import 'package:Dimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:Dimy/usuarioGerente/classes/comanda.dart';
 
 class Finalizarecarregarcomandas with ChangeNotifier {
   final database = FirebaseFirestore.instance;

@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class ItemVisaoComissao extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
-import 'package:fiotrim/rotas/verificarTipoUsuario.dart';
+import 'package:Dimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:Dimy/rotas/verificarTipoUsuario.dart';
 
 class VerificacaoDeLogado extends StatelessWidget {
   const VerificacaoDeLogado({super.key});

@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "1024433973403",
-    "project_id": "fiotrim",
-    "storage_bucket": "fiotrim.appspot.com"
+    "project_id": "Dimy",
+    "storage_bucket": "Dimy.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:1024433973403:android:bef1dbea002660d9b3fe3e",
         "android_client_info": {
-          "package_name": "com.fiotrim.oficial"
+          "package_name": "com.Dimy.oficial"
         }
       },
       "oauth_client": [],

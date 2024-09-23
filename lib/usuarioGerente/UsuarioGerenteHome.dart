@@ -1,15 +1,15 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
-import 'package:fiotrim/rotas/confirmacaoAgendamento.dart';
-import 'package:fiotrim/rotas/verificadorDeLogin.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
-import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/funcoes/CriarContaeLogar.dart';
+import 'package:Dimy/rotas/confirmacaoAgendamento.dart';
+import 'package:Dimy/rotas/verificadorDeLogin.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
+import 'package:Dimy/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

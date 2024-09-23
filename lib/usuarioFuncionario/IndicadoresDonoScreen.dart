@@ -1,15 +1,15 @@
-import 'package:fiotrim/usuarioFuncionario/RankingProfissionais.dart';
-import 'package:fiotrim/usuarioFuncionario/indicadoresQuadro.dart';
+import 'package:Dimy/usuarioFuncionario/RankingProfissionais.dart';
+import 'package:Dimy/usuarioFuncionario/indicadoresQuadro.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/bannerAnuncios.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart';
+import 'package:Dimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/componentes/Configuracoes.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/componentes/HeaderNomeMaisFoto.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/componentes/RankingProfissionais.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/componentes/ShoppingParaGerente.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/componentes/bannerAnuncios.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/componentes/indicadoresQuadro.dart';
 import 'package:provider/provider.dart';
 
 class IndicadoresScreenFuncionario extends StatefulWidget {

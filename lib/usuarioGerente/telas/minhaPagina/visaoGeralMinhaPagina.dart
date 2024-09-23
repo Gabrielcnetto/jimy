@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/barbeiros.dart';
-import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
-import 'package:fiotrim/usuarioGerente/classes/pagamentos.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/EditProfileBarberPage.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/EditarHorariosPrincipalScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/components/bannerItem.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/barbeiros.dart';
+import 'package:Dimy/usuarioGerente/classes/horarios.dart';
+import 'package:Dimy/usuarioGerente/classes/pagamentos.dart';
+import 'package:Dimy/usuarioGerente/funcoes/EditProfileBarberPage.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/EditarHorariosPrincipalScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/components/bannerItem.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/components/profItemDaLista.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/editarPerfil/EditarPerfilScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart';
 import 'package:provider/provider.dart';
 
 class VisaoGeralMinhaPagina extends StatefulWidget {
@@ -46,7 +46,7 @@ class _VisaoGeralMinhaPaginaState extends State<VisaoGeralMinhaPagina> {
   }
 
   List<String> _images = [
-    "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/bannerFixo%2FdefaultBanner.jpeg?alt=media&token=b3d110b2-2b3f-4b6c-a67d-4ddb3a327724",
+    "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/bannerFixo%2FdefaultBanner.jpeg?alt=media&token=b3d110b2-2b3f-4b6c-a67d-4ddb3a327724",
   ];
 
   String? BarbeariaNome;

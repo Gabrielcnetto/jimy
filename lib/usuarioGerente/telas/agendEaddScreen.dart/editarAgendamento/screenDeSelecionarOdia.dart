@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/funcoes/agendarHorario.dart';
-import 'package:fiotrim/rotas/verificadorDeLogin.dart';
-import 'package:fiotrim/usuarioGerente/classes/CorteClass.dart';
-import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/funcoes/agendarHorario.dart';
+import 'package:Dimy/rotas/verificadorDeLogin.dart';
+import 'package:Dimy/usuarioGerente/classes/CorteClass.dart';
+import 'package:Dimy/usuarioGerente/classes/horarios.dart';
 import 'package:provider/provider.dart';
 
 class EditarODiaDoAgendamento extends StatefulWidget {

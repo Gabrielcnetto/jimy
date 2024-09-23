@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/funcoes/CriarContaeLogar.dart';
 import 'package:provider/provider.dart';
 
 class RecuperarSenhaScreen extends StatefulWidget {

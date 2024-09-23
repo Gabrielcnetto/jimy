@@ -1,9 +1,9 @@
-import 'package:fiotrim/usuarioFuncionario/IndicadoresDonoScreen.dart';
-import 'package:fiotrim/usuarioFuncionario/agendaEAddScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
-import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
+import 'package:Dimy/usuarioFuncionario/IndicadoresDonoScreen.dart';
+import 'package:Dimy/usuarioFuncionario/agendaEAddScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/agendEaddScreen.dart/agendaEAddScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/indicadores/IndicadoresDonoScreen.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/visaoGeralMinhaPagina.dart';
+import 'package:Dimy/usuarioGerente/telas/visaoAvancadaIndicadores/novaInternoIndicadores.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

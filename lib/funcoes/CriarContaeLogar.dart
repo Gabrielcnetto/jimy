@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/horarios.dart';
 
 class CriarcontaelogarProvider with ChangeNotifier {
   //bibliotecas - packages
@@ -36,7 +36,7 @@ class CriarcontaelogarProvider with ChangeNotifier {
         'PhoneNumber': "",
         'userIdDatabase': userIdCreate,
         "urlPerfilImage": "${Dadosgeralapp().defaultAvatarImage}",
-        "FioTrimpoints": 0,
+        "Dimypoints": 0,
         "userName": userName,
         "email": email,
         "senha": password,

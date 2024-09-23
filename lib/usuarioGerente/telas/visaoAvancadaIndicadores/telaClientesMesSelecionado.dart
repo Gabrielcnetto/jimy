@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/comanda.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioGerente/telas/visaoAvancadaIndicadores/itemComandaMesSelecionado.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/comanda.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/telas/visaoAvancadaIndicadores/itemComandaMesSelecionado.dart';
 import 'package:provider/provider.dart';
 
 class TelaClientesMesSelecionado extends StatefulWidget {

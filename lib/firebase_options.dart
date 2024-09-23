@@ -50,9 +50,9 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyBbtBz4OdG62bV1vbugOF0-6koeGBvpCBU',
     appId: '1:894532107300:web:aaf292a1c78518208eacb1',
     messagingSenderId: '894532107300',
-    projectId: 'fiotrimappoficial',
-    authDomain: 'fiotrimappoficial.firebaseapp.com',
-    storageBucket: 'fiotrimappoficial.appspot.com',
+    projectId: 'Dimyappoficial',
+    authDomain: 'Dimyappoficial.firebaseapp.com',
+    storageBucket: 'Dimyappoficial.appspot.com',
     measurementId: 'G-9RN8TZG6B3',
   );
 
@@ -60,17 +60,17 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyDP_LKydm8aS4ld0Pq6ioFl6an0DAU4RaQ',
     appId: '1:1024433973403:android:bef1dbea002660d9b3fe3e',
     messagingSenderId: '1024433973403',
-    projectId: 'fiotrim',
-    storageBucket: 'fiotrim.appspot.com',
+    projectId: 'Dimy',
+    storageBucket: 'Dimy.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA2uZOtIouUpEop6VVRy3X2kBeRLkPDenk',
     appId: '1:1024433973403:ios:78262981fdd8e90fb3fe3e',
     messagingSenderId: '1024433973403',
-    projectId: 'fiotrim',
-    storageBucket: 'fiotrim.appspot.com',
-    iosBundleId: 'com.fiotrim.oficial',
+    projectId: 'Dimy',
+    storageBucket: 'Dimy.appspot.com',
+    iosBundleId: 'com.Dimy.oficial',
   );
 
 }

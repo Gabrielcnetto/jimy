@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
-import 'package:fiotrim/rotas/AppRoutes.dart';
-import 'package:fiotrim/usuarioDistribuidor/classes/ProdutoShopping.dart';
-import 'package:fiotrim/usuarioDistribuidor/funcoes/produtosFunctions.dart';
-import 'package:fiotrim/usuarioDistribuidor/telas/components/itemViewMyProduct.dart';
-import 'package:fiotrim/usuarioDistribuidor/telas/produtosAdicionados/componentes/listaEBotaoVenderAgora.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/funcoes/CriarContaeLogar.dart';
+import 'package:Dimy/rotas/AppRoutes.dart';
+import 'package:Dimy/usuarioDistribuidor/classes/ProdutoShopping.dart';
+import 'package:Dimy/usuarioDistribuidor/funcoes/produtosFunctions.dart';
+import 'package:Dimy/usuarioDistribuidor/telas/components/itemViewMyProduct.dart';
+import 'package:Dimy/usuarioDistribuidor/telas/produtosAdicionados/componentes/listaEBotaoVenderAgora.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 

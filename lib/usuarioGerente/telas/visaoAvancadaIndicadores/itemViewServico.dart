@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/servico.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarServicos.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/servico.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
 import 'package:provider/provider.dart';
 
 class ItemViewGeralServico extends StatefulWidget {

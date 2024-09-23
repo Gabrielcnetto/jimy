@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/produto.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
-import 'package:fiotrim/usuarioGerente/telas/adicionarProdutos/produtoItem.dart';
-import 'package:fiotrim/usuarioGerente/telas/adicionarProdutos/telaDeCriarUmProduto.dart';
-import 'package:fiotrim/usuarioGerente/telas/adicionarProdutos/visaoInternaProduto.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/produto.dart';
+import 'package:Dimy/usuarioGerente/funcoes/criar_e_enviarProdutos.dart';
+import 'package:Dimy/usuarioGerente/telas/adicionarProdutos/produtoItem.dart';
+import 'package:Dimy/usuarioGerente/telas/adicionarProdutos/telaDeCriarUmProduto.dart';
+import 'package:Dimy/usuarioGerente/telas/adicionarProdutos/visaoInternaProduto.dart';
 import 'package:provider/provider.dart';
 
 class VisaoDeTodosOsProdutos extends StatefulWidget {

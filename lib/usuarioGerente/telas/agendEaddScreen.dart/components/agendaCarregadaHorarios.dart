@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
+import 'package:Dimy/usuarioGerente/classes/horarios.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
 class LinhaTempoProfissionalSelecionado extends StatefulWidget {

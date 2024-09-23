@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/telas/DomingoHorarios.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/telas/SabadoHorarios.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/telas/Semana.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/telas/DomingoHorarios.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/telas/SabadoHorarios.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/telas/Semana.dart';
 
 class EditarHorariosPrincipalEscreen extends StatefulWidget {
   const EditarHorariosPrincipalEscreen({super.key});

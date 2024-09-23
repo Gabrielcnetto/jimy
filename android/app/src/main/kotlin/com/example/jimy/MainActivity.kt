@@ -1,4 +1,4 @@
-package com.fiotrim.oficial
+package com.Dimy.oficial
 
 import io.flutter.embedding.android.FlutterActivity
 

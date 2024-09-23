@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fiotrim/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart';
+import 'package:Dimy/usuarioGerente/telas/minhaPagina/editarWallpapers/editarWallpapers.dart';
 
 class BannerItem extends StatefulWidget {
   List<String> images;

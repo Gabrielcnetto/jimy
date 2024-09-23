@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioDistribuidor/classes/ProdutoShopping.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioDistribuidor/classes/ProdutoShopping.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProdutoCriadoViewIntern extends StatelessWidget {

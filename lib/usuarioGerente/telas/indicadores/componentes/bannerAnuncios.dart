@@ -15,8 +15,8 @@ class _BannerAnunciosPerfilGerenteState
   final PageController _pageController = PageController();
   int _currentPage = 0;
   List<String> _banners = [
-    "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/bannerFixo%2FbannersHomeBarbeiros%2Fbanner02.png?alt=media&token=4a78540e-ebc6-4189-ae26-8efe60126f86",
-    "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/bannerFixo%2FbannersHomeBarbeiros%2Fbanner01.png?alt=media&token=9a2a614f-75e7-40e9-87c2-9e7d7a8fb101",
+    "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/bannerFixo%2FbannersHomeBarbeiros%2Fbanner02.png?alt=media&token=4a78540e-ebc6-4189-ae26-8efe60126f86",
+    "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/bannerFixo%2FbannersHomeBarbeiros%2Fbanner01.png?alt=media&token=9a2a614f-75e7-40e9-87c2-9e7d7a8fb101",
   ];
   @override
   Widget build(BuildContext context) {

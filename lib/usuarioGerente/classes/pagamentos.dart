@@ -48,36 +48,36 @@ final pagListPrincipal = [
     id: "D1",
     name: "Dinheiro",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FmoneyIcon.png?alt=media&token=74967870-137f-45f5-a867-8fe9075dc5ef",
+        "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/cardIcons%2FmoneyIcon.png?alt=media&token=74967870-137f-45f5-a867-8fe9075dc5ef",
   ),
   Pagamentos(
     id: "M1",
     name: "Mastercard Crédito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2Fmastercardicon.png?alt=media&token=b7f59d64-cfa4-4c0f-affa-47d64187413b",
+        "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/cardIcons%2Fmastercardicon.png?alt=media&token=b7f59d64-cfa4-4c0f-affa-47d64187413b",
   ),
   Pagamentos(
     id: "M2",
     name: "Mastercard Débito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2Fmastercardicon.png?alt=media&token=b7f59d64-cfa4-4c0f-affa-47d64187413b",
+        "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/cardIcons%2Fmastercardicon.png?alt=media&token=b7f59d64-cfa4-4c0f-affa-47d64187413b",
   ),
   Pagamentos(
     id: "V1",
     name: "Visa Crédito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FvisaIcon.png?alt=media&token=3f4c8456-868a-44f4-8de4-8c2e2af0ea47",
+        "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/cardIcons%2FvisaIcon.png?alt=media&token=3f4c8456-868a-44f4-8de4-8c2e2af0ea47",
   ),
   Pagamentos(
     id: "V2",
     name: "Visa Débito",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FvisaIcon.png?alt=media&token=3f4c8456-868a-44f4-8de4-8c2e2af0ea47",
+        "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/cardIcons%2FvisaIcon.png?alt=media&token=3f4c8456-868a-44f4-8de4-8c2e2af0ea47",
   ),
   Pagamentos(
     id: "P0",
     name: "PIX",
     photoIcon:
-        "https://firebasestorage.googleapis.com/v0/b/fiotrim.appspot.com/o/cardIcons%2FpixIcon.png?alt=media&token=b94f99b9-a233-4cdc-a638-cf50eefadfd9",
+        "https://firebasestorage.googleapis.com/v0/b/Dimy.appspot.com/o/cardIcons%2FpixIcon.png?alt=media&token=b94f99b9-a233-4cdc-a638-cf50eefadfd9",
   ),
 ];

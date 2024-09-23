@@ -1,15 +1,15 @@
-import 'package:fiotrim/usuarioFuncionario/funcionarioHome.dart';
+import 'package:Dimy/usuarioFuncionario/funcionarioHome.dart';
 import 'package:flutter/material.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
-import 'package:fiotrim/funcoes/CriarContaeLogar.dart';
-import 'package:fiotrim/rotas/verificadorDeLogin.dart';
-import 'package:fiotrim/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
-import 'package:fiotrim/usuarioGerente/UsuarioGerenteHome.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarFuncionario.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/CriarServicos.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioNormal/UsuarioNormalHome.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/acesso/entrada/AcessoEntradaPrimeiraTela.dart';
+import 'package:Dimy/funcoes/CriarContaeLogar.dart';
+import 'package:Dimy/rotas/verificadorDeLogin.dart';
+import 'package:Dimy/usuarioDistribuidor/UsuarioDistribuidorHome.dart';
+import 'package:Dimy/usuarioGerente/UsuarioGerenteHome.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarFuncionario.dart';
+import 'package:Dimy/usuarioGerente/funcoes/CriarServicos.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioNormal/UsuarioNormalHome.dart';
 import 'package:provider/provider.dart';
 
 class VerificartipoDeUsuario extends StatefulWidget {

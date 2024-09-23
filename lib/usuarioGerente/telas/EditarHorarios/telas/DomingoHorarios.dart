@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:fiotrim/DadosGeralApp.dart';
-import 'package:fiotrim/usuarioGerente/classes/horarios.dart';
-import 'package:fiotrim/usuarioGerente/funcoes/GetsDeInformacoes.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/telas/IconeHorario.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioDomingo.dart';
-import 'package:fiotrim/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioSabado.dart';
+import 'package:Dimy/DadosGeralApp.dart';
+import 'package:Dimy/usuarioGerente/classes/horarios.dart';
+import 'package:Dimy/usuarioGerente/funcoes/GetsDeInformacoes.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/telas/IconeHorario.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioDomingo.dart';
+import 'package:Dimy/usuarioGerente/telas/EditarHorarios/telas/IconeHorarioSabado.dart';
 import 'package:provider/provider.dart';
 
 class DomingoHorarios extends StatefulWidget {

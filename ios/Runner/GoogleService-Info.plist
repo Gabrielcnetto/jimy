@@ -9,11 +9,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.fiotrim.oficial</string>
+	<string>com.Dimy.oficial</string>
 	<key>PROJECT_ID</key>
-	<string>fiotrim</string>
+	<string>Dimy</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fiotrim.appspot.com</string>
+	<string>Dimy.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
